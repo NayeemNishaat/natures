@@ -1,12 +1,15 @@
 {
   "name": "natures",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Natures app with Express and MongoDB!",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "lAbYriNth",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.3"
+  }
 }
