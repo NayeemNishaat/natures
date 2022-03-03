@@ -1,15 +1,15 @@
 {
-  "name": "natures",
-  "version": "1.0.0",
-  "description": "Natures app with Express and MongoDB!",
-  "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "lAbYriNth",
-  "license": "ISC",
-  "dependencies": {
-    "express": "^4.17.3"
-  }
+    "name": "natures",
+    "version": "1.0.0",
+    "description": "Natures app with Express and MongoDB!",
+    "main": "app.js",
+    "scripts": {
+        "start": "nodemon server.js"
+    },
+    "keywords": [],
+    "author": "lAbYriNth",
+    "license": "ISC",
+    "dependencies": {
+        "express": "^4.17.3"
+    }
 }
