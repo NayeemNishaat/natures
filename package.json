@@ -4,12 +4,14 @@
     "description": "Natures app with Express and MongoDB!",
     "main": "app.js",
     "scripts": {
-        "start": "nodemon server.js"
+        "start": "nodemon server.js",
+        "prod": "SET NODE_ENV=production & nodemon server.js"
     },
     "keywords": [],
     "author": "lAbYriNth",
     "license": "ISC",
     "dependencies": {
+        "dotenv": "^16.0.0",
         "express": "^4.17.3"
     }
 }
