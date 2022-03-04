@@ -1,7 +1,7 @@
 const dotenv = require("dotenv");
-dotenv.config({ path: __dirname + "/config.env" }); // Important: Note: This two lines should be on top because we need to set the environment variable at first before starting the app!
+const app = require(`./app`);
 
-const app = require("./app");
+dotenv.config({ path: `${__dirname}/config.env` }); // Important: Note: This two lines should be on top because we need to set the environment variable at first before starting the app!
 
 // console.log(app.get("env"));
 // console.log(process.env);
