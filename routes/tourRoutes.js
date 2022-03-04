@@ -10,10 +10,22 @@ const tourController = require("../controllers/tourController");
 
 const router = express.Router();
 
+// Part: Param Middleware
+router.param(
+    "id",
+    tourController.checkId /* (req, res, next, val) => {
+    console.log(`Tour Id is ${val}`);
+    // Important: Must call next()
+    next();
+} */
+);
+
+// Test:
+
 router
     .route("/")
     .get(tourController.getAllTours)
-    .post(tourController.createTour);
+    .post(tourController.checkBody, tourController.createTour);
 router
     .route("/:id")
     .get(tourController.getTour)

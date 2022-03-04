@@ -4,6 +4,34 @@ const tours = JSON.parse(
     fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`)
 );
 
+// Important: In express always use middleware not function. That's the philosophy of express!
+exports.checkId = (req, res, next, val) => {
+    if (+req.params.id > tours.length) {
+        // Important: Must return
+        return res.status(404).json({ status: "fail", message: "Invalid Id" });
+    }
+    console.log(`Tour Id is ${val}`);
+
+    next();
+};
+
+exports.checkBody = (req, res, next) => {
+    const receivedData = req.body;
+
+    if (
+        !receivedData ||
+        !receivedData.name ||
+        receivedData.name === "" ||
+        !receivedData.price ||
+        receivedData.price === ""
+    )
+        return res
+            .status(400)
+            .json({ status: "fail", message: "Invalid Name and Price" });
+
+    next();
+};
+
 exports.getAllTours = (req, res) => {
     console.log(req.requestTime);
 
@@ -28,13 +56,12 @@ exports.getTour = (req, res) => {
 
     const tour = tours.find((el) => el.id === id);
 
-    if (!tour) {
-        return res.status(404).json({ status: "fail", message: "Invalid Id" });
-    }
+    // if (!tour) {
+    //     return res.status(404).json({ status: "fail", message: "Invalid Id" });
+    // }
 
     res.status(200).json({
         status: "success",
-        results: tours.length,
         data: {
             tour
         }
@@ -49,7 +76,7 @@ exports.createTour = (req, res) => {
 
     tours.push(newTour);
     fs.writeFile(
-        `${__dirname}/dev-data/data/tours-simple.json`,
+        `${__dirname}/../dev-data/data/tours-simple.json`,
         JSON.stringify(tours),
         (err) => {
             res.status(201).json({
@@ -65,9 +92,9 @@ exports.createTour = (req, res) => {
 };
 
 exports.updateTour = (req, res) => {
-    if (+req.params.id > tours.length) {
-        return res.status(404).json({ status: "fail", message: "Invalid Id" });
-    }
+    // if (+req.params.id > tours.length) {
+    //     return res.status(404).json({ status: "fail", message: "Invalid Id" });
+    // }
 
     res.status(200).json({
         status: "success",
@@ -76,10 +103,6 @@ exports.updateTour = (req, res) => {
 };
 
 exports.deleteTour = (req, res) => {
-    if (+req.params.id > tours.length) {
-        return res.status(404).json({ status: "fail", message: "Invalid Id" });
-    }
-
     res.status(204).json({
         status: "success",
         data: null
