@@ -7,6 +7,8 @@ const userRouter = require("./routes/userRoutes");
 // Important: Using middleware (a function that can modify the incoming data)
 // Important: Point: Position is very important in express. We must define the middlewares before the route handlers send the response.
 app.use(express.json());
+app.use(express.static(`${__dirname}/public`)); // Note: We don't need to include public in the url because it acts as root when no route is defined for the entered url!
+
 app.use((req, res, next) => {
     console.log("Middleware");
     // Important: Must call next else the req, res cycle will stuck here.
