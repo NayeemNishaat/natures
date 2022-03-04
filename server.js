@@ -5,10 +5,10 @@ dotenv.config({ path: `${__dirname}/config.env` }); // Important: Note: This two
 
 // console.log(app.get("env"));
 // console.log(process.env);
-console.log(process.env.NODE_ENV);
+// console.log(process.env.NODE_ENV);
 
 const port = process.env.port || 8080;
 
 app.listen(port, () => {
-    console.log(`App listening on port ${port}.`);
+    // console.log(`App listening on port ${port}.`);
 });
