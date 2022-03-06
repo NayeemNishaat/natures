@@ -1,3 +1,4 @@
+const { MongoClient } = require("mongodb");
 const dotenv = require("dotenv");
 const app = require(`./app`);
 
@@ -6,6 +7,11 @@ dotenv.config({ path: `${__dirname}/config.env` }); // Important: Note: This two
 // console.log(app.get("env"));
 // console.log(process.env);
 // console.log(process.env.NODE_ENV);
+
+(async () => {
+    /* const client =  */ await MongoClient.connect(process.env.DB_LOCAL);
+    // console.log(client);
+})();
 
 const port = process.env.port || 8080;
 

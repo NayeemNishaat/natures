@@ -1,0 +1,25 @@
+Chapter: Create
+use db-name
+show dbs
+show collections
+db.tours.insertOne({name:"Nayeem"})
+
+Chapter: Read
+db.tours.find({price:{$lte:500}})
+db.tours.find({price:{$gt:500},rating:{$eq:4.7}})
+db.tours.find({price:{$gt:500},rating:{$eq:4.7}})
+db.tours.find({$or:[{price:{$lt:500}},{rating:{$lt:4.9}}]})
+db.tours.find({$or:[{price:{$lt:500}},{rating:{$lt:4.9}}]},{name:1})
+
+Chapter: Update
+Part: Update Partially
+db.tours.updateOne({name:"The Snow Advanturer"},{$set:{price:597}})
+db.tours.updateMany({price:{$gt:500},rating:{$gte:4.8}},{$set:{premium:true}})
+
+Part: Update Totally
+db.tours.replaceOne({query},{data})
+
+Chapter: Delete
+db.tours.deleteMany({rating:{$lt:4.8}})
+db.dropDatabase()
+db.mycollection.drop()
