@@ -71,14 +71,14 @@ exports.getTour = (req, res) => {
 
 exports.createTour = async (req, res) => {
     // Point: Mongoose
-    // await TourModel.create({data});
+    // await TourModel.create(req.body);
 
     // Point: MongoDB
     let client;
     try {
         client = await unresolvedClient();
     } catch (err) {
-        console.log(err);
+        res.status(404).json({ status: "fail", message: err });
     }
 
     const db = client.db();
