@@ -1,4 +1,4 @@
-const { MongoClient } = require("mongodb");
+// const { MongoClient } = require("mongodb");
 const dotenv = require("dotenv");
 const app = require(`./app`);
 
@@ -8,13 +8,60 @@ dotenv.config({ path: `${__dirname}/config.env` }); // Important: Note: This two
 // console.log(process.env);
 // console.log(process.env.NODE_ENV);
 
-(async () => {
-    /* const client =  */ await MongoClient.connect(process.env.DB_LOCAL);
-    // console.log(client);
-})();
+// Chapter: MongoDB Driver
+// (async () => {
+//     const client = await MongoClient.connect(process.env.DB_LOCAL);
+// console.log(client);
+
+// const db = client.db();
+
+// Part: Insert Data
+// const tourData = {
+//     name: "The Forest Hiker",
+//     rating: 4.7,
+//     price: 497
+// };
+
+// try {
+//     await db.collection("natures").insertOne(tourData);
+// } catch (err) {
+//     console.log(err);
+// }
+
+// Part: Delete Data
+// await db.collection("natures").deleteOne({ price: 497 });
+
+// Part: Get Data
+// const data = await db.collection("natures").find({}).toArray();
+
+//     console.log(data);
+// })();
 
 const port = process.env.port || 8080;
 
 app.listen(port, () => {
     // console.log(`App listening on port ${port}.`);
 });
+
+// Chapter: With mongoclient we would do it like this:
+// const tourSchema = new mongoose.Schema({
+//     name: {
+//         type: String,
+//         required: [true, "A tour must have a name"],
+//         unique: true
+//     },
+//     rating: { type: Number, dafault: 4.5 },
+//     price: {
+//         type: Number,
+//         required: [true, "A tour must have a price"]
+//     }
+// });
+// const TourModel = mongoose.model("TourModel", tourSchema);
+
+// const testTour = new Tour({
+//     name: "The Forest Hiker",
+//     rating: 4.7,
+//     price: 497
+// });
+
+// testTour.save();

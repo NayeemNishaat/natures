@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(express.static(`${__dirname}/public`)); // Note: We don't need to include public in the url because it acts as root when no route is defined for the entered url!
 
 app.use((req, res, next) => {
-    console.log("Middleware");
+    // console.log("From Middleware");
     // Important: Must call next else the req, res cycle will stuck here.
     next();
 });
