@@ -33,23 +33,76 @@ const unresolvedClient = require("../models/tourModel");
 //     next();
 // };
 
-exports.getAllTours = (req, res) => {
-    console.log(req.requestTime);
+exports.getAllTours = async (req, res) => {
+    // Point: Mongoose
+    // await testTour.find();
 
-    res.status(200).json({
-        status: "success",
-        requestedAt: req.requestTime
-        // results: tours.length,
-        // data: {
-        //     tours
-        // }
-    });
+    // console.log(req.requestTime);
+
+    let client;
+    try {
+        client = await unresolvedClient();
+    } catch (err) {
+        res.status(404).json({ status: "fail", message: err });
+    }
+
+    const db = client.db();
+
+    try {
+        const allTours = await db.collection("natours").find().toArray();
+
+        client.close();
+
+        res.status(200).json({
+            status: "success",
+            requestedAt: req.requestTime,
+            results: allTours.length,
+            data: {
+                allTours
+            }
+        });
+    } catch (err) {
+        client.close();
+        console.log(err);
+    }
 };
 
-exports.getTour = (req, res) => {
-    // console.log(req.params);
+exports.getTour = async (req, res) => {
+    // Point: Mongoose
+    // await testTour.findById(+req.params.id);
+    // testTour.findOne({_id:req.params.id})
 
-    const id = req.params.id * 1; // Point: Another trick to convert from string to number (js performs type casting to number).
+    let client;
+    try {
+        client = await unresolvedClient();
+    } catch (err) {
+        res.status(404).json({ status: "fail", message: err });
+    }
+
+    const db = client.db();
+
+    try {
+        const tour = await db
+            .collection("natours")
+            .find({ id: +req.params.id })
+            .toArray();
+
+        client.close();
+
+        res.status(200).json({
+            status: "success",
+            requestedAt: req.requestTime,
+            data: {
+                tour
+            }
+        });
+    } catch (err) {
+        client.close();
+        console.log(err);
+    }
+
+    // console.log(req.params);
+    // const id = req.params.id * 1; // Point: Another trick to convert from string to number (js performs type casting to number).
 
     // if (id > tours.length) {
     //     return res.status(404).json({ status: "fail", message: "Invalid Id" });
@@ -71,7 +124,7 @@ exports.getTour = (req, res) => {
 
 exports.createTour = async (req, res) => {
     // Point: Mongoose
-    // await TourModel.create(req.body);
+    // await testTour.create(req.body);
 
     // Point: MongoDB
     let client;
@@ -120,20 +173,63 @@ exports.createTour = async (req, res) => {
     // res.status(200).send("Done!"); // Important: We must return a response.
 };
 
-exports.updateTour = (req, res) => {
+exports.updateTour = async (req, res) => {
     // if (+req.params.id > tours.length) {
     //     return res.status(404).json({ status: "fail", message: "Invalid Id" });
     // }
 
-    res.status(200).json({
-        status: "success",
-        data: { tour: "<Updated tour here!>" }
-    });
+    // Point: Mongoose
+    // await testTour.findByIdAndUpdate(req.param.id,req.body,{new:true,runValidators:true});
+
+    let client;
+    try {
+        client = await unresolvedClient();
+    } catch (err) {
+        res.status(404).json({ status: "fail", message: err });
+    }
+
+    const db = client.db();
+
+    try {
+        const tour = await db
+            .collection("natours")
+            .updateOne({ id: +req.params.id }, { $set: req.body });
+        client.close();
+
+        res.status(200).json({
+            status: "success",
+            requestedAt: req.requestTime,
+            data: {
+                tour
+            }
+        });
+    } catch (err) {
+        client.close();
+        console.log(err);
+    }
 };
 
-exports.deleteTour = (req, res) => {
-    res.status(204).json({
-        status: "success",
-        data: null
-    });
+exports.deleteTour = async (req, res) => {
+    let client;
+    try {
+        client = await unresolvedClient();
+    } catch (err) {
+        res.status(404).json({ status: "fail", message: err });
+    }
+
+    const db = client.db();
+
+    try {
+        await db.collection("natours").deleteOne({ id: +req.params.id });
+        client.close();
+
+        res.status(200).json({
+            status: "success",
+            requestedAt: req.requestTime,
+            data: null
+        });
+    } catch (err) {
+        client.close();
+        console.log(err);
+    }
 };

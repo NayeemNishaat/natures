@@ -43,7 +43,16 @@ app.listen(port, () => {
     // console.log(`App listening on port ${port}.`);
 });
 
-// Chapter: With mongoclient we would do it like this:
+// Chapter: With Mongoose
+// const DB = DB_CONNECTION_STRING;
+// mongoose
+//     .connect(DB, {
+//         useNewUrlParser: true,
+//         useCreateIndex: true,
+//         useFindAndModify: true
+//     })
+//     .then(() => "Connected");
+
 // const tourSchema = new mongoose.Schema({
 //     name: {
 //         type: String,
@@ -58,7 +67,7 @@ app.listen(port, () => {
 // });
 // const TourModel = mongoose.model("TourModel", tourSchema);
 
-// const testTour = new Tour({
+// const testTour = new TourModel({
 //     name: "The Forest Hiker",
 //     rating: 4.7,
 //     price: 497
