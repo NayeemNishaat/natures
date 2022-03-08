@@ -1,4 +1,5 @@
 // const { MongoClient } = require("mongodb");
+const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const app = require(`./app`);
 
@@ -36,6 +37,10 @@ dotenv.config({ path: `${__dirname}/config.env` }); // Important: Note: This two
 
 //     console.log(data);
 // })();
+
+const DB = process.env.DB_MONGOOSE;
+
+mongoose.connect(DB).then(() => console.log("DB connection successful!"));
 
 const port = process.env.port || 8080;
 
