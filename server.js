@@ -40,7 +40,9 @@ dotenv.config({ path: `${__dirname}/config.env` }); // Important: Note: This two
 
 const DB = process.env.DB_MONGOOSE;
 
-mongoose.connect(DB).then(() => console.log("DB connection successful!"));
+mongoose.connect(DB).then(() => {
+    // console.log("DB connection successful!");
+});
 
 const port = process.env.port || 8080;
 

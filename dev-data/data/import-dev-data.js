@@ -7,7 +7,9 @@ dotenv.config({ path: `${__dirname}/../../config.env` }); // Note: If __dirname 
 
 const DB = process.env.DB_MONGOOSE;
 
-mongoose.connect(DB).then(() => console.log("DB connection successful!"));
+mongoose.connect(DB).then(() => {
+    // console.log("DB connection successful!");
+});
 
 const tours = JSON.parse(
     fs.readFileSync(`${__dirname}/tours-simple.json`, "utf-8")
@@ -16,9 +18,9 @@ const tours = JSON.parse(
 const importData = async () => {
     try {
         await Tour.create(tours);
-        console.log("Imported!");
+        // console.log("Imported!");
     } catch (err) {
-        console.log(err);
+        // console.log(err);
     }
 
     process.exit();
@@ -27,15 +29,15 @@ const importData = async () => {
 const deleteData = async () => {
     try {
         await Tour.deleteMany();
-        console.log("Deleted!");
+        // console.log("Deleted!");
     } catch (err) {
-        console.log(err);
+        // console.log(err);
     }
 
     process.exit();
 };
 
-console.log(process.argv);
+// console.log(process.argv);
 
 if (process.argv[2] === "--import") {
     importData();
