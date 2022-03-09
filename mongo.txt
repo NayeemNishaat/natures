@@ -8,6 +8,7 @@ Chapter: Read
 db.tours.find({price:{$lte:500}})
 db.tours.find({price:{$gt:500},rating:{$eq:4.7}})
 db.tours.find({price:{$gt:500},rating:{$eq:4.7}})
+Part: OR Query
 db.tours.find({$or:[{price:{$lt:500}},{rating:{$lt:4.9}}]})
 db.tours.find({$or:[{price:{$lt:500}},{rating:{$lt:4.9}}]},{name:1})
 

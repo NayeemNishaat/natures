@@ -252,7 +252,29 @@ exports.getAllTours = async (req, res) => {
         //     .sort()
         //     .limitFields()
         //     .paginate();
-        const tours = await Tour.find();
+
+        // Point: Filtering Query
+        // const tours = await Tour.find()
+        //     .where("duration")
+        //     .equals(5)
+        //     .where("difficulty")
+        //     .equals("easy");
+
+        // const tours = await Tour.find({ duration: 5, difficulty: "easy" });
+
+        const queryObj = { ...req.query };
+        const excludedFields = ["page", "sort", "limit", "fields"];
+        excludedFields.forEach((el) => {
+            delete queryObj[el];
+        });
+
+        // const tours = await Tour.find(queryObj);
+        // Part: First build the query!
+        const query = Tour.find(queryObj); // Important: Without await it will return a query. With await it will return a resolved result of the current query.
+        // Part: Then execute the query!
+        const tours = await query;
+
+        // const tours = await Tour.find();
 
         // SEND RESPONSE
         res.status(200).json({

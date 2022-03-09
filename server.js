@@ -1,9 +1,10 @@
 // const { MongoClient } = require("mongodb");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-const app = require(`./app`);
 
 dotenv.config({ path: `${__dirname}/config.env` }); // Important: Note: This two lines should be on top because we need to set the environment variable at first before starting the app!
+
+const app = require(`./app`);
 
 // console.log(app.get("env"));
 // console.log(process.env);
