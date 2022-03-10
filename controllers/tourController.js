@@ -262,15 +262,45 @@ exports.getAllTours = async (req, res) => {
 
         // const tours = await Tour.find({ duration: 5, difficulty: "easy" });
 
+        // Part: Advanced Filtering
+        // /tours?duration[gte]=5&difficulty=easy
         const queryObj = { ...req.query };
         const excludedFields = ["page", "sort", "limit", "fields"];
         excludedFields.forEach((el) => {
-            delete queryObj[el];
+            delete queryObj[el]; // Important: Deleting property from object
         });
+
+        let queryString = JSON.stringify(queryObj);
+        queryString = queryString.replace(
+            /\b(gte|gt|lte|lt)\b/g,
+            (match) => `$${match}`
+        ); // Remark: \b for matching exact word!
+        let query = Tour.find(JSON.parse(queryString));
+
+        // Part: Sorting with chain
+        // /tours?sort=-price // Note: Descending Order
+        // /tours?sort=price,ratingsAverage
+        if (req.query.sort) {
+            // sort("price ratingsAverage")
+            const sortBy = req.query.split(",").join(" ");
+            query = query.sort(sortBy);
+            // query = query.sort(req.query.sort);
+        } else {
+            query = query.sort("-createdAt");
+        }
+
+        // Part: Field Limitting
+        // /tours?fields=name,duration,difficulty,price
+        if (req.query.fields) {
+            const fields = req.query.fields.split(",").join(" ");
+            query = query.select(fields);
+        } else {
+            query = query.select("-__v"); // Note: Excluding __v with this "-"!
+        }
 
         // const tours = await Tour.find(queryObj);
         // Part: First build the query!
-        const query = Tour.find(queryObj); // Important: Without await it will return a query. With await it will return a resolved result of the current query.
+        // const query = Tour.find(queryObj); // Important: Without await it will return a query. With await it will return a resolved result of the current query.
         // Part: Then execute the query!
         const tours = await query;
 
