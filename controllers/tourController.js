@@ -298,6 +298,18 @@ exports.getAllTours = async (req, res) => {
             query = query.select("-__v"); // Note: Excluding __v with this "-"!
         }
 
+        // Part: Pagination
+        // /tours?page=2&limit=10 // Note: 1 - 10 for page 1 and 11-20 for page 2.
+        const page = req.query.page * 1 || 1;
+        const limit = req.query.limit * 1 || 100;
+        const skip = limit * (page - 1);
+        query = query.skip(skip).limit(limit);
+
+        if (req.query.page) {
+            const numTours = await Tour.countDocuments();
+            if (skip >= numTours) throw new Error("This page does not exist!");
+        }
+
         // const tours = await Tour.find(queryObj);
         // Part: First build the query!
         // const query = Tour.find(queryObj); // Important: Without await it will return a query. With await it will return a resolved result of the current query.
