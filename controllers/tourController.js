@@ -282,7 +282,7 @@ exports.getAllTours = async (req, res) => {
         // /tours?sort=price,ratingsAverage
         if (req.query.sort) {
             // sort("price ratingsAverage")
-            const sortBy = req.query.split(",").join(" ");
+            const sortBy = req.query.sort.split(",").join(" ");
             query = query.sort(sortBy);
             // query = query.sort(req.query.sort);
         } else {
@@ -327,6 +327,7 @@ exports.getAllTours = async (req, res) => {
             }
         });
     } catch (err) {
+        console.log(err);
         res.status(404).json({
             status: "fail",
             message: err
