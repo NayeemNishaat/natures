@@ -551,3 +551,61 @@ exports.getTourStats = async (req, res) => {
         });
     }
 };
+
+exports.getMonthlyPlan = async (req, res) => {
+    try {
+        const year = req.params.year * 1;
+
+        const plan = await Tour.aggregate(
+            // Note: Unwind will deconstruct an array for the specified field and creates a document for each element in the array.
+            [
+                { $unwind: "$startDates" },
+                // Point: $match is used for selecting a document.
+                {
+                    $match: {
+                        startDates: {
+                            $gte: new Date(`${year}-01-01`),
+                            $lte: new Date(`${year}-12-31`)
+                        }
+                    }
+                },
+                {
+                    $group: {
+                        _id: { $month: "$startDates" },
+                        numTourStarts: { $sum: 1 },
+                        tours: { $push: "$name" }
+                    }
+                },
+                {
+                    $addFields: { month: "$_id" }
+                },
+                {
+                    $project: { _id: 0 }
+                },
+                {
+                    $sort: { numTourStarts: -1 }
+                },
+                { $limit: 6 },
+                {
+                    $group: {
+                        // _id -> group by!
+                        _id: null,
+                        busyMonth: { $max: "$numTourStarts" }
+                    }
+                }
+            ]
+        );
+
+        res.status(200).json({
+            status: "success",
+            data: {
+                plan
+            }
+        });
+    } catch (err) {
+        res.status(404).json({
+            status: "fail",
+            message: err
+        });
+    }
+};
