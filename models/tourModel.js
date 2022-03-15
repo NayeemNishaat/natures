@@ -127,10 +127,12 @@ tourSchema.virtual("durationWeeks").get(function () {
 
 // DOCUMENT MIDDLEWARE: runs before .save() and .create()
 tourSchema.pre("save", function (next) {
+    // this -> current document
     this.slug = slugify(this.name, { lower: true });
     next();
 });
 
+// Important: Here "save" is the hook/pre save hook!
 // tourSchema.pre('save', function(next) {
 //   console.log('Will save document...');
 //   next();
@@ -166,3 +168,6 @@ tourSchema.pre("aggregate", function (next) {
 const Tour = mongoose.model("Tour", tourSchema);
 
 module.exports = Tour;
+
+// Point: Business Logic > busyMonth, duration in week etc.
+// Point: Application Logic -> req and response handeling etc.
