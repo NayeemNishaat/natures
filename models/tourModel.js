@@ -146,6 +146,8 @@ tourSchema.pre("save", function (next) {
 // QUERY MIDDLEWARE
 // tourSchema.pre('find', function(next) {
 tourSchema.pre(/^find/, function (next) {
+    // Note: Here this -> query object
+    // Point: This pre find hook runs before executing the query and after creation of the query.
     this.find({ secretTour: { $ne: true } });
 
     this.start = Date.now();
@@ -153,6 +155,7 @@ tourSchema.pre(/^find/, function (next) {
 });
 
 tourSchema.post(/^find/, (_docs, next) =>
+    // Remark: It has access to the returned documents because it runs after executing the query.
     // console.log(`Query took ${Date.now() - this.start} milliseconds!`);
     next()
 );
