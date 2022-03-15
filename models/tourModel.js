@@ -29,7 +29,7 @@
 
 const mongoose = require("mongoose");
 const slugify = require("slugify");
-// const validator = require('validator');
+// const validator = require("validator");
 
 const tourSchema = new mongoose.Schema(
     {
@@ -61,6 +61,7 @@ const tourSchema = new mongoose.Schema(
             type: String,
             required: [true, "A tour must have a difficulty"],
             enum: {
+                // Point: String only validator. match also available to string for matching a regular expression.
                 values: ["easy", "medium", "difficult"],
                 message: "Difficulty is either: easy, medium, difficult"
             }
@@ -68,6 +69,7 @@ const tourSchema = new mongoose.Schema(
         ratingsAverage: {
             type: Number,
             default: 4.5,
+            // min/max also works for dates too.
             min: [1, "Rating must be above 1.0"],
             max: [5, "Rating must be below 5.0"]
         },
@@ -83,7 +85,7 @@ const tourSchema = new mongoose.Schema(
             type: Number,
             validate: {
                 validator: function (val) {
-                    // this only points to current doc on NEW document creation
+                    // Important: this only points to current doc on NEW document creation not on document update!
                     return val < this.price;
                 },
                 message:
@@ -162,6 +164,8 @@ tourSchema.post(/^find/, (_docs, next) =>
 
 // AGGREGATION MIDDLEWARE
 tourSchema.pre("aggregate", function (next) {
+    // Note: Here this -> aggregation object.
+    // Remark: unshift to insert an element in the beginning of the array.
     this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
 
     // console.log(this.pipeline());
@@ -174,3 +178,5 @@ module.exports = Tour;
 
 // Point: Business Logic > busyMonth, duration in week etc.
 // Point: Application Logic -> req and response handeling etc.
+
+// No model middleware because it's not very useful.
