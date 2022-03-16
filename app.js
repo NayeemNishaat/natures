@@ -165,6 +165,31 @@ app.use("/api/v1/users", userRouter);
 // userRouter.route("/").get(getAllUsers).post(createUser);
 // userRouter.route("/:id").get(getUser).patch(updateUser).delete(deleteUser);
 
+// Part: Handle unwanted routes (Operational Error)
+app.all("*", function (req, res, next) {
+    // res.status(404).json({
+    //     status: "fail",
+    //     message: `Can't find ${req.originalUrl} on this server.`
+    // });
+    const err = new Error(`Can't find ${req.originalUrl} on this server.`);
+    err.status = "fail";
+    err.statusCode = 404;
+
+    next(err); // Important: If next() receives an argument, express will automatically know an error occured. And it will skip all the other middlewares to the error handling middleware.
+});
+
+// Chapter: Error Handling
+app.use((err, req, res, next) => {
+    // Important: If all four parameters are defined, express will automatically know it's an error handeling middleware!
+    err.statusCode = err.statusCode || 500;
+    err.status = err.status || "Error!";
+
+    res.status(err.statusCode).json({
+        status: err.status,
+        message: err.message
+    });
+});
+
 // Chapter: Start Server
 // const port = 3000;
 // app.listen(port, () => {
