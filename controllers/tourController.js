@@ -236,6 +236,7 @@
 
 const Tour = require("../models/tourModel");
 const APIFeatures = require("../lib/apiFeatures");
+const catchAsync = require("../lib/catchAsync");
 
 exports.aliasTopTours = (req, res, next) => {
     req.query.limit = "5";
@@ -244,100 +245,99 @@ exports.aliasTopTours = (req, res, next) => {
     next();
 };
 
-exports.getAllTours = async (req, res) => {
-    try {
-        // EXECUTE QUERY
-        // const features = new APIFeatures(Tour.find(), req.query)
-        //     .filter()
-        //     .sort()
-        //     .limitFields()
-        //     .paginate();
+exports.getAllTours = catchAsync(async (req, res) => {
+    // try {
+    // EXECUTE QUERY
+    // const features = new APIFeatures(Tour.find(), req.query)
+    //     .filter()
+    //     .sort()
+    //     .limitFields()
+    //     .paginate();
 
-        // Point: Filtering Query
-        // const tours = await Tour.find()
-        //     .where("duration")
-        //     .equals(5)
-        //     .where("difficulty")
-        //     .equals("easy");
+    // Point: Filtering Query
+    // const tours = await Tour.find()
+    //     .where("duration")
+    //     .equals(5)
+    //     .where("difficulty")
+    //     .equals("easy");
 
-        // const tours = await Tour.find({ duration: 5, difficulty: "easy" });
+    // const tours = await Tour.find({ duration: 5, difficulty: "easy" });
 
-        // Part: Advanced Filtering
-        // /tours?duration[gte]=5&difficulty=easy
-        // const queryObj = { ...req.query };
-        // const excludedFields = ["page", "sort", "limit", "fields"];
-        // excludedFields.forEach((el) => {
-        //     delete queryObj[el]; // Important: Deleting property from object
-        // });
+    // Part: Advanced Filtering
+    // /tours?duration[gte]=5&difficulty=easy
+    // const queryObj = { ...req.query };
+    // const excludedFields = ["page", "sort", "limit", "fields"];
+    // excludedFields.forEach((el) => {
+    //     delete queryObj[el]; // Important: Deleting property from object
+    // });
 
-        // let queryString = JSON.stringify(queryObj);
-        // queryString = queryString.replace(
-        //     /\b(gte|gt|lte|lt)\b/g,
-        //     (match) => `$${match}`
-        // ); // Remark: \b for matching exact word!
-        // let query = Tour.find(JSON.parse(queryString));
+    // let queryString = JSON.stringify(queryObj);
+    // queryString = queryString.replace(
+    //     /\b(gte|gt|lte|lt)\b/g,
+    //     (match) => `$${match}`
+    // ); // Remark: \b for matching exact word!
+    // let query = Tour.find(JSON.parse(queryString));
 
-        // Part: Sorting with chain
-        // /tours?sort=-price // Note: Descending Order
-        // /tours?sort=price,ratingsAverage
-        // if (req.query.sort) {
-        //     // sort("price ratingsAverage")
-        //     const sortBy = req.query.sort.split(",").join(" ");
-        //     query = query.sort(sortBy);
-        //     // query = query.sort(req.query.sort);
-        // } else {
-        //     query = query.sort("-createdAt");
-        // }
+    // Part: Sorting with chain
+    // /tours?sort=-price // Note: Descending Order
+    // /tours?sort=price,ratingsAverage
+    // if (req.query.sort) {
+    //     // sort("price ratingsAverage")
+    //     const sortBy = req.query.sort.split(",").join(" ");
+    //     query = query.sort(sortBy);
+    //     // query = query.sort(req.query.sort);
+    // } else {
+    //     query = query.sort("-createdAt");
+    // }
 
-        // Part: Field Limitting
-        // /tours?fields=name,duration,difficulty,price
-        // if (req.query.fields) {
-        //     const fields = req.query.fields.split(",").join(" ");
-        //     query = query.select(fields);
-        // } else {
-        //     query = query.select("-__v"); // Note: Excluding __v with this "-"!
-        // }
+    // Part: Field Limitting
+    // /tours?fields=name,duration,difficulty,price
+    // if (req.query.fields) {
+    //     const fields = req.query.fields.split(",").join(" ");
+    //     query = query.select(fields);
+    // } else {
+    //     query = query.select("-__v"); // Note: Excluding __v with this "-"!
+    // }
 
-        // Part: Pagination
-        // /tours?page=2&limit=10 // Note: 1 - 10 for page 1 and 11-20 for page 2.
-        // const page = req.query.page * 1 || 1;
-        // const limit = req.query.limit * 1 || 100;
-        // const skip = limit * (page - 1);
-        // query = query.skip(skip).limit(limit);
+    // Part: Pagination
+    // /tours?page=2&limit=10 // Note: 1 - 10 for page 1 and 11-20 for page 2.
+    // const page = req.query.page * 1 || 1;
+    // const limit = req.query.limit * 1 || 100;
+    // const skip = limit * (page - 1);
+    // query = query.skip(skip).limit(limit);
 
-        // if (req.query.page) {
-        //     const numTours = await Tour.countDocuments();
-        //     if (skip >= numTours) throw new Error("This page does not exist!");
-        // }
+    // if (req.query.page) {
+    //     const numTours = await Tour.countDocuments();
+    //     if (skip >= numTours) throw new Error("This page does not exist!");
+    // }
 
-        // const tours = await Tour.find(queryObj);
-        // Part: First build the query!
-        // const query = Tour.find(queryObj); // Important: Without await it will return a query. With await it will return a resolved result of the current query.
-        // Part: Then execute the query!
-        const features = new APIFeatures(Tour.find(), req.query)
-            .filter()
-            .sort()
-            .limitFields()
-            .paginate();
-        const tours = await features.query;
+    // const tours = await Tour.find(queryObj);
+    // Part: First build the query!
+    // const query = Tour.find(queryObj); // Important: Without await it will return a query. With await it will return a resolved result of the current query.
+    // Part: Then execute the query!
+    const features = new APIFeatures(Tour.find(), req.query)
+        .filter()
+        .sort()
+        .limitFields()
+        .paginate();
+    const tours = await features.query;
+    // const tours = await Tour.find();
 
-        // const tours = await Tour.find();
-
-        // SEND RESPONSE
-        res.status(200).json({
-            status: "success",
-            results: tours.length,
-            data: {
-                tours
-            }
-        });
-    } catch (err) {
-        res.status(404).json({
-            status: "fail",
-            message: err
-        });
-    }
-};
+    // SEND RESPONSE
+    res.status(200).json({
+        status: "success",
+        results: tours.length,
+        data: {
+            tours
+        }
+    });
+    // } catch (err) {
+    //     res.status(404).json({
+    //         status: "fail",
+    //         message: err
+    //     });
+    // }
+});
 
 exports.getTour = async (req, res) => {
     try {
@@ -358,26 +358,35 @@ exports.getTour = async (req, res) => {
     }
 };
 
-exports.createTour = async (req, res) => {
-    try {
-        // const newTour = new Tour({})
-        // newTour.save()
+exports.createTour = catchAsync(async (req, res) => {
+    const newTour = await Tour.create(req.body);
 
-        const newTour = await Tour.create(req.body);
+    res.status(201).json({
+        status: "success",
+        data: {
+            tour: newTour
+        }
+    });
 
-        res.status(201).json({
-            status: "success",
-            data: {
-                tour: newTour
-            }
-        });
-    } catch (err) {
-        res.status(400).json({
-            status: "fail",
-            message: err
-        });
-    }
-};
+    // try {
+    // const newTour = new Tour({})
+    // newTour.save()
+
+    // const newTour = await Tour.create(req.body);
+
+    // res.status(201).json({
+    //     status: "success",
+    //     data: {
+    //         tour: newTour
+    //     }
+    // });
+    // } catch (err) {
+    //     res.status(400).json({
+    //         status: "fail",
+    //         message: err
+    //     });
+    // }
+});
 
 exports.updateTour = async (req, res) => {
     try {

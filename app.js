@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 const tourRouter = require("./routes/tourRoutes");
 const userRouter = require("./routes/userRoutes");
+const AppError = require("./lib/appError");
+const globalErrorHandler = require("./controllers/errorController");
 
 // Chapter: Middlewares
 // Important: Using middleware (a function that can modify the incoming data)
@@ -171,24 +173,16 @@ app.all("*", function (req, res, next) {
     //     status: "fail",
     //     message: `Can't find ${req.originalUrl} on this server.`
     // });
-    const err = new Error(`Can't find ${req.originalUrl} on this server.`);
-    err.status = "fail";
-    err.statusCode = 404;
 
-    next(err); // Important: If next() receives an argument, express will automatically know an error occured. And it will skip all the other middlewares to the error handling middleware.
+    // const err = new Error(`Can't find ${req.originalUrl} on this server.`);
+    // err.status = "fail";
+    // err.statusCode = 404;
+
+    next(new AppError(`Can't find ${req.originalUrl} on this server.`, 404)); // Important: If next() receives an argument, express will automatically know an error occured. And it will skip all the other middlewares to the error handling middleware.
 });
 
 // Chapter: Error Handling
-app.use((err, req, res, next) => {
-    // Important: If all four parameters are defined, express will automatically know it's an error handeling middleware!
-    err.statusCode = err.statusCode || 500;
-    err.status = err.status || "Error!";
-
-    res.status(err.statusCode).json({
-        status: err.status,
-        message: err.message
-    });
-});
+app.use(globalErrorHandler);
 
 // Chapter: Start Server
 // const port = 3000;
