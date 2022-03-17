@@ -2,6 +2,20 @@
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 
+// Important: Must be placed before executing any other code!
+process.on("unhandledRejection", (err) => {
+    console.log("Unhandled Rejection! Shutting down!");
+    console.log(err.name, err.message);
+    server.close(() => process.exit(1)); // Note: 1 -> Uncaught exception, 0 -> Success.
+});
+
+process.on("uncaughtException", (err) => {
+    // Remark: Uncaught Exceptions are synchronous errors.
+    console.log("Uncaught Exception! Shutting down!");
+    console.log(err.name, err.message);
+    process.exit(1);
+});
+
 dotenv.config({ path: `${__dirname}/config.env` }); // Important: Note: This two lines should be on top because we need to set the environment variable at first before starting the app!
 
 const app = require(`./app`);
@@ -41,13 +55,18 @@ const app = require(`./app`);
 
 const DB = process.env.DB_MONGOOSE;
 
-mongoose.connect(DB).then(() => {
-    // console.log("DB connection successful!");
-});
+mongoose
+    .connect(DB)
+    .then(() => {
+        // console.log("DB connection successful!");
+    })
+    .catch(() => {
+        // console.log("DB connection failed!");
+    });
 
 const port = process.env.port || 8080;
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
     // console.log(`App listening on port ${port}.`);
 });
 

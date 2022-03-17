@@ -9,7 +9,7 @@ const sendError = (res, err, env) => {
             stack: err.stack
         });
 
-        console.error("ERROR:", err);
+        // console.error("ERROR:", err);
     } else if (err.isOperational) {
         // Point: Operational error
         res.status(err.statusCode).json({
