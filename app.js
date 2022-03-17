@@ -15,13 +15,13 @@ if (process.env.NODE_ENV === "development") {
 app.use(express.json());
 app.use(express.static(`${__dirname}/public`)); // Note: We don't need to include public in the url because it acts as root when no route is defined for the entered url!
 
-app.use((req, res, next) => {
+app.use((_req, _res, next) => {
     // console.log("From Middleware");
     // Important: Must call next else the req, res cycle will stuck here.
     next();
 });
 
-app.use((req, res, next) => {
+app.use((req, _res, next) => {
     req.requestTime = new Date().toISOString();
 
     next();
@@ -168,7 +168,7 @@ app.use("/api/v1/users", userRouter);
 // userRouter.route("/:id").get(getUser).patch(updateUser).delete(deleteUser);
 
 // Part: Handle unwanted routes (Operational Error)
-app.all("*", function (req, res, next) {
+app.all("*", (req, _res, next) => {
     // res.status(404).json({
     //     status: "fail",
     //     message: `Can't find ${req.originalUrl} on this server.`
