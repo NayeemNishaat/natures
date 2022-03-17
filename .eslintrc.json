@@ -15,12 +15,6 @@
         "no-underscore-dangle": "off",
         "class-methods-use-this": "off",
         "prefer-destructuring": ["error", { "object": true, "array": false }],
-        "no-unused-vars": [
-            "error",
-            { "argsIgnorePattern": "req|res|next|val" }
-        ],
-        "engines": {
-            "node": ">=17.0.0"
-        }
+        "no-unused-vars": ["error", { "argsIgnorePattern": "req|res|next|val" }]
     }
 }
