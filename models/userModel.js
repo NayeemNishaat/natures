@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
+const bcrypt = require("bcryptjs");
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -23,8 +24,30 @@ const userSchema = new mongoose.Schema({
     },
     passwordConfirm: {
         type: String,
-        required: [true, "Please confirm your password."]
+        required: [true, "Please confirm your password."],
+        validate: {
+            validator: function (el) {
+                // Important: Only works on SAVE or CREATE! So we need to use save not update to perform validation.
+                // Note: true -> no error. el -> passwordConfirm and this.password -> the upper password property.
+                // Point: Validator function will be automatically called by mongoose and it will be called with the parameter passwordConfirm.
+                return el === this.password;
+            },
+            message: "Passwords didn't match!"
+        }
     }
+});
+
+userSchema.pre("save", async function (next) {
+    // Part: Only run if password is modified.
+    if (!this.isModified("password")) return next();
+
+    // Part: Hash the password.
+    this.password = await bcrypt.hash(this.password, 12);
+
+    // Part: Delete the passwordConfirm from DB.
+    this.passwordConfirm = undefined;
+
+    next();
 });
 
 module.exports = mongoose.model("User", userSchema);
