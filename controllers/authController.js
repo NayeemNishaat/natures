@@ -43,3 +43,27 @@ exports.login = catchAsync(async (req, res, next) => {
 
     res.status(200).json({ status: "success", token });
 });
+
+// Chapter: Route Protection
+exports.protect = catchAsync(async (req, res, next) => {
+    // Part: Check if the token exists
+    let token;
+    if (
+        req.headers.authorization &&
+        req.headers.authorization.startsWith("Bearer ")
+    ) {
+        token = req.headers.authorization.split(" ")[1];
+    }
+
+    if (!token) {
+        return next(new AppError("You are not logged in!"), 401);
+    }
+
+    // Part: Verify the token
+
+    // Part: Check if the user still exist
+
+    // Part: Check if the user changed the password after the token was issued
+
+    next();
+});
