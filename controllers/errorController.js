@@ -45,6 +45,12 @@ const handleValidationErrorDB = (err) => {
     return new AppError(message, 400);
 };
 
+const handleJWTError = () =>
+    new AppError("Invalid token. Please log in again!", 401); // Remark: This will potentially create an error object add some properties to it and then retuns it.
+
+const handleJWTExpiredError = () =>
+    new AppError("Your token has expired! Please log in again.", 401);
+
 module.exports = (err, _req, res, _next) => {
     // Important: If all four parameters are defined, express will automatically know it's an error handeling middleware!
     err.statusCode = err.statusCode || 500;
@@ -63,6 +69,10 @@ module.exports = (err, _req, res, _next) => {
         if (error._message === "Tour validation failed") {
             error = handleValidationErrorDB(error);
         }
+
+        if (error.name === "JsonWebTokenError") error = handleJWTError(); // Point: Saving the created error object into error.
+
+        if (error.name === "TokenExpiredError") error = handleJWTExpiredError();
 
         sendError(res, error, "production");
     }
