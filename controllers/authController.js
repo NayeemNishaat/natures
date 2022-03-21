@@ -86,3 +86,36 @@ exports.protect = catchAsync(async (req, res, next) => {
     req.user = currentUser;
     next(); // Note: Grant access to the protected route.
 });
+
+exports.restrictTo =
+    (...roles) =>
+    // Important: We can not directly pass arguments to the middleware function. So we are creating a wrapper function.
+    (req, res, next) => {
+        // Note: Because of closure this function can access roles array!
+        if (!roles.includes(req.user.role))
+            return next(
+                new AppError(
+                    "You don't have permission to perform this action.",
+                    403
+                )
+            );
+
+        next();
+    };
+
+// Chapter: Forgot Password
+exports.forgotPassword = catchAsync(async (req, res, next) => {
+    // Part: Get user based on posted email
+    const user = await User.findOne({ email: req.body.email });
+
+    if (!user)
+        return next(
+            new AppError("There is no user with that email address."),
+            404
+        );
+
+    // Part: Generate the random reset token
+    // Part: Send it to the user email.
+});
+
+exports.resetPassword = (req, res, next) => {};
