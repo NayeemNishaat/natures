@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
 const catchAsync = require("../lib/catchAsync");
 const AppError = require("../lib/appError");
+const sendEmail = require("../lib/email");
 
 // Segment: Generate Token
 const signToken = (id) =>
@@ -115,7 +116,42 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
         );
 
     // Part: Generate the random reset token
+    const resetToken = user.createPasswordResetToken();
+    await user.save({ validateBeforeSave: false }); // Important: Point: Modified data in instance method and saving here now. For saving we have a validator to check if email and password are given. But we dont send those here. So, stopping validation, hence the document will contain the previous info.
+
     // Part: Send it to the user email.
+    const resetURL = `${req.protocol}://${req.get(
+        "host"
+    )}/api/v1/users/reset-password/${resetToken}`;
+
+    const message = `Forgot your password? Submit a patch request with your new password and passwordConfirm to: ${resetURL}.\nIf you didn't forget your password, please ignore this email.`;
+
+    // Important: We need to do more than simply sending errors to the client. Hence, using try/catch block.
+
+    try {
+        await sendEmail({
+            email: user.email,
+            subject: "Password reset link! (Valid for 10m.)",
+            message
+        });
+
+        res.status(200).json({
+            status: "success",
+            message: "Token sent to email successfully!"
+        });
+    } catch (error) {
+        user.passwordResetToken = undefined;
+        user.passwordResetExpires = undefined;
+
+        await user.save({ validateBeforeSave: false });
+
+        return next(
+            new AppError(
+                "There was an error sending the email. Try again later!"
+            ),
+            500
+        );
+    }
 });
 
 exports.resetPassword = (req, res, next) => {};
