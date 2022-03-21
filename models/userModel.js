@@ -33,11 +33,11 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, "Please confirm your password."],
         validate: {
-            validator: function (el) {
+            validator: function (currEl) {
                 // Important: Only works on SAVE or CREATE! So we need to use save not update to perform validation.
-                // Note: true -> no error. el -> passwordConfirm and this.password -> the upper password property.
+                // Note: true -> no error. currEl -> current passwordConfirm element and this.password -> the upper password property.
                 // Point: Validator function will be automatically called by mongoose and it will be called with the parameter passwordConfirm.
-                return el === this.password;
+                return currEl === this.password;
             },
             message: "Passwords didn't match!"
         }
