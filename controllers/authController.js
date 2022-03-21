@@ -176,7 +176,17 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
 
-    await user.save();
+    // console.log(user);
+    // {
+    // 	_id: new ObjectId("6238a13ef888c1599beda2c8"),
+    // 	name: 'nayeem',
+    // 	email: 'nayeem@next.com',
+    // 	role: 'user',
+    // 	__v: 0,
+    // 	passwordChangedAt: 2022-03-21T19:44:03.816Z
+    //   }
+
+    await user.save(); //Important: Point: Here we are running the validation and mongoose will only run validation for password and passwordConfirm because we are setting/changing these above. Other properties remain same as before so, they are already valid.
 
     // Point: Update changedPasswordAt property for the curent user.
     // Changed it in the pre save() middleware.
