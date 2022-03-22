@@ -44,9 +44,11 @@ const userSchema = new mongoose.Schema({
     },
     passwordChangedAt: Date,
     passwordResetToken: String,
-    passwordResetExpires: Date
+    passwordResetExpires: Date,
+    active: { type: Boolean, default: true, select: false }
 });
 
+// Chapter: Document middleware
 userSchema.pre("save", async function (next) {
     // Part: Only run if password is modified.
     if (!this.isModified("password")) return next();
@@ -67,7 +69,14 @@ userSchema.pre("save", function (next) {
     next();
 });
 
-// Segment: Instance Method -> It is a method that is going to be available to all of the documents of a collection.
+// Chapter: Query middleware
+userSchema.pre(/^find/, function (next) {
+    // Note: Here this -> current queriable object
+    this.find({ active: { $ne: false } });
+    next();
+});
+
+// Chapter: Instance Method -> It is a method that is going to be available to all of the documents of a collection.
 userSchema.methods.correctPassword = async function (
     candidatePassword,
     userPassword
