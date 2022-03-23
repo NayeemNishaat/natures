@@ -1,5 +1,6 @@
 const express = require("express");
 const rateLimit = require("express-rate-limit");
+const helmet = require("helmet");
 const app = express();
 const tourRouter = require("./routes/tourRoutes");
 const userRouter = require("./routes/userRoutes");
@@ -9,10 +10,15 @@ const globalErrorHandler = require("./controllers/errorController");
 // Chapter: Global Middlewares
 // Important: Using middleware (a function that can modify the incoming data)
 // Important: Point: Position is very important in express. We must define the middlewares before the route handlers send the response.
+// Part: Set security http headers
+app.use(helmet()); // Note: Called a function but app.use() expects a function not a function call. But the called function will return a function so no worries.
+
+// Part: Development logging
 if (process.env.NODE_ENV === "development") {
     // Do development logging!
 }
 
+// Part: Request limitting
 const limiter = rateLimit({
     max: 100,
     windowMs: 3600 * 1000,
@@ -21,9 +27,13 @@ const limiter = rateLimit({
 
 app.use("/api", limiter);
 
-app.use(express.json());
+// Part: Json body parser
+app.use(express.json({ limit: "10kb" }));
+
+// Part: Serving static files
 app.use(express.static(`${__dirname}/public`)); // Note: We don't need to include public in the url because it acts as root when no route is defined for the entered url!
 
+// Part: Test middleware
 app.use((_req, _res, next) => {
     // console.log("From Middleware");
     // Important: Must call next else the req, res cycle will stuck here.
