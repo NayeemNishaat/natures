@@ -15,9 +15,23 @@ const signToken = (id) =>
 const createSendToken = (user, statusCode, res) => {
     const token = signToken(user._id);
 
+    const cookieOptions = {
+        expires: new Date(
+            Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 84600000
+        ),
+        httpOnly: true // Remark: To prevent css!
+    };
+
+    if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
+
+    res.cookie("jwt", token, cookieOptions);
+
+    // Note: Remove password from the output.
+    user.password = undefined;
+
     res.status(statusCode).json({
         status: "success",
-        token,
+        // token,
         data: { user: user }
     });
 };
@@ -30,6 +44,7 @@ exports.signup = catchAsync(async (req, res, next) => {
         password: req.body.password,
         passwordConfirm: req.body.passwordConfirm
     });
+    //  Important: Password select is false but we still get it in the response because when creating a document select false doesn't work!
 
     createSendToken(newUser, 201, res);
 });
@@ -62,7 +77,7 @@ exports.protect = catchAsync(async (req, res, next) => {
         req.headers.authorization.startsWith("Bearer ")
     ) {
         token = req.headers.authorization.split(" ")[1];
-    }
+    } else token = req.headers.cookie.split("=")[1];
 
     if (!token) {
         return next(new AppError("You are not logged in!"), 401);
