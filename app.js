@@ -1,16 +1,25 @@
 const express = require("express");
+const rateLimit = require("express-rate-limit");
 const app = express();
 const tourRouter = require("./routes/tourRoutes");
 const userRouter = require("./routes/userRoutes");
 const AppError = require("./lib/appError");
 const globalErrorHandler = require("./controllers/errorController");
 
-// Chapter: Middlewares
+// Chapter: Global Middlewares
 // Important: Using middleware (a function that can modify the incoming data)
 // Important: Point: Position is very important in express. We must define the middlewares before the route handlers send the response.
 if (process.env.NODE_ENV === "development") {
     // Do development logging!
 }
+
+const limiter = rateLimit({
+    max: 100,
+    windowMs: 3600 * 1000,
+    message: "Too many requests from this IP. Please try again in an hour."
+});
+
+app.use("/api", limiter);
 
 app.use(express.json());
 app.use(express.static(`${__dirname}/public`)); // Note: We don't need to include public in the url because it acts as root when no route is defined for the entered url!
