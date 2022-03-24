@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
+const hpp = require("hpp");
 const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
 const app = express();
@@ -38,6 +39,21 @@ app.use(mongoSanitize());
 
 // Part: Data sanitization against XSS
 app.use(xss());
+
+// Part: Prevent parameter pollution
+// Warning: /api/v1/tours?sort=duration&sort=price -> will give an error because we dont expect any array of parameters but string. (express converts multiple params with same name seperated by "&" to an array)
+app.use(
+    hpp({
+        whitelist: [
+            "duration",
+            "ratingsQuantity",
+            "ratingsAverage",
+            "maxGroupSize",
+            "difficulty",
+            "price"
+        ]
+    })
+);
 
 // Part: Serving static files
 app.use(express.static(`${__dirname}/public`)); // Note: We don't need to include public in the url because it acts as root when no route is defined for the entered url!
