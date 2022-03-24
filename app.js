@@ -1,4 +1,6 @@
 const express = require("express");
+const mongoSanitize = require("express-mongo-sanitize");
+const xss = require("xss-clean");
 const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
 const app = express();
@@ -30,11 +32,20 @@ app.use("/api", limiter);
 // Part: Json body parser
 app.use(express.json({ limit: "10kb" }));
 
+// Part: Data sanitization against NoSQL query injection
+// Warning: "email":{"$gt":""} -> always returns true. So when we findOne({email}) we get all the users!
+app.use(mongoSanitize());
+
+// Part: Data sanitization against XSS
+app.use(xss());
+
 // Part: Serving static files
 app.use(express.static(`${__dirname}/public`)); // Note: We don't need to include public in the url because it acts as root when no route is defined for the entered url!
 
 // Part: Test middleware
 app.use((_req, _res, next) => {
+    // const ip = _req.headers["x-forwarded-for"] || _req.socket.remoteAddress;
+    // console.log();
     // console.log("From Middleware");
     // Important: Must call next else the req, res cycle will stuck here.
     next();
