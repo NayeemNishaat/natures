@@ -29,6 +29,7 @@
 
 const mongoose = require("mongoose");
 const slugify = require("slugify");
+const User = require("./userModel");
 // const validator = require("validator");
 
 const tourSchema = new mongoose.Schema(
@@ -115,9 +116,36 @@ const tourSchema = new mongoose.Schema(
         secretTour: {
             type: Boolean,
             default: false
-        }
+        },
+        startLocation: {
+            // GeoJSON
+            type: {
+                type: String,
+                default: "Point",
+                enum: ["Point"]
+            },
+            coordinates: [Number],
+            address: String,
+            description: String
+        },
+        locations: [
+            {
+                type: {
+                    type: String,
+                    default: "Point",
+                    enum: ["Point"]
+                },
+                coordinates: [Number],
+                address: String,
+                description: String,
+                day: Number
+            }
+        ],
+        // Point: Embedding guides from User model.
+        guides: Array
     },
     {
+        // Remark: To use virtual properties we need to define these.
         toJSON: { virtuals: true },
         toObject: { virtuals: true }
     }
@@ -127,10 +155,23 @@ tourSchema.virtual("durationWeeks").get(function () {
     return this.duration / 7;
 });
 
-// DOCUMENT MIDDLEWARE: runs before .save() and .create()
+// Chapter: DOCUMENT MIDDLEWARE: runs before .save() and .create()
 tourSchema.pre("save", function (next) {
     // this -> current document
     this.slug = slugify(this.name, { lower: true });
+    next();
+});
+
+// Part: Embedding
+tourSchema.pre("save", async function (next) {
+    // this -> current document
+    // req -> "guides":["123","1234567"]
+    const guidesPromises = this.guides.map(
+        async (id) => await User.findById(id)
+    ); // Important: map() is not async so it will return an array of promises though we have used await. So we need to manually settle the promises!
+
+    this.guides = await Promise.all(guidesPromises);
+
     next();
 });
 
@@ -145,7 +186,7 @@ tourSchema.pre("save", function (next) {
 //   next();
 // });
 
-// QUERY MIDDLEWARE
+// Chapter: QUERY MIDDLEWARE
 // tourSchema.pre('find', function(next) {
 tourSchema.pre(/^find/, function (next) {
     // Note: Here this -> query object
@@ -162,7 +203,7 @@ tourSchema.post(/^find/, (_docs, next) =>
     next()
 );
 
-// AGGREGATION MIDDLEWARE
+// Chapter: AGGREGATION MIDDLEWARE
 tourSchema.pre("aggregate", function (next) {
     // Note: Here this -> aggregation object.
     // Remark: unshift to insert an element in the beginning of the array.
