@@ -29,7 +29,7 @@
 
 const mongoose = require("mongoose");
 const slugify = require("slugify");
-const User = require("./userModel");
+// const User = require("./userModel"); // No need for referencing but for embedding from another model.
 // const validator = require("validator");
 
 const tourSchema = new mongoose.Schema(
@@ -129,6 +129,7 @@ const tourSchema = new mongoose.Schema(
             description: String
         },
         locations: [
+            // Embedding locations without creating any model.
             {
                 type: {
                     type: String,
@@ -141,8 +142,10 @@ const tourSchema = new mongoose.Schema(
                 day: Number
             }
         ],
-        // Point: Embedding guides from User model.
-        guides: Array
+        // Point: Embedding guides from User model. (Not a good idean. Because when we need to update a guide to lead guide we need to update it for all the tours where he/she is a guide and also in the user collection.)
+        // guides: Array
+        // Point: Referencing guides
+        guides: [{ type: mongoose.Schema.ObjectId, ref: "User" }]
     },
     {
         // Remark: To use virtual properties we need to define these.
@@ -162,18 +165,18 @@ tourSchema.pre("save", function (next) {
     next();
 });
 
-// Part: Embedding
-tourSchema.pre("save", async function (next) {
-    // this -> current document
-    // req -> "guides":["123","1234567"]
-    const guidesPromises = this.guides.map(
-        async (id) => await User.findById(id)
-    ); // Important: map() is not async so it will return an array of promises though we have used await. So we need to manually settle the promises!
+// Part: Embedding will only work for save/create documents not updating.
+// tourSchema.pre("save", async function (next) {
+// this -> current document
+// req -> "guides":["123","1234567"]
+// const guidesPromises = this.guides.map(
+//     async (id) => await User.findById(id)
+// ); // Important: map() is not async so it will return an array of promises though we have used await. So we need to manually settle the promises!
 
-    this.guides = await Promise.all(guidesPromises);
+//     this.guides = await Promise.all(guidesPromises);
 
-    next();
-});
+//     next();
+// });
 
 // Important: Here "save" is the hook/pre save hook!
 // tourSchema.pre('save', function(next) {
@@ -194,6 +197,16 @@ tourSchema.pre(/^find/, function (next) {
     this.find({ secretTour: { $ne: true } });
 
     this.start = Date.now();
+    next();
+});
+
+tourSchema.pre(/^find/, function (next) {
+    // Note: Current query is "this" i.e. -> Tour.findById(req.params.id)
+    this.populate({
+        path: "guides",
+        select: "-__v -passwordChangedAt"
+    });
+
     next();
 });
 

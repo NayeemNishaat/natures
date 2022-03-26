@@ -3,12 +3,6 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 
 // Important: Must be placed before executing any other code!
-process.on("unhandledRejection", (err) => {
-    console.log("Unhandled Rejection! Shutting down!");
-    console.log(err.name, err.message);
-    server.close(() => process.exit(1)); // Note: 1 -> Uncaught exception, 0 -> Success.
-});
-
 process.on("uncaughtException", (err) => {
     // Remark: Uncaught Exceptions are synchronous errors.
     console.log("Uncaught Exception! Shutting down!");
@@ -70,6 +64,12 @@ const server = app.listen(port, () => {
     // console.log(`App listening on port ${port}.`);
 });
 
+process.on("unhandledRejection", (err) => {
+    console.log("Unhandled Rejection! Shutting down!");
+    console.log(err.name, err.message);
+    server.close(() => process.exit(1)); // Note: 1 -> Uncaught exception, 0 -> Success.
+});
+
 // Chapter: With Mongoose
 // const DB = DB_CONNECTION_STRING;
 // mongoose
@@ -101,3 +101,5 @@ const server = app.listen(port, () => {
 // });
 
 // testTour.save();
+
+// Colors springgreen, gold, dodgerblue, deeppink, blueviolet
