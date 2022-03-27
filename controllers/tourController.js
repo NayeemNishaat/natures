@@ -316,14 +316,14 @@ exports.getAllTours = catchAsync(async (req, res, next) => {
     // const tours = await Tour.find(queryObj);
     // Part: First build the query!
     // const query = Tour.find(queryObj); // Important: Without await it will return a query. With await it will return a resolved result of the current query.
-    // Part: Then execute the query!
-    const features = new APIFeatures(Tour.find(), req.query)
+    const features = new APIFeatures(Tour, req.query)
         .filter()
         .sort()
         .limitFields()
         .paginate();
-    const tours = await features.query;
-    // const tours = await Tour.find();
+    // Part: Then execute the query!
+    const tours = await features.query; // Important: Remark: This query object is APIFeatures class's query object. And it's mutated over and over again by the filter(), sort(), limitFields() etc methods. Note: the final query looks like this: tour.find().sort().select().skip().limit() // Important: Without await it will return a query. With await it will return a resolved result of the current query.
+    // const tours = await Tour.query();
 
     // SEND RESPONSE
     res.status(200).json({

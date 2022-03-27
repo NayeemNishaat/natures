@@ -7,6 +7,7 @@ const helmet = require("helmet");
 const app = express();
 const tourRouter = require("./routes/tourRoutes");
 const userRouter = require("./routes/userRoutes");
+const reviewRouter = require("./routes/reviewRoutes");
 const AppError = require("./lib/appError");
 const globalErrorHandler = require("./controllers/errorController");
 
@@ -212,6 +213,8 @@ app.use("/api/v1/users", userRouter);
 
 // userRouter.route("/").get(getAllUsers).post(createUser);
 // userRouter.route("/:id").get(getUser).patch(updateUser).delete(deleteUser);
+
+app.use("/api/v1/reviews", reviewRouter);
 
 // Part: Handle unwanted routes (Operational Error)
 app.all("*", (req, _res, next) => {
