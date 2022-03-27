@@ -162,6 +162,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
             message: "Token sent to email successfully!"
         });
     } catch (error) {
+        // Important: If any error occurs we will remove the passwordResetToken and passwordResetExpires. Because since the request wasn't compleated by an error so it's best to remove these things.
         user.passwordResetToken = undefined;
         user.passwordResetExpires = undefined;
 
