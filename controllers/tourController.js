@@ -343,7 +343,7 @@ exports.getAllTours = catchAsync(async (req, res, next) => {
 
 exports.getTour = catchAsync(async (req, res, next) => {
     // try {
-    const tour = await Tour.findById(req.params.id);
+    const tour = await Tour.findById(req.params.id).populate("reviews");
 
     if (!tour) {
         return next(new AppError("No tour found with the given id", 404)); // Important: The next middleware is the error handeling middleware because we passed something inside next("something")!
@@ -448,7 +448,7 @@ exports.getTourStats = catchAsync(async (req, res, next) => {
         },
         {
             $group: {
-                // _id: "$difficulty", // Note: null -> All Fields
+                // _id: "$difficulty", // Note: null -> no group. Consider All document's specific field for calculation.
                 _id: { $toUpper: "$difficulty" },
                 numTours: { $sum: 1 },
                 numRatings: { $sum: "$ratingsQuantity" },
@@ -520,7 +520,7 @@ exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
             { $limit: 6 },
             {
                 $group: {
-                    // _id -> group by!
+                    // _id: null -> group by null that means no group!
                     _id: null,
                     busyMonth: { $max: "$numTourStarts" }
                 }

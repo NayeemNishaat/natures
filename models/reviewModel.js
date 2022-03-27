@@ -27,4 +27,16 @@ const reviewSchema = new mongoose.Schema(
     }
 );
 
+// Chapter: Query Middleware
+reviewSchema.pre(/^find/, function (next) {
+    // this.populate("tour", "name").populate({
+    //     path: "user",
+    //     select: "name photo"
+    // });
+
+    this.populate("user", "name photo");
+
+    next();
+});
+
 module.exports = mongoose.model("Review", reviewSchema);

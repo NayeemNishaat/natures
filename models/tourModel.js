@@ -154,8 +154,17 @@ const tourSchema = new mongoose.Schema(
     }
 );
 
+// Chapter: Virtual Middleware
+// Part: Virtual Field
 tourSchema.virtual("durationWeeks").get(function () {
     return this.duration / 7;
+});
+
+// Part: Virtual Populate
+tourSchema.virtual("reviews", {
+    ref: "Review", // Note: Name of the model!
+    foreignField: "tour",
+    localField: "_id"
 });
 
 // Chapter: DOCUMENT MIDDLEWARE: runs before .save() and .create()
@@ -203,18 +212,18 @@ tourSchema.pre(/^find/, function (next) {
 tourSchema.pre(/^find/, function (next) {
     // Note: Current query is "this" i.e. -> Tour.findById(req.params.id)
     this.populate({
-        path: "guides",
+        path: "guides", // Name of the key to populate.
         select: "-__v -passwordChangedAt"
-    });
+    }); // .populate("reviews"); // Important: Not populating here because we dont want to show reviews when the user requests for all tours. Rateher we will populate for a specific tour.
 
     next();
 });
 
-tourSchema.post(/^find/, (_docs, next) =>
-    // Remark: It has access to the returned documents because it runs after executing the query.
-    // console.log(`Query took ${Date.now() - this.start} milliseconds!`);
-    next()
-);
+// tourSchema.post(/^find/, (_docs, next) =>
+// Remark: It has access to the returned documents because it runs after executing the query.
+// console.log(`Query took ${Date.now() - this.start} milliseconds!`);
+//     next()
+// );
 
 // Chapter: AGGREGATION MIDDLEWARE
 tourSchema.pre("aggregate", function (next) {
