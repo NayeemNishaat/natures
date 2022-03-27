@@ -1,7 +1,7 @@
 const express = require("express");
 const authController = require("../controllers/authController");
 const tourController = require("../controllers/tourController");
-const reviewController = require("../controllers/reviewController");
+const reviewRouter = require("./reviewRoutes");
 
 const router = express.Router();
 
@@ -14,6 +14,10 @@ const router = express.Router();
 //     next();
 // }
 // );
+// End|
+
+// Note: Redirecting to review router!
+router.use("/:id/reviews", reviewRouter); // Important: A major problem in this approach is we don't have access to the query params (id) to the reviewRouter middleware. So we have to us merge-params to solve this problem.
 
 router
     .route("/top-5-cheap")
@@ -36,14 +40,6 @@ router
         authController.protect,
         authController.restrictTo("admin ", "lead-guide"),
         tourController.deleteTour
-    );
-
-router
-    .route("/:id/reviews")
-    .post(
-        authController.protect,
-        authController.restrictTo("user"),
-        reviewController.createReview
     );
 
 module.exports = router;
