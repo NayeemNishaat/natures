@@ -238,6 +238,7 @@ const Tour = require("../models/tourModel");
 const AppError = require("../lib/appError");
 const APIFeatures = require("../lib/apiFeatures");
 const catchAsync = require("../lib/catchAsync");
+const factory = require("./handlerFactory");
 
 exports.aliasTopTours = (req, res, next) => {
     req.query.limit = "5";
@@ -419,7 +420,9 @@ exports.updateTour = catchAsync(async (req, res, next) => {
     // }
 });
 
-exports.deleteTour = catchAsync(async (req, res, next) => {
+exports.deleteTour = factory.deleteOne(Tour); // Important: Remark: Not using factory.deleteOne("Tour")() because we dont call this function. It is express who will call this whenever a request to this route initiated.
+
+/* exports.deleteTour = catchAsync(async (req, res, next) => {
     // try {
     const tour = await Tour.findByIdAndDelete(req.params.id);
 
@@ -437,7 +440,7 @@ exports.deleteTour = catchAsync(async (req, res, next) => {
     //         message: err
     //     });
     // }
-});
+}); */
 
 // Segment: Aggrigation Middleware
 exports.getTourStats = catchAsync(async (req, res, next) => {

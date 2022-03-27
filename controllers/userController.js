@@ -1,6 +1,7 @@
 const User = require("../models/userModel");
 const catchAsync = require("../lib/catchAsync");
 const AppError = require("../lib/appError");
+const factory = require("./handlerFactory");
 
 const filterObj = (obj, ...allowedFields) => {
     const newObj = {};
@@ -68,6 +69,4 @@ exports.updateUser = (req, res) => {
     res.status(500).json({ status: "error", message: "Undefined route!" });
 };
 
-exports.deleteUser = (req, res) => {
-    res.status(500).json({ status: "error", message: "Undefined route!" });
-};
+exports.deleteUser = factory.deleteOne(User);
