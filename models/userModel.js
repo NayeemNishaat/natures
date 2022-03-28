@@ -47,8 +47,8 @@ const userSchema = new mongoose.Schema(
         passwordResetToken: String,
         passwordResetExpires: Date,
         active: { type: Boolean, default: true, select: false }
-    },
-    { id: false }
+    }
+    // { id: false } // Remark: Need the id for getting current user info and for other reasons! Important: .select("+id") doesn't work in this case!
 );
 
 // Chapter: Document middleware
