@@ -365,60 +365,64 @@ exports.getTour = catchAsync(async (req, res, next) => {
     // }
 });
 
-exports.createTour = catchAsync(async (req, res, next) => {
-    const newTour = await Tour.create(req.body);
+exports.createTour = factory.createOne(Tour);
 
-    res.status(201).json({
-        status: "success",
-        data: {
-            tour: newTour
-        }
-    });
+// exports.createTour = catchAsync(async (req, res, next) => {
+//     const newTour = await Tour.create(req.body);
 
-    // try {
-    // const newTour = new Tour({})
-    // newTour.save()
+//     res.status(201).json({
+//         status: "success",
+//         data: {
+//             tour: newTour
+//         }
+//     });
 
-    // const newTour = await Tour.create(req.body);
+// try {
+// const newTour = new Tour({})
+// newTour.save()
 
-    // res.status(201).json({
-    //     status: "success",
-    //     data: {
-    //         tour: newTour
-    //     }
-    // });
-    // } catch (err) {
-    //     res.status(400).json({
-    //         status: "fail",
-    //         message: err
-    //     });
-    // }
-});
+// const newTour = await Tour.create(req.body);
 
-exports.updateTour = catchAsync(async (req, res, next) => {
-    // try {
-    const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
-        new: true,
-        runValidators: true
-    });
+// res.status(201).json({
+//     status: "success",
+//     data: {
+//         tour: newTour
+//     }
+// });
+// } catch (err) {
+//     res.status(400).json({
+//         status: "fail",
+//         message: err
+//     });
+// }
+// });
 
-    if (!tour) {
-        return next(new AppError("No tour found with the given id", 404));
-    }
+exports.updateTour = factory.updateOne(Tour);
 
-    res.status(200).json({
-        status: "success",
-        data: {
-            tour
-        }
-    });
-    // } catch (err) {
-    //     res.status(404).json({
-    //         status: "fail",
-    //         message: err
-    //     });
-    // }
-});
+// exports.updateTour = catchAsync(async (req, res, next) => {
+//     // try {
+//     const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
+//         new: true,
+//         runValidators: true
+//     });
+
+//     if (!tour) {
+//         return next(new AppError("No tour found with the given id", 404));
+//     }
+
+//     res.status(200).json({
+//         status: "success",
+//         data: {
+//             tour
+//         }
+//     });
+// } catch (err) {
+//     res.status(404).json({
+//         status: "fail",
+//         message: err
+//     });
+// }
+// });
 
 exports.deleteTour = factory.deleteOne(Tour); // Important: Remark: Not using factory.deleteOne("Tour")() because we dont call this function. It is express who will call this whenever a request to this route initiated.
 

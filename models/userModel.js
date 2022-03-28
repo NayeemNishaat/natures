@@ -3,50 +3,53 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
 
-const userSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: [true, "A user must have a name!"],
-        trim: true
+const userSchema = new mongoose.Schema(
+    {
+        name: {
+            type: String,
+            required: [true, "A user must have a name!"],
+            trim: true
+        },
+        email: {
+            type: String,
+            required: [true, "A user must have an email!"],
+            unique: true,
+            trim: true,
+            lowercase: true,
+            validate: [validator.isEmail, "Please provide a valid email!"]
+        },
+        photo: String,
+        role: {
+            type: String,
+            enum: ["user", "guide", "lead-guide", "admin"],
+            default: "user"
+        },
+        password: {
+            type: String,
+            required: [true, "A user must have a password!"],
+            minlength: [8, "Minimum password length should be 8 characters"],
+            select: false
+        },
+        passwordConfirm: {
+            type: String,
+            required: [true, "Please confirm your password."],
+            validate: {
+                validator: function (currEl) {
+                    // Important: Only works on SAVE or CREATE! So we need to use save not update to perform validation.
+                    // Note: true -> no error. currEl -> current passwordConfirm element and this.password -> the upper password property.
+                    // Point: Validator function will be automatically called by mongoose and it will be called with the parameter passwordConfirm.
+                    return currEl === this.password;
+                },
+                message: "Passwords didn't match!"
+            }
+        },
+        passwordChangedAt: Date,
+        passwordResetToken: String,
+        passwordResetExpires: Date,
+        active: { type: Boolean, default: true, select: false }
     },
-    email: {
-        type: String,
-        required: [true, "A user must have an email!"],
-        unique: true,
-        trim: true,
-        lowercase: true,
-        validate: [validator.isEmail, "Please provide a valid email!"]
-    },
-    photo: String,
-    role: {
-        type: String,
-        enum: ["user", "guide", "lead-guide", "admin"],
-        default: "user"
-    },
-    password: {
-        type: String,
-        required: [true, "A user must have a password!"],
-        minlength: [8, "Minimum password length should be 8 characters"],
-        select: false
-    },
-    passwordConfirm: {
-        type: String,
-        required: [true, "Please confirm your password."],
-        validate: {
-            validator: function (currEl) {
-                // Important: Only works on SAVE or CREATE! So we need to use save not update to perform validation.
-                // Note: true -> no error. currEl -> current passwordConfirm element and this.password -> the upper password property.
-                // Point: Validator function will be automatically called by mongoose and it will be called with the parameter passwordConfirm.
-                return currEl === this.password;
-            },
-            message: "Passwords didn't match!"
-        }
-    },
-    passwordChangedAt: Date,
-    passwordResetToken: String,
-    passwordResetExpires: Date,
-    active: { type: Boolean, default: true, select: false }
-});
+    { id: false }
+);
 
 // Chapter: Document middleware
 userSchema.pre("save", async function (next) {
