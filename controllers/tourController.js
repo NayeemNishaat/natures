@@ -235,7 +235,6 @@
 // };
 
 const Tour = require("../models/tourModel");
-const APIFeatures = require("../lib/apiFeatures");
 const catchAsync = require("../lib/catchAsync");
 const factory = require("./handlerFactory");
 
@@ -246,8 +245,10 @@ exports.aliasTopTours = (req, res, next) => {
     next();
 };
 
+exports.getAllTours = factory.getAll(Tour);
+
 // Note: No error handeling for getAllTours because there couldn't be any error when requesting for all tours.
-exports.getAllTours = catchAsync(async (req, res, next) => {
+/* exports.getAllTours = catchAsync(async (req, res, next) => {
     // try {
     // EXECUTE QUERY
     // const features = new APIFeatures(Tour.find(), req.query)
@@ -339,7 +340,7 @@ exports.getAllTours = catchAsync(async (req, res, next) => {
     //         message: err
     //     });
     // }
-});
+}); */
 
 exports.getTour = factory.getOne(Tour, { path: "reviews" });
 

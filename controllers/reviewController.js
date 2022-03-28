@@ -1,28 +1,32 @@
 const Review = require("../models/reviewModel");
-const catchAsync = require("../lib/catchAsync");
 const factory = require("./handlerFactory");
 
-exports.getAllReviews = catchAsync(async (req, res, next) => {
-    let filter = {};
-    if (req.params.id) filter = { tour: req.params.id };
+// Note: Not using a middleware for nexted route support. Rather putting the logic inside getAll()
+exports.getAllReviews = factory.getAll(Review);
 
-    const reviews = await Review.find(filter);
+// exports.getAllReviews = catchAsync(async (req, res, next) => {
+//     let filter = {};
+//     if (req.params.id) filter = { tour: req.params.id };
 
-    res.status(200).json({
-        status: "success",
-        results: reviews.length,
-        data: { reviews }
-    });
-});
+//     const reviews = await Review.find(filter);
 
-exports.getReview = catchAsync(async (req, res, next) => {
-    const review = await Review.findById(req.params.id);
+//     res.status(200).json({
+//         status: "success",
+//         results: reviews.length,
+//         data: { reviews }
+//     });
+// });
 
-    res.status(200).json({
-        status: "success",
-        data: review
-    });
-});
+exports.getReview = factory.getOne(Review);
+
+// exports.getReview = catchAsync(async (req, res, next) => {
+//     const review = await Review.findById(req.params.id);
+
+//     res.status(200).json({
+//         status: "success",
+//         data: review
+//     });
+// });
 
 exports.setTourUserIds = (req, res, next) => {
     // Remark: Allowing nested routes
