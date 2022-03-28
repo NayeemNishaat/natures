@@ -1,8 +1,17 @@
 const Review = require("../models/reviewModel");
 const factory = require("./handlerFactory");
 
-// Note: Not using a middleware for nexted route support. Rather putting the logic inside getAll()
-exports.getAllReviews = factory.getAll(Review);
+// Note: Not using a helper function for nested route support. Rather putting the logic inside getAll(), but using now!
+exports.getAllReviewsSecificTour = (req, res, next) => {
+    let filter = {};
+    if (req.params.id) filter = { tour: req.params.id };
+
+    req.filter = filter;
+
+    next();
+};
+
+exports.getAllReviews = factory.getAll(Review); // Important: Note: Express only calls first callback with (req, res, next). If we want this in 2nd level we need to call the 1st function() then declare the inner function. Then express will call the inner function as callback function. Btw in this way we can pass parameters to the callback function!
 
 // exports.getAllReviews = catchAsync(async (req, res, next) => {
 //     let filter = {};

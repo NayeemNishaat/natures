@@ -9,7 +9,10 @@ const router = express.Router({ mergeParams: true }); // Remark: Because we want
 
 router
     .route("/")
-    .get(reviewController.getAllReviews)
+    .get(
+        reviewController.getAllReviewsSecificTour,
+        reviewController.getAllReviews
+    )
     .post(
         authController.protect,
         authController.restrictTo("user"),

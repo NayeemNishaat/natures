@@ -80,12 +80,14 @@ exports.getOne = (Model, populateOptions) =>
 
 exports.getAll = (Model) =>
     catchAsync(async (req, res, next) => {
-        // Warning: Hack to allow for nested  GET reviews on tour best would be using a middleware but a middleware will be too much for the two lines of code.
-        let filter = {};
-        if (req.params.id) filter = { tour: req.params.id };
+        // Warning: Hack to allow for nested  GET reviews on tour best would be using a middleware but a middleware will be too much for the two lines of code. But I changed my mind. Using middleware! 😉 Sorry my bad, middleware can only manipulate req/res object not other thing i.e. Model! So will use a helper function for this.
+        // let filter = {};
+        // if (req.params.id) filter = { tour: req.params.id };
+
+        // const features = new APIFeatures(Model.find(filter), req.query)
 
         // Part: First build the query!
-        const features = new APIFeatures(Model.find(filter), req.query)
+        const features = new APIFeatures(Model.find(req.filter), req.query)
             .filter()
             .sort()
             .limitFields()
