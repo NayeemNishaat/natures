@@ -235,7 +235,6 @@
 // };
 
 const Tour = require("../models/tourModel");
-const AppError = require("../lib/appError");
 const APIFeatures = require("../lib/apiFeatures");
 const catchAsync = require("../lib/catchAsync");
 const factory = require("./handlerFactory");
@@ -342,28 +341,30 @@ exports.getAllTours = catchAsync(async (req, res, next) => {
     // }
 });
 
-exports.getTour = catchAsync(async (req, res, next) => {
-    // try {
-    const tour = await Tour.findById(req.params.id).populate("reviews");
+exports.getTour = factory.getOne(Tour, { path: "reviews" });
 
-    if (!tour) {
-        return next(new AppError("No tour found with the given id", 404)); // Important: The next middleware is the error handeling middleware because we passed something inside next("something")!
-    }
-    // Tour.findOne({ _id: req.params.id })
+// exports.getTour = catchAsync(async (req, res, next) => {
+//     // try {
+//     const tour = await Tour.findById(req.params.id).populate("reviews");
 
-    res.status(200).json({
-        status: "success",
-        data: {
-            tour
-        }
-    });
-    // } catch (err) {
-    //     res.status(404).json({
-    //         status: "fail",
-    //         message: err
-    //     });
-    // }
-});
+// if (!tour) {
+//     return next(new AppError("No tour found with the given id", 404)); // Important: The next middleware is the error handeling middleware because we passed something inside next("something")!
+// }
+// Tour.findOne({ _id: req.params.id })
+
+// res.status(200).json({
+//     status: "success",
+//     data: {
+//         tour
+//     }
+// });
+// } catch (err) {
+//     res.status(404).json({
+//         status: "fail",
+//         message: err
+//     });
+// }
+// });
 
 exports.createTour = factory.createOne(Tour);
 

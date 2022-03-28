@@ -147,7 +147,7 @@ const tourSchema = new mongoose.Schema(
         // Point: Referencing guides
         guides: [{ type: mongoose.Schema.ObjectId, ref: "User" }]
     },
-    { id: false },
+    // { id: false }, // Warning: If we want to use virtual-populate we mustn't set id/_id to false.
     {
         // Remark: To use virtual properties we need to define these.
         toJSON: { virtuals: true },

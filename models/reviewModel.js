@@ -24,7 +24,7 @@ const reviewSchema = new mongoose.Schema(
             userSchemarequired: [true, "Review must have an author."]
         }
     },
-    { id: false },
+    // { id: false },
     {
         // Note: For showing virtual properties in json and object.
         toJSON: { virtuals: true },
