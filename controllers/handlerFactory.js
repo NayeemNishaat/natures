@@ -86,8 +86,11 @@ exports.getAll = (Model) =>
 
         // const features = new APIFeatures(Model.find(filter), req.query)
 
+        // if (req.fltr) Model = Model.find();
+        // console.log(req.fltr);
+
         // Part: First build the query!
-        const features = new APIFeatures(Model.find(req.filter), req.query)
+        const features = new APIFeatures(Model.find(req.fltr), req.query)
             .filter()
             .sort()
             .limitFields()

@@ -3,10 +3,10 @@ const factory = require("./handlerFactory");
 
 // Note: Not using a helper function for nested route support. Rather putting the logic inside getAll(), but using now!
 exports.getAllReviewsSecificTour = (req, res, next) => {
-    let filter = {};
-    if (req.params.id) filter = { tour: req.params.id };
+    let fltr = {};
+    if (req.params.id) fltr = { tour: req.params.id };
 
-    req.filter = filter;
+    req.fltr = fltr;
 
     next();
 };
