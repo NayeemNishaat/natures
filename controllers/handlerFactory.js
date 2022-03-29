@@ -96,6 +96,10 @@ exports.getAll = (Model) =>
             .limitFields()
             .paginate();
         // Part: Then execute the query by using await!
+
+        // Important: Executionstatistics
+        // const doc = await features.query.explain(); Use index to make quering much more efficient!
+
         const doc = await features.query;
         res.status(200).json({
             status: "success",

@@ -155,6 +155,12 @@ const tourSchema = new mongoose.Schema(
     }
 );
 
+// Chapter: Index
+// tourSchema.index({ price: 1 }); // Note: Single field index!
+tourSchema.index({ price: 1, ratingsAverage: -1 }); // Note: Compound field index!
+tourSchema.index({ slug: 1 });
+// Important: Dont create index for a field that is mostly written (high write/read ratio).
+
 // Chapter: Virtual Middleware
 // Part: Virtual Field
 tourSchema.virtual("durationWeeks").get(function () {
