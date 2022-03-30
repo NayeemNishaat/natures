@@ -3,14 +3,8 @@ const APIFeatures = require("../lib/apiFeatures");
 const AppError = require("../lib/appError");
 
 exports.deleteOne = (Model) =>
-    catchAsync(async (req, res, next) => {
-        const doc = await Model.findByIdAndDelete(req.params.id);
-
-        if (!doc) {
-            return next(
-                new AppError("No document found with the given id", 404)
-            );
-        }
+    catchAsync(async (req, res) => {
+        await Model.findByIdAndDelete(req.params.id);
 
         res.status(204).json({
             status: "success",
@@ -18,7 +12,6 @@ exports.deleteOne = (Model) =>
         });
     });
 
-// Bug: Need to Implement Authorization
 exports.updateOne = (Model) =>
     catchAsync(async (req, res, next) => {
         const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
@@ -41,7 +34,7 @@ exports.updateOne = (Model) =>
     });
 
 exports.createOne = (Model) =>
-    catchAsync(async (req, res, next) => {
+    catchAsync(async (req, res) => {
         const doc = await Model.create(req.body);
 
         doc.__v = undefined;
@@ -79,7 +72,7 @@ exports.getOne = (Model, populateOptions) =>
     });
 
 exports.getAll = (Model) =>
-    catchAsync(async (req, res, next) => {
+    catchAsync(async (req, res) => {
         // Warning: Hack to allow for nested  GET reviews on tour best would be using a middleware but a middleware will be too much for the two lines of code. But I changed my mind. Using middleware! 😉 Sorry my bad, middleware can only manipulate req/res object not other thing i.e. Model! So will use a helper function for this.
         // let filter = {};
         // if (req.params.id) filter = { tour: req.params.id };

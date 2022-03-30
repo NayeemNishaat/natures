@@ -71,10 +71,17 @@ reviewSchema.statics.calcAverageRatings = async function (tourId) {
         }
     ]);
 
-    await Tour.findByIdAndUpdate(tourId, {
-        ratingsQuantity: stats[0].nRating,
-        ratingsAverage: stats[0].averageRating
-    });
+    if (stats.length > 0) {
+        await Tour.findByIdAndUpdate(tourId, {
+            ratingsQuantity: stats[0].nRating,
+            ratingsAverage: stats[0].averageRating
+        });
+    } else {
+        await Tour.findByIdAndUpdate(tourId, {
+            ratingsQuantity: 0,
+            ratingsAverage: 0
+        });
+    }
 };
 
 // Chapter: Document middleware
@@ -85,6 +92,26 @@ reviewSchema.post("save", function () {
     this.constructor.calcAverageRatings(this.tour);
 
     // next(); Warning: Post middleware doesn't have access to next()
+});
+
+// findOneAndUpdate -> find by id and update
+// findOneAndDelete -> find by id and dlete
+// Important: Can not simply use post here because the query has already executed. And without query we can not get the review document potentially can not run calcAverageRatings().
+reviewSchema.pre(/^findOneAnd/, async function (next) {
+    // Important: In query/pre-find middleware this -> current query not document!
+    // Important: Trick to pass the review from pre to the post middleware.
+    this.review = await this.clone(); // findOne() will get the document from the database so current document/changes will not be available because it's a pre middleware. Important: With mongoose v6, executing two same queries subsequently is not allowed. So used clone() and then executing find().
+
+    next();
+});
+
+reviewSchema.post(/^findOneAnd/, async function () {
+    // this.review = await this.findOne(); // Remark: Does not work here, query has already executed and this no longer points to the query object.
+    // Important: Now in this query middleware, the query has already finished and review was updated.
+    // Note: this.review -> current document.
+    if (!this.review) return;
+
+    await this.review.constructor.calcAverageRatings(this.review.tour);
 });
 
 module.exports = mongoose.model("Review", reviewSchema);
