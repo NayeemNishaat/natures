@@ -25,13 +25,16 @@ const reviewSchema = new mongoose.Schema(
             userSchemarequired: [true, "Review must have an author."]
         }
     },
-    // { id: false },
     {
         // Note: For showing virtual properties in json and object.
         toJSON: { virtuals: true },
         toObject: { virtuals: true }
+        // id: false
     }
 );
+
+// Chapter: Index // Warning: If the existing documents are not unique then it will not work!
+reviewSchema.index({ tour: 1, user: 1 }, { unique: true });
 
 // Chapter: Document Middleware
 // reviewSchema.pre("save", function (next) {

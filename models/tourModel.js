@@ -72,7 +72,8 @@ const tourSchema = new mongoose.Schema(
             default: 4.5,
             // min/max also works for dates too.
             min: [1, "Rating must be above 1.0"],
-            max: [5, "Rating must be below 5.0"]
+            max: [5, "Rating must be below 5.0"],
+            set: (val) => Math.round(val * 10) / 10 // Remark: Setter function that will run each time when ratingsAverage receives a new value.
         },
         ratingsQuantity: {
             type: Number,
@@ -147,8 +148,8 @@ const tourSchema = new mongoose.Schema(
         // Point: Referencing guides
         guides: [{ type: mongoose.Schema.ObjectId, ref: "User" }]
     },
-    // { id: false }, // Warning: If we want to use virtual-populate we mustn't set id/_id to false.
     {
+        // id: false, // Warning: If we want to use virtual-populate we mustn't set id/_id to false.
         // Remark: To use virtual properties we need to define these.
         toJSON: { virtuals: true },
         toObject: { virtuals: true }
