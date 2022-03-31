@@ -239,7 +239,7 @@ tourSchema.pre(/^find/, function (next) {
 // Warning: Pithole! When using $geoNear it shouldn't be the first aggregation middleware but $geoNear.
 /* tourSchema.pre("aggregate", function (next) {
     // Note: Here this -> aggregation object.
-    // Remark: unshift to insert an element in the beginning of the array.
+    // Remark: unshift to insert an element in the beginning of the array. Note: Using it to hide secret tour through aggrigation route. Could be achieved through $projection!
     this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
 
     // console.log(this.pipeline());
