@@ -12,11 +12,7 @@ router.patch("/reset-password/:token", authController.resetPassword);
 // Point: Protect all routes after this middleware.
 router.use(authController.protect); // Important: By using this middleware all the below middlewares will be protected because Remark: middlewares always runs in sequence!
 
-router.patch(
-    "/update-password",
-
-    authController.updatePassword
-);
+router.patch("/update-password", authController.updatePassword);
 
 router.get(
     "/me",
