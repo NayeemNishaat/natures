@@ -161,6 +161,8 @@ const tourSchema = new mongoose.Schema(
 tourSchema.index({ price: 1, ratingsAverage: -1 }); // Note: Compound field index!
 tourSchema.index({ slug: 1 });
 // Important: Dont create index for a field that is mostly written (high write/read ratio).
+// Important: Warning: Must required index for geo-spetial data field startLocation! Remark: 2D sphere index for real points and 2D index for fictional points on a simple plane.
+tourSchema.index({ startLocation: "2dsphere" });
 
 // Chapter: Virtual Middleware
 // Part: Virtual Field
@@ -234,14 +236,15 @@ tourSchema.pre(/^find/, function (next) {
 // );
 
 // Chapter: AGGREGATION MIDDLEWARE
-tourSchema.pre("aggregate", function (next) {
+// Warning: Pithole! When using $geoNear it shouldn't be the first aggregation middleware but $geoNear.
+/* tourSchema.pre("aggregate", function (next) {
     // Note: Here this -> aggregation object.
     // Remark: unshift to insert an element in the beginning of the array.
     this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
 
     // console.log(this.pipeline());
     next();
-});
+}); */
 
 const Tour = mongoose.model("Tour", tourSchema);
 

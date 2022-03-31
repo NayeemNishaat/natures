@@ -236,6 +236,7 @@
 
 const Tour = require("../models/tourModel");
 const catchAsync = require("../lib/catchAsync");
+const AppError = require("../lib/appError");
 const factory = require("./handlerFactory");
 
 exports.aliasTopTours = (req, res, next) => {
@@ -549,4 +550,76 @@ exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
     //         message: err
     //     });
     // }
+});
+
+exports.getToursWithin = catchAsync(async (req, res, next) => {
+    const { distance, latlng, unit } = req.params;
+
+    const [lat, lng] = latlng.split(",");
+
+    if (!lat || !lng) {
+        next(
+            new AppError(
+                "Please provide latitude and longitude in the format lat,lng.",
+                400
+            )
+        );
+    }
+
+    // Note: Radius should be in radian
+    const radius = unit === "mi" ? distance / 3963.2 : distance / 6378.1;
+
+    const tours = await Tour.find({
+        startLocation: { $geoWithin: { $centerSphere: [[lng, lat], radius] } }
+    });
+
+    res.status(200).json({
+        stats: "success",
+        results: tours.length,
+        data: { tours }
+    });
+});
+
+// Note: Generally aggregation pipeline is used for calculation!
+exports.getDistances = catchAsync(async (req, res, next) => {
+    const { latlng, unit } = req.params;
+
+    const [lat, lng] = latlng.split(",");
+
+    if (!lat || !lng) {
+        next(
+            new AppError(
+                "Please provide latitude and longitude in the format lat,lng.",
+                400
+            )
+        );
+    }
+
+    const multiplier = unit === "mi" ? 0.000621371 : 0.001;
+
+    const distances = await Tour.aggregate([
+        {
+            // Important: $geoNear must be the first stage.
+            // Warning: It requires one of the field to be geo-spatial index. If multiple fields with geo-spatial index, then keys parameter need to be used to define the field that should be used for calculations. Remark: For only one geo-spatial index field we don't need to define keys.
+            $geoNear: {
+                near: {
+                    type: "Point",
+                    coordinates: [+lng, lat * 1] // Note: Converting to number.
+                },
+                distanceField: "distance", // Remark: Name of the field that will be create where all of the calculated distances will be stored.
+                distanceMultiplier: multiplier
+            }
+        },
+        {
+            $project: {
+                distance: 1,
+                name: 1
+            }
+        }
+    ]);
+
+    res.status(200).json({
+        stats: "success",
+        data: { distances }
+    });
 });
