@@ -1,15 +1,21 @@
+const path = require("path");
 const express = require("express");
 const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 const hpp = require("hpp");
 const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
-const app = express();
 const tourRouter = require("./routes/tourRoutes");
 const userRouter = require("./routes/userRoutes");
 const reviewRouter = require("./routes/reviewRoutes");
 const AppError = require("./lib/appError");
 const globalErrorHandler = require("./controllers/errorController");
+
+const app = express();
+
+// Important: Setting view engine and view folder
+app.set("view engine", "pug");
+app.set("views", path.join(__dirname, "views"));
 
 // Chapter: Global Middlewares
 // Important: Using middleware (a function that can modify the incoming data)
@@ -57,7 +63,8 @@ app.use(
 );
 
 // Part: Serving static files
-app.use(express.static(`${__dirname}/public`)); // Note: We don't need to include public in the url because it acts as root when no route is defined for the entered url!
+// app.use(express.static(`${__dirname}/public`)); // Note: We don't need to include public in the url because it acts as root when no route is defined for the entered url! All files inside this directory will be served automatically!
+app.use(express.static(path.join(__dirname, "public")));
 
 // Part: Test middleware
 app.use((_req, _res, next) => {
@@ -202,6 +209,27 @@ app.use((req, _res, next) => {
 // app.delete("/api/v1/tours/:id", deleteTour);
 
 // Chapter: Routes
+// Part: View
+app.get("/", (req, res) => {
+    res.status(200).render("base", {
+        tour: "The forest hiker",
+        user: "Nayeem"
+    });
+});
+
+app.get("/overview", (req, res) => {
+    res.status(200).render("overview", {
+        title: "All Tours"
+    });
+});
+
+app.get("/tour", (req, res) => {
+    res.status(200).render("tour", {
+        title: "The Forest Hiker Tour"
+    });
+});
+
+// Part: API
 // const tourRouter = express.Router();
 app.use("/api/v1/tours", tourRouter); // Mounting Router
 

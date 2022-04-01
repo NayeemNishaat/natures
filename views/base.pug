@@ -1,0 +1,46 @@
+//- Remark: Pug is whitespace sensitive indentation based. Note: It also supports vanilla html!
+//- Important: Basics of PUG
+//-
+	doctype html
+	html
+	head
+		//- Note: Interpolation syntax
+		title Natours | #{tour}
+		link(rel="shortcut icon", type="image/png" href="img/favicon.png")
+		<link rel="stylesheet" href ="css/style.css"/>
+
+	body
+		h1= tour
+		//- Remark: Pug comment
+		//- Note: This type of code is called buffered code, that adds something to the output.
+		h2= user.toUpperCase()
+		//- Important: In buffered code ";" shouldn't be used.
+		//- Important: No space between h1 and "=".
+		//- Remark: Html comment
+		// h1 The Park Camper
+		//- Note: Unbuffered code
+		- const x = 9 * 2;
+		h2= x
+		p This is Some random text!
+
+doctype html
+html
+	head
+		meta(charset="UTF-8")
+		meta(name="viewport" content="width=device-width, initial-scale=1.0")
+
+		title Natours | #{title}
+		link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=Lato:300,300i,700")
+		link(rel="shortcut icon", type="image/png" href="img/favicon.png")
+		<link rel="stylesheet" href ="css/style.css"/>
+	body
+		//- Part: Header
+		include _header
+
+		//- Part: Main:
+		block main
+			h1 This is a placeholder!
+
+		//- Footer
+		include _footer
+
