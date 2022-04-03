@@ -60,7 +60,8 @@ app.use(
 
 // Part: Development logging
 if (process.env.NODE_ENV === "development") {
-    // Do development logging!
+    // Note: Do development logging!
+    // Important: Must use logging in production (Morgan)
 }
 
 // Part: Request limitting
