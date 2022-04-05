@@ -8,6 +8,7 @@ const helmet = require("helmet");
 const tourRouter = require("./routes/tourRoutes");
 const userRouter = require("./routes/userRoutes");
 const reviewRouter = require("./routes/reviewRoutes");
+const viewRouter = require("./routes/viewRoutes");
 const AppError = require("./lib/appError");
 const globalErrorHandler = require("./controllers/errorController");
 
@@ -210,24 +211,7 @@ app.use((req, _res, next) => {
 
 // Chapter: Routes
 // Part: View
-app.get("/", (req, res) => {
-    res.status(200).render("base", {
-        tour: "The forest hiker",
-        user: "Nayeem"
-    });
-});
-
-app.get("/overview", (req, res) => {
-    res.status(200).render("overview", {
-        title: "All Tours"
-    });
-});
-
-app.get("/tour", (req, res) => {
-    res.status(200).render("tour", {
-        title: "The Forest Hiker Tour"
-    });
-});
+app.use("/", viewRouter);
 
 // Part: API
 // const tourRouter = express.Router();
