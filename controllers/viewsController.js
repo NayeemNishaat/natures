@@ -12,7 +12,7 @@ exports.getOverview = catchAsync(async (req, res, next) => {
         tours
     });
 
-    // next(); Warning: Cannot do this because after sending response the req-res cycle ends here. So there is no point of calling next() that will throw cannot set headers after the response has been sent.
+    // next(); Warning: Cannot do this because after sending response the req-res cycle ends here. So there is no point of calling next() that will throw cannot set headers after the response has been sent. But still defining next for the catchAsync function.
 });
 
 exports.getTour = catchAsync(async (req, res, next) => {
@@ -24,5 +24,11 @@ exports.getTour = catchAsync(async (req, res, next) => {
     res.status(200).render("tour", {
         title: `${tour.name} Tour`,
         tour
+    });
+});
+
+exports.getLoginForm = catchAsync(async (req, res) => {
+    res.status(200).render("login", {
+        title: "Log into your account."
     });
 });
