@@ -1,6 +1,12 @@
 extends base
-
 include _reviewMixin
+
+//- Remark: Use prepand to insert at the beginning.
+block append head
+	script(src='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js')
+	link(href='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css' rel='stylesheet')
+
+	script(defer, src="/js/mapbox.js")
 
 block main
 	section.section-header
@@ -61,8 +67,9 @@ block main
 				img.picture-box__img(src=`/img/tours/${img}`, alt=`The Park Camper Tour ${i+1}`, class=`picture-box__img--${i}`)
 				//- Note: class attribute to dynamically assign class name.
 
+	//- Remark: Storing data into html in order to read through js! 
 	section.section-map
-		#map
+		#map(data-locations=`${JSON.stringify(tour.locations)}`)
 
 	section.section-reviews
 		.reviews
