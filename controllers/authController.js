@@ -110,6 +110,31 @@ exports.protect = catchAsync(async (req, res, next) => {
     next(); // Note: Grant access to the protected route.
 });
 
+// Note: To check if user logged in for rendered pages, no errors will be sent to the client. In rendered website token will always be sent with the cookie.
+exports.isLoggedIn = catchAsync(async (req, res, next) => {
+    let token;
+    if (req.headers.cookie) token = req.headers.cookie.split("=")[1];
+
+    if (!token) {
+        return next();
+    }
+
+    // Key: Varify Token
+    const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+
+    // Key: Check if user still exists
+    const currentUser = await User.findById(decoded.id);
+    if (!currentUser) return next();
+
+    if (currentUser.changedPasswordAfter(decoded.iat)) {
+        return next();
+    }
+
+    // Key: There is a logged in user
+    res.locals.user = currentUser; // Important: In a pug template it always has access to res.locals object.
+    return next(); // Always logically return next() once from a function.
+});
+
 exports.restrictTo =
     (...roles) =>
     // Important: We can not directly pass arguments to the middleware function. So we are creating a wrapper function.

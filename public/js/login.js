@@ -9,9 +9,16 @@ const login = async (email, password) => {
         });
 
         const data = await res.json();
-        console.log(data);
+
+        if (data.status === "success") {
+            alert("Logged in successfully!");
+
+            setTimeout(() => {
+                location.assign("/");
+            }, 1500);
+        } else throw new Error(data.message);
     } catch (err) {
-        console.log(err);
+        alert(err.message);
     }
 };
 
