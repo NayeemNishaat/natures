@@ -23,3 +23,18 @@ export const login = async (email, password) => {
         showAlert("error", err.message);
     }
 };
+
+export const logout = async () => {
+    try {
+        const res = await fetch("http://localhost:3000/api/v1/users/logout", {
+            method: "GET",
+            headers: { "Content-Type": "application/json" }
+        });
+
+        const data = await res.json();
+
+        if (data.status === "success") location.reload(true); // Remark: true for hard reload from server!
+    } catch (err) {
+        showAlert("error", "Error when trying to log out. Please try again!");
+    }
+};

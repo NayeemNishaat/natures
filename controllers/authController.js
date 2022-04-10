@@ -68,6 +68,18 @@ exports.login = catchAsync(async (req, res, next) => {
     createSendToken(user, 200, res);
 });
 
+// Chapter: LogOut
+exports.logout = (req, res) => {
+    res.cookie("jwt", "loggedout", {
+        expires: new Date(Date.now() + 1000),
+        httpOnly: true
+    });
+
+    res.status(200).json({
+        status: "success"
+    });
+};
+
 // Chapter: Route Protection
 exports.protect = catchAsync(async (req, res, next) => {
     // Part: Check if the token exists
@@ -110,8 +122,8 @@ exports.protect = catchAsync(async (req, res, next) => {
     next(); // Note: Grant access to the protected route.
 });
 
-// Note: To check if user logged in for rendered pages, no errors will be sent to the client. In rendered website token will always be sent with the cookie.
-exports.isLoggedIn = catchAsync(async (req, res, next) => {
+// Note: To check if user logged in for rendered pages, Important: no errors will be sent to the client if so, that will result in a white error page because we are using get here and sending it as a document response to the browser not to the JS. In rendered website token will always be sent with the cookie.
+exports.isLoggedIn = async (req, res, next) => {
     let token;
     if (req.headers.cookie) token = req.headers.cookie.split("=")[1];
 
@@ -119,21 +131,30 @@ exports.isLoggedIn = catchAsync(async (req, res, next) => {
         return next();
     }
 
-    // Key: Varify Token
-    const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+    // Note: Wrapping it with try because when we are logging out we are sending an invalid jwt. And for each request from the client that invalid jwt will be sent or no jwt because low cookie expiry data. That will cause an error and we dont want to send any error to the client.
+    try {
+        // Key: Varify Token
+        const decoded = await promisify(jwt.verify)(
+            token,
+            process.env.JWT_SECRET
+        );
 
-    // Key: Check if user still exists
-    const currentUser = await User.findById(decoded.id);
-    if (!currentUser) return next();
+        // Key: Check if user still exists
+        const currentUser = await User.findById(decoded.id);
+        if (!currentUser) return next();
 
-    if (currentUser.changedPasswordAfter(decoded.iat)) {
+        if (currentUser.changedPasswordAfter(decoded.iat)) {
+            return next();
+        }
+
+        // Key: There is a logged in user
+        res.locals.user = currentUser; // Important: In a pug template it always has access to res.locals object.
+    } catch (err) {
         return next();
     }
 
-    // Key: There is a logged in user
-    res.locals.user = currentUser; // Important: In a pug template it always has access to res.locals object.
     return next(); // Always logically return next() once from a function.
-});
+};
 
 exports.restrictTo =
     (...roles) =>

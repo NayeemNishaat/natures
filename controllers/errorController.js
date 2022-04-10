@@ -1,28 +1,48 @@
 const AppError = require("../lib/appError");
 
-const sendError = (res, err, env) => {
+const sendError = (req, res, err, env) => {
+    // Chapter: Development Error
     if (env === "development") {
-        res.status(err.statusCode).json({
-            status: err.status,
-            error: err,
-            message: err.message,
-            stack: err.stack
-        });
+        // Key: API
+        if (req.originalUrl.startsWith("/api")) {
+            return res.status(err.statusCode).json({
+                status: err.status,
+                error: err,
+                message: err.message,
+                stack: err.stack
+            });
+        }
 
-        // console.error("ERROR:", err);
-    } else if (err.isOperational) {
-        // Point: Operational error
-        res.status(err.statusCode).json({
-            status: err.status,
-            message: err.message
-        });
-    } else {
-        // Point: Programming/unknown error
-        res.status(500).json({
-            status: "error",
-            message: "Something went wrong!"
+        // Key: Rendered Website
+        return res.status(err.statusCode).render("error", {
+            title: "Something went wrong!",
+            msg: err.message
         });
     }
+
+    // Chapter: Production Error
+    if (err.isOperational) {
+        // Point: Operational error
+        // Key: API
+        if (req.originalUrl.startsWith("/api")) {
+            return res.status(err.statusCode).json({
+                status: err.status,
+                message: err.message
+            });
+        }
+
+        // Key: Rendered Website
+        return res.status(err.statusCode).render("error", {
+            title: "Something went wrong!",
+            msg: err.message
+        });
+    }
+
+    // Point: Programming/unknown error
+    return res.status(err.statusCode).render("error", {
+        title: "Something went wrong!",
+        msg: "Please try again later!"
+    });
 };
 
 const handleCastErrorDB = (err) => {
@@ -51,15 +71,16 @@ const handleJWTError = () =>
 const handleJWTExpiredError = () =>
     new AppError("Your token has expired! Please log in again.", 401);
 
-module.exports = (err, _req, res, _next) => {
+module.exports = (err, req, res, _next) => {
     // Important: If all four parameters are defined, express will automatically know it's an error handeling middleware!
     err.statusCode = err.statusCode || 500;
     err.status = err.status || "Error!";
 
     if (process.env.NODE_ENV === "development")
-        sendError(res, err, "development");
+        sendError(req, res, err, "development");
     else {
         let error = { ...err };
+        error.message = err.message; // Point: Don't know why message is not copied. So setting it manually!
 
         if (Object.prototype.hasOwnProperty.call(error, "messageFormat")) {
             error = handleCastErrorDB(error);
@@ -74,6 +95,6 @@ module.exports = (err, _req, res, _next) => {
 
         if (error.name === "TokenExpiredError") error = handleJWTExpiredError();
 
-        sendError(res, error, "production");
+        sendError(req, res, error, "production");
     }
 };
