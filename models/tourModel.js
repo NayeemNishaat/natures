@@ -129,8 +129,8 @@ const tourSchema = new mongoose.Schema(
             address: String,
             description: String
         },
+        // Important: Embedding locations without creating any model.
         locations: [
-            // Embedding locations without creating any model.
             {
                 type: {
                     type: String,
@@ -143,7 +143,7 @@ const tourSchema = new mongoose.Schema(
                 day: Number
             }
         ],
-        // Point: Embedding guides from User model. (Not a good idean. Because when we need to update a guide to lead guide we need to update it for all the tours where he/she is a guide and also in the user collection.)
+        // Point: Embedding guides from User model. (Not a good idea. Because when we need to update a guide to lead guide we need to update it for all the tours where he/she is a guide and also in the user collection.)
         // guides: Array
         // Point: Referencing guides
         guides: [{ type: mongoose.Schema.ObjectId, ref: "User" }]

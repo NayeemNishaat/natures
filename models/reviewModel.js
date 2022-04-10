@@ -22,7 +22,7 @@ const reviewSchema = new mongoose.Schema(
         user: {
             type: mongoose.Schema.ObjectId,
             ref: "User",
-            userSchemarequired: [true, "Review must have an author."]
+            required: [true, "Review must have an author."]
         }
     },
     {
