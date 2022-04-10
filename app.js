@@ -43,6 +43,9 @@ app.use("/api", limiter);
 // Part: Json body parser
 app.use(express.json({ limit: "10kb" }));
 
+// Part: URl encoded body parser
+app.use(express.urlencoded({ extended: true, limit: "10kb" }));
+
 // Part: Data sanitization against NoSQL query injection
 // Warning: "email":{"$gt":""} -> always returns true. So when we findOne({email}) we get all the users!
 app.use(mongoSanitize());
