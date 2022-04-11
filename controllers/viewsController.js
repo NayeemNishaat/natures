@@ -37,6 +37,12 @@ exports.getLoginForm = catchAsync(async (req, res) => {
     });
 });
 
+exports.getsignupForm = catchAsync(async (req, res) => {
+    res.status(200).render("signup", {
+        title: "Create an account"
+    });
+});
+
 exports.getAccount = (req, res) => {
     res.status(200).render("account", {
         title: "Your account."
