@@ -2,12 +2,13 @@
 import "@babel/polyfill";
 import { login, logout } from "./login";
 import { displayMap } from "./mapbox";
-import { updateData } from "./updateSettings";
+import { updateSettings } from "./updateSettings";
 
 // Chapter: DOM Elements
 const mapBox = document.getElementById("map");
 const loginForm = document.querySelector(".form--login");
 const userForm = document.querySelector(".form-user-data");
+const userPasswordForm = document.querySelector(".form-user-password");
 const logoutBtn = document.querySelector(".nav__el--logout");
 
 // Chapter: Delegation
@@ -32,8 +33,34 @@ if (userForm) {
     userForm.addEventListener("submit", (e) => {
         e.preventDefault();
 
-        const inputName = document.querySelector("input[name=name]").value;
-        const inputEmail = document.querySelector("input[name=email]").value;
-        updateData(inputName, inputEmail);
+        const name = document.querySelector("input[name=name]").value;
+        const email = document.querySelector("input[name=email]").value;
+        updateSettings({ name, email }, "data");
+    });
+}
+
+if (userPasswordForm) {
+    userPasswordForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        document.querySelector(".btn--save-password").textContent =
+            "Updating..."; // Warning: Never use innerHTML because it will lead to XSS. value is only available to input elements!
+
+        const passwordCurrent =
+            document.getElementById("password-current").value;
+        const password = document.getElementById("password").value;
+        const passwordConfirm =
+            document.getElementById("password-confirm").value;
+
+        await updateSettings(
+            { passwordCurrent, password, passwordConfirm },
+            "password"
+        );
+
+        document.querySelector(".btn--save-password").textContent =
+            "Save Password";
+        document.getElementById("password-current").value = "";
+        document.getElementById("password").value = "";
+        document.getElementById("password-confirm").value = "";
     });
 }

@@ -1,19 +1,21 @@
 import { showAlert } from "./alert";
 
-export const updateData = async (name, email) => {
+export const updateSettings = async (settings, type) => {
     try {
-        const res = await fetch(
-            "http://localhost:3000/api/v1/users/update-me",
-            {
-                method: "PATCH",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ name, email })
-            }
-        );
+        const url =
+            type === "password"
+                ? "http://localhost:3000/api/v1/users/update-password"
+                : "http://localhost:3000/api/v1/users/update-me";
+
+        const res = await fetch(url, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(settings)
+        });
 
         const data = await res.json();
         if (data.status === "success") {
-            showAlert("success", "User info updated!");
+            showAlert("success", `${type.toUpperCase()} updated successfully!`);
         } else throw new Error(data.message);
     } catch (err) {
         showAlert("error", err.message);
