@@ -1,7 +1,36 @@
+const multer = require("multer"); // Note: Multer is a middleware for transporting multi-part form data.
 const User = require("../models/userModel");
 const catchAsync = require("../lib/catchAsync");
 const AppError = require("../lib/appError");
 const factory = require("./handlerFactory");
+
+const multerStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "public/img/users"); // Note: (error, destination)
+    },
+    filename: (req, file, cb) => {
+        const ext = file.mimetype.split("/")[1];
+        cb(null, `user-${req.user.id}-${Date.now()}.${ext}`);
+    }
+});
+
+const multerFilter = (req, file, cb) => {
+    if (file.mimetype.startsWith("image")) {
+        cb(null, true); // Note:  true -> Allow uploading.
+    } else
+        cb(new AppError("Not an image! Please upload only image!", 400), false);
+};
+
+// Key: Simple
+// const upload = multer({ dest: "public/img/users" });
+
+// Key: Complex
+const upload = multer({
+    storage: multerStorage,
+    fileFilter: multerFilter
+}); // Remark: If no option is specified the uploaded content will be stored in the memory. Important: We never store images directly in the DB. Instead we upload and store the image in the file system and put the link of the image in the DB!
+
+exports.uploadUserPhoto = upload.single("photo"); // Remark: Single for uploading a single file and "photo" is the name of the form's field that will be going to temporarily hold the file before upload in the html form.
 
 const filterObj = (obj, ...allowedFields) => {
     const newObj = {};
@@ -13,6 +42,8 @@ const filterObj = (obj, ...allowedFields) => {
 };
 
 exports.updateMe = catchAsync(async (req, res, next) => {
+    // console.log(req.file);
+    // console.log(req.body);
     // Point: Create error if user posts password data
     if (req.body.password || req.body.passwordConfirm)
         return next(

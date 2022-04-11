@@ -20,7 +20,11 @@ router.get(
     userController.getMe,
     userController.getUser // Note: Pretty clever! Faking user id in the url by setting it with userController.getMe() middleware.
 );
-router.patch("/update-me", userController.updateMe);
+router.patch(
+    "/update-me",
+    userController.uploadUserPhoto,
+    userController.updateMe
+);
 router.delete("/delete-me", userController.deleteMe);
 
 router.use(authController.restrictTo("admin"));
