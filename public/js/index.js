@@ -2,10 +2,12 @@
 import "@babel/polyfill";
 import { login, logout } from "./login";
 import { displayMap } from "./mapbox";
+import { updateData } from "./updateSettings";
 
 // Chapter: DOM Elements
 const mapBox = document.getElementById("map");
 const loginForm = document.querySelector(".form--login");
+const userForm = document.querySelector(".form-user-data");
 const logoutBtn = document.querySelector(".nav__el--logout");
 
 // Chapter: Delegation
@@ -17,6 +19,7 @@ if (mapBox) {
 if (loginForm) {
     loginForm.addEventListener("submit", (e) => {
         e.preventDefault();
+
         const email = document.getElementById("email").value;
         const password = document.getElementById("password").value;
         login(email, password);
@@ -24,3 +27,13 @@ if (loginForm) {
 }
 
 if (logoutBtn) logoutBtn.addEventListener("click", logout);
+
+if (userForm) {
+    userForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const inputName = document.querySelector("input[name=name]").value;
+        const inputEmail = document.querySelector("input[name=email]").value;
+        updateData(inputName, inputEmail);
+    });
+}

@@ -1,5 +1,5 @@
 const Tour = require("../models/tourModel");
-import User from "../models/userModel";
+const User = require("../models/userModel");
 const catchAsync = require("../lib/catchAsync");
 const AppError = require("../lib/appError");
 
