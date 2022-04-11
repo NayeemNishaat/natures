@@ -65,8 +65,9 @@ const handleValidationErrorDB = (err) => {
     return new AppError(message, 400);
 };
 
+// new AppError("Invalid token. Please log in again!", 401); // Remark: This will potentially create an error object add some properties to it and then retuns it.
 const handleJWTError = () =>
-    new AppError("Invalid token. Please log in again!", 401); // Remark: This will potentially create an error object add some properties to it and then retuns it.
+    new AppError("Please log in to get access to this page!", 401); // Note: Changing the message to hide the actual error from the user!
 
 const handleJWTExpiredError = () =>
     new AppError("Your token has expired! Please log in again.", 401);
