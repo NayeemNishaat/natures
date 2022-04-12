@@ -7,11 +7,17 @@ export const updateSettings = async (settings, type) => {
                 ? "http://localhost:3000/api/v1/users/update-password"
                 : "http://localhost:3000/api/v1/users/update-me";
 
-        const res = await fetch(url, {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(settings)
-        });
+        const res =
+            type !== "photo"
+                ? await fetch(url, {
+                      method: "PATCH",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify(settings)
+                  })
+                : await fetch(url, {
+                      method: "PATCH",
+                      body: settings
+                  });
 
         const data = await res.json();
         if (data.status === "success") {

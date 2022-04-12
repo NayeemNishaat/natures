@@ -32,6 +32,8 @@ block main
 
 					//- Remark: Without API
 					//- form.form.form-user-data(action="/submit-user-data" method="POST")
+					//- Note: Without API for file
+					//- form.form.form-user-data(action="/submit-user-data" method="POST" enctype="multipart/form-data")
 
 					//- Remark: With API
 					form.form.form-user-data
@@ -41,11 +43,17 @@ block main
 						.form__group.ma-bt-md
 							label.form__label(for='email') Email address
 							input#email.form__input(type='email', value=`${user.email}`, required, name="email")
-						.form__group.form__photo-upload
-							img.form__user-photo(src=`/img/users/${user.photo}`, alt='User photo')
-							a.btn-text(href='') Choose new photo
 						.form__group.right
 							button.btn.btn--small.btn--green Save settings
+
+					form.form.form-user-photo
+						.form__group.form__photo-upload
+							img.form__user-photo(src=`/img/users/${user.photo}`, alt='User photo')
+							input.form__upload(type="file",accept="image/*",id="photo",name="photo")
+							//- Important: Multer expecting name="photo"
+							label(for="photo") Choose new photo
+						.form__group.right
+							button.btn.btn--small.btn--green Save Photo
 
 				.line &nbsp;
 				.user-view__form-container

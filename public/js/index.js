@@ -8,7 +8,8 @@ import { updateSettings } from "./updateSettings";
 const mapBox = document.getElementById("map");
 const loginForm = document.querySelector(".form--login");
 const signupForm = document.querySelector(".form--signup");
-const userForm = document.querySelector(".form-user-data");
+const userDateForm = document.querySelector(".form-user-data");
+const userPhotoForm = document.querySelector(".form-user-photo");
 const userPasswordForm = document.querySelector(".form-user-password");
 const logoutBtn = document.querySelector(".nav__el--logout");
 
@@ -30,13 +31,26 @@ if (loginForm) {
 
 if (logoutBtn) logoutBtn.addEventListener("click", logout);
 
-if (userForm) {
-    userForm.addEventListener("submit", (e) => {
+if (userDateForm) {
+    userDateForm.addEventListener("submit", (e) => {
         e.preventDefault();
 
         const name = document.querySelector("input[name=name]").value;
         const email = document.querySelector("input[name=email]").value;
         updateSettings({ name, email }, "data");
+    });
+}
+
+if (userPhotoForm) {
+    userPhotoForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const form = new FormData();
+        // form.append("name", document.querySelector("input[name=name]").value);
+        // form.append("email", document.querySelector("input[name=email]").value);
+        form.append("photo", document.getElementById("photo").files[0]);
+
+        updateSettings(form, "photo");
     });
 }
 

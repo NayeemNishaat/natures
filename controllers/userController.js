@@ -1,18 +1,22 @@
 const multer = require("multer"); // Note: Multer is a middleware for transporting multi-part form data.
+const sharp = require("sharp");
 const User = require("../models/userModel");
 const catchAsync = require("../lib/catchAsync");
 const AppError = require("../lib/appError");
 const factory = require("./handlerFactory");
 
-const multerStorage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, "public/img/users"); // Note: (error, destination)
-    },
-    filename: (req, file, cb) => {
-        const ext = file.mimetype.split("/")[1];
-        cb(null, `user-${req.user.id}-${Date.now()}.${ext}`);
-    }
-});
+// const multerStorage = multer.diskStorage({
+//     destination: (req, file, cb) => {
+//         cb(null, "public/img/users"); // Note: (error, destination)
+//     },
+//     filename: (req, file, cb) => {
+//         const ext = file.mimetype.split("/")[1];
+//         cb(null, `user-${req.user.id}-${Date.now()}.${ext}`);
+//     }
+// });
+
+// Important: For efficient image processing it's best to store the image in the memory as a buffer.
+const multerStorage = multer.memoryStorage();
 
 const multerFilter = (req, file, cb) => {
     if (file.mimetype.startsWith("image")) {
@@ -31,6 +35,21 @@ const upload = multer({
 }); // Remark: If no option is specified the uploaded content will be stored in the memory. Important: We never store images directly in the DB. Instead we upload and store the image in the file system and put the link of the image in the DB!
 
 exports.uploadUserPhoto = upload.single("photo"); // Remark: Single for uploading a single file and "photo" is the name of the form's field that will be going to temporarily hold the file before upload in the html form.
+
+// Part: Image Processing
+exports.resizeUserPhoto = (req, res, next) => {
+    if (!req.file) return next();
+
+    req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`; // Setting the filename because when we store the file in the memory the filename doesn't get set automatically but we need it to save the filename into the DB. jpeg because the image is processed and formatted as a jpeg below.
+
+    sharp(req.file.buffer)
+        .resize(500, 500)
+        .toFormat("jpeg")
+        .jpeg({ quality: 90 })
+        .toFile(`public/img/users/${req.file.filename}`); // Remark: In buffer the memory stored image will be available.
+
+    next();
+};
 
 const filterObj = (obj, ...allowedFields) => {
     const newObj = {};

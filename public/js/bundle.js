@@ -6950,7 +6950,13 @@ var updateSettings = /*#__PURE__*/function () {
           case 0:
             _context.prev = 0;
             url = type === "password" ? "http://localhost:3000/api/v1/users/update-password" : "http://localhost:3000/api/v1/users/update-me";
-            _context.next = 4;
+
+            if (!(type !== "photo")) {
+              _context.next = 8;
+              break;
+            }
+
+            _context.next = 5;
             return fetch(url, {
               method: "PATCH",
               headers: {
@@ -6959,41 +6965,56 @@ var updateSettings = /*#__PURE__*/function () {
               body: JSON.stringify(settings)
             });
 
-          case 4:
-            res = _context.sent;
-            _context.next = 7;
+          case 5:
+            _context.t0 = _context.sent;
+            _context.next = 11;
+            break;
+
+          case 8:
+            _context.next = 10;
+            return fetch(url, {
+              method: "PATCH",
+              body: settings
+            });
+
+          case 10:
+            _context.t0 = _context.sent;
+
+          case 11:
+            res = _context.t0;
+            _context.next = 14;
             return res.json();
 
-          case 7:
+          case 14:
             data = _context.sent;
 
             if (!(data.status === "success")) {
-              _context.next = 12;
+              _context.next = 19;
               break;
             }
 
             (0, _alert.showAlert)("success", "".concat(type.toUpperCase(), " updated successfully!"));
-            _context.next = 13;
+            _context.next = 20;
             break;
 
-          case 12:
+          case 19:
             throw new Error(data.message);
 
-          case 13:
-            _context.next = 18;
+          case 20:
+            _context.next = 25;
             break;
 
-          case 15:
-            _context.prev = 15;
-            _context.t0 = _context["catch"](0);
-            (0, _alert.showAlert)("error", _context.t0.message);
+          case 22:
+            _context.prev = 22;
+            _context.t1 = _context["catch"](0);
+            (0, _alert.showAlert)("error", _context.t1.message);
 
-          case 18:
+          case 25:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 15]]);
+    }, _callee, null, [[0, 22]]);
   }));
 
   return function updateSettings(_x, _x2) {
@@ -7283,7 +7304,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 var mapBox = document.getElementById("map");
 var loginForm = document.querySelector(".form--login");
 var signupForm = document.querySelector(".form--signup");
-var userForm = document.querySelector(".form-user-data");
+var userDateForm = document.querySelector(".form-user-data");
+var userPhotoForm = document.querySelector(".form-user-photo");
 var userPasswordForm = document.querySelector(".form-user-password");
 var logoutBtn = document.querySelector(".nav__el--logout"); // Chapter: Delegation
 
@@ -7303,8 +7325,8 @@ if (loginForm) {
 
 if (logoutBtn) logoutBtn.addEventListener("click", _loginSignup.logout);
 
-if (userForm) {
-  userForm.addEventListener("submit", function (e) {
+if (userDateForm) {
+  userDateForm.addEventListener("submit", function (e) {
     e.preventDefault();
     var name = document.querySelector("input[name=name]").value;
     var email = document.querySelector("input[name=email]").value;
@@ -7312,6 +7334,17 @@ if (userForm) {
       name: name,
       email: email
     }, "data");
+  });
+}
+
+if (userPhotoForm) {
+  userPhotoForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var form = new FormData(); // form.append("name", document.querySelector("input[name=name]").value);
+    // form.append("email", document.querySelector("input[name=email]").value);
+
+    form.append("photo", document.getElementById("photo").files[0]);
+    (0, _updateSettings.updateSettings)(form, "photo");
   });
 }
 
