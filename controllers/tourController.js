@@ -234,10 +234,49 @@
 //     }
 // };
 
+const multer = require("multer");
+const sharp = require("sharp");
 const Tour = require("../models/tourModel");
 const catchAsync = require("../lib/catchAsync");
 const AppError = require("../lib/appError");
 const factory = require("./handlerFactory");
+
+const multerStorage = multer.memoryStorage();
+
+const multerFilter = (req, file, cb) => {
+    if (file.mimetype.startsWith("image")) {
+        cb(null, true); // Note:  true -> Allow uploading.
+    } else
+        cb(new AppError("Not an image! Please upload only image!", 400), false);
+};
+
+const upload = multer({
+    storage: multerStorage,
+    fileFilter: multerFilter
+});
+
+// Remark: One field with multiple images
+// upload.array("images", 5); // Note: Available in req.files
+
+// Remark: One field with single image
+// upload.single("image"); // Note: Available in req.file
+
+// Remark: When Mixed
+exports.uploadTourImages = upload.fields([
+    {
+        name: "imageCover",
+        maxCount: 1
+    },
+    {
+        name: "images",
+        maxCount: 3
+    }
+]);
+
+exports.resizeTourImages = (req, res, next) => {
+    //
+    next();
+};
 
 exports.aliasTopTours = (req, res, next) => {
     req.query.limit = "5";

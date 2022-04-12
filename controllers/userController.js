@@ -37,19 +37,20 @@ const upload = multer({
 exports.uploadUserPhoto = upload.single("photo"); // Remark: Single for uploading a single file and "photo" is the name of the form's field that will be going to temporarily hold the file before upload in the html form.
 
 // Part: Image Processing
-exports.resizeUserPhoto = (req, res, next) => {
+exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
     if (!req.file) return next();
 
     req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`; // Setting the filename because when we store the file in the memory the filename doesn't get set automatically but we need it to save the filename into the DB. jpeg because the image is processed and formatted as a jpeg below.
 
-    sharp(req.file.buffer)
+    // Remark: Sharp returns a promise
+    await sharp(req.file.buffer)
         .resize(500, 500)
         .toFormat("jpeg")
         .jpeg({ quality: 90 })
         .toFile(`public/img/users/${req.file.filename}`); // Remark: In buffer the memory stored image will be available.
 
     next();
-};
+});
 
 const filterObj = (obj, ...allowedFields) => {
     const newObj = {};
