@@ -53,7 +53,6 @@ export const signup = async (name, email, password, passwordConfirm) => {
         });
 
         const data = await res.json();
-
         if (data.status === "success") {
             showAlert("success", "Account created successfully!");
             location.reload(true);

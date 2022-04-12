@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
 const catchAsync = require("../lib/catchAsync");
 const AppError = require("../lib/appError");
-const sendEmail = require("../lib/email");
+const Email = require("../lib/email");
 
 // Segment: Generate Token
 const signToken = (id) =>
@@ -45,6 +45,9 @@ exports.signup = catchAsync(async (req, res, next) => {
         passwordConfirm: req.body.passwordConfirm
     });
     //  Important: Password select is false but we still get it in the response because when creating a document select false doesn't work!
+
+    const url = `${req.protocol}://${req.get("host")}/me`;
+    await new Email(newUser, url).sendWelcome();
 
     createSendToken(newUser, 201, res);
 });
@@ -198,11 +201,11 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     // Important: We need to do more than simply sending errors to the client. Hence, using try/catch block.
 
     try {
-        await sendEmail({
-            email: user.email,
-            subject: "Password reset link! (Valid for 10m.)",
-            message
-        });
+        // await sendEmail({
+        //     email: user.email,
+        //     subject: "Password reset link! (Valid for 10m.)",
+        //     message
+        // });
 
         res.status(200).json({
             status: "success",
