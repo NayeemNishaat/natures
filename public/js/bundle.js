@@ -7307,7 +7307,8 @@ var signupForm = document.querySelector(".form--signup");
 var userDateForm = document.querySelector(".form-user-data");
 var userPhotoForm = document.querySelector(".form-user-photo");
 var userPasswordForm = document.querySelector(".form-user-password");
-var logoutBtn = document.querySelector(".nav__el--logout"); // Chapter: Delegation
+var logoutBtn = document.querySelector(".nav__el--logout");
+var photo = document.getElementById("photo"); // Chapter: Delegation
 
 if (mapBox) {
   var locations = JSON.parse(mapBox.dataset.locations);
@@ -7334,6 +7335,15 @@ if (userDateForm) {
       name: name,
       email: email
     }, "data");
+  });
+}
+
+if (photo) {
+  photo.addEventListener("change", function (e) {
+    var filepath = e.target.value;
+    var filenameStart = filepath.lastIndexOf("\\");
+    var filename = filepath.slice(filenameStart + 1);
+    document.querySelector(".label-photo").textContent = filename;
   });
 }
 

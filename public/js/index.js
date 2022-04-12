@@ -12,6 +12,7 @@ const userDateForm = document.querySelector(".form-user-data");
 const userPhotoForm = document.querySelector(".form-user-photo");
 const userPasswordForm = document.querySelector(".form-user-password");
 const logoutBtn = document.querySelector(".nav__el--logout");
+const photo = document.getElementById("photo");
 
 // Chapter: Delegation
 if (mapBox) {
@@ -38,6 +39,15 @@ if (userDateForm) {
         const name = document.querySelector("input[name=name]").value;
         const email = document.querySelector("input[name=email]").value;
         updateSettings({ name, email }, "data");
+    });
+}
+
+if (photo) {
+    photo.addEventListener("change", (e) => {
+        const filepath = e.target.value;
+        const filenameStart = filepath.lastIndexOf("\\");
+        const filename = filepath.slice(filenameStart + 1);
+        document.querySelector(".label-photo").textContent = filename;
     });
 }
 

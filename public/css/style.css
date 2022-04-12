@@ -1299,8 +1299,8 @@ body {
 }
 
 .form__upload:focus + label {
-    outline: 3px solid #55c57a;
-    outline-offset: 3px;
+    /* outline: 3px solid #55c57a;
+    outline-offset: 3px; */
 }
 
 .form__upload + label {
