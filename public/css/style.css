@@ -314,7 +314,8 @@ body {
     -ms-flex-align: center;
     align-items: center;
 }
-@media only screen and (max-width: 62.5em) {
+@media only screen and (max-width: 50rem) {
+    /* Remark: By default 1rem = root font-size/the font size of the user's browser = 16px */
     .header {
         -webkit-box-orient: vertical;
         -webkit-box-direction: normal;
@@ -325,7 +326,7 @@ body {
 .header__logo img {
     height: 3.5rem;
 }
-@media only screen and (max-width: 62.5em) {
+@media only screen and (max-width: 62.5rem) {
     .header__logo {
         -webkit-box-ordinal-group: 0;
         -ms-flex-order: -1;
@@ -805,7 +806,7 @@ body {
     -ms-flex-pack: justify;
     justify-content: space-between;
 }
-@media only screen and (max-width: 50em) {
+@media only screen and (max-width: 50rem) {
     .footer {
         grid-template-columns: 1fr;
         grid-row-gap: 1.25rem;
@@ -848,7 +849,7 @@ body {
     justify-self: end;
     color: #999;
 }
-@media only screen and (max-width: 50em) {
+@media only screen and (max-width: 50rem) {
     .footer__copyright {
         justify-self: center;
     }
@@ -862,7 +863,7 @@ body {
     -ms-flex-align: center;
     align-items: center;
 }
-@media only screen and (max-width: 37.5em) {
+@media only screen and (max-width: 37.5rem) {
     .nav {
         -webkit-box-orient: vertical;
         -webkit-box-direction: normal;
@@ -875,12 +876,12 @@ body {
     -ms-flex: 0 1 40%;
     flex: 0 1 40%;
 }
-@media only screen and (max-width: 62.5em) {
+@media only screen and (max-width: 62.5rem) {
     .nav--tours {
         margin-bottom: 1.5rem;
     }
 }
-@media only screen and (max-width: 37.5em) {
+@media only screen and (max-width: 37.5rem) {
     .nav--tours {
         margin-bottom: 0;
     }
@@ -922,7 +923,7 @@ body {
 .nav__el:not(:last-child) {
     margin-right: 3rem;
 }
-@media only screen and (max-width: 37.5em) {
+@media only screen and (max-width: 37.5rem) {
     .nav__el:not(:last-child) {
         margin-right: 0;
         margin-bottom: 1.2rem;
@@ -952,7 +953,7 @@ body {
     -ms-flex-align: center;
     align-items: center;
 }
-@media only screen and (max-width: 37.5em) {
+@media only screen and (max-width: 37.5rem) {
     .nav__search {
         -webkit-box-ordinal-group: 0;
         -ms-flex-order: -1;

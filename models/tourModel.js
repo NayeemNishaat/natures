@@ -167,7 +167,7 @@ tourSchema.index({ startLocation: "2dsphere" });
 // Chapter: Virtual Middleware
 // Part: Virtual Field
 tourSchema.virtual("durationWeeks").get(function () {
-    return this.duration / 7;
+    return (this.duration / 7).toFixed(2);
 });
 
 // Part: Virtual Populate
