@@ -6791,9 +6791,8 @@ var logout = /*#__PURE__*/function () {
             data = _context2.sent;
 
             if (data.status === "success") {
-              location.reload(true); // Remark: true for hard reload from server!
-
               (0, _alert.showAlert)("success", "Successfully logged out!");
+              location.reload(true); // Remark: true for hard reload from server!
             }
 
             _context2.next = 13;
@@ -6851,7 +6850,9 @@ var signup = /*#__PURE__*/function () {
 
             if (data.status === "success") {
               (0, _alert.showAlert)("success", "Account created successfully!");
-              location.reload(true);
+              setTimeout(function () {
+                location.assign("/");
+              }, 1500);
             }
 
             _context3.next = 13;
@@ -7437,7 +7438,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49689" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54668" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

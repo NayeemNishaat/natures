@@ -34,8 +34,8 @@ export const logout = async () => {
         const data = await res.json();
 
         if (data.status === "success") {
-            location.reload(true); // Remark: true for hard reload from server!
             showAlert("success", "Successfully logged out!");
+            location.reload(true); // Remark: true for hard reload from server!
         }
     } catch (err) {
         showAlert("error", "Error when trying to log out. Please try again!");
@@ -55,7 +55,9 @@ export const signup = async (name, email, password, passwordConfirm) => {
         const data = await res.json();
         if (data.status === "success") {
             showAlert("success", "Account created successfully!");
-            location.reload(true);
+            setTimeout(() => {
+                location.assign("/");
+            }, 1500);
         }
     } catch (err) {
         showAlert("error", "Error when trying to sign up. Please try again!");
