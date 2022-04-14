@@ -1,12 +1,15 @@
 extends base
 include _reviewMixin
 
-//- Remark: Use prepand to insert at the beginning.
-block append head
+//- Remark: Use prepend to insert at the beginning.
+//- Must prepend because we need all the 3rd party scripts before our scripts.
+block prepend head
+	//- Important: Warning: When integrating stripe in frontend we must add the script in the root/index.html and add it into all the page's header so that stripe's script is available in all the pages!
+	//- script(src="https://js.stripe.com/v3")
 	script(src='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js')
 	link(href='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css' rel='stylesheet')
 
-//- 	script(defer, src="/js/mapbox.js")
+	//-	script(defer, src="/js/mapbox.js")
 
 block main
 	section.section-header
