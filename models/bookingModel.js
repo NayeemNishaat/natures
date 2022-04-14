@@ -27,8 +27,11 @@ const bookingSchema = new mongoose.Schema({
     }
 });
 
-bookingSchema.pre(/^find/, function () {
+bookingSchema.pre(/^find/, function (next) {
     this.populate("user").populate("tour", "name");
+
+    // Warning: Must call next to not stuck the cycle.
+    next();
 });
 
 module.exports = mongoose.model("Booking", bookingSchema);
