@@ -1,5 +1,3 @@
-/* eslint-disable */ // Disabling because es-lint is configured for nodeJs only not for client side!
-
 import { showAlert } from "./alert";
 
 export const login = async (email, password) => {

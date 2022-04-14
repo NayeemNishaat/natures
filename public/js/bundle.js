@@ -6885,7 +6885,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.displayMap = void 0;
 
-/* eslint-disable */
 var displayMap = function displayMap(locations) {
   mapboxgl.accessToken = "pk.eyJ1IjoibmF5ZWVtbmlzaGFhdCIsImEiOiJjbDFwYm10OGUwY21uM2ZtbTJxZDB1MmthIn0.DD9h17aGmeThhJCcmhicUA";
   var map = new mapboxgl.Map({

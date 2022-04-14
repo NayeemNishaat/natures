@@ -1,4 +1,5 @@
-/* eslint-disable */
+// /* eslint-disable */ // Disabling because es-lint is configured for nodeJs only not for client side! // Note: But now I configured env for es-lint. So it works without disabling es-lint.
+
 import "@babel/polyfill";
 import { login, logout, signup } from "./loginSignup";
 import { displayMap } from "./mapbox";
