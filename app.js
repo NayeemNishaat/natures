@@ -8,6 +8,7 @@ const helmet = require("helmet");
 const tourRouter = require("./routes/tourRoutes");
 const userRouter = require("./routes/userRoutes");
 const reviewRouter = require("./routes/reviewRoutes");
+const bookingRouter = require("./routes/bookingRoutes");
 const viewRouter = require("./routes/viewRoutes");
 const AppError = require("./lib/appError");
 const globalErrorHandler = require("./controllers/errorController");
@@ -232,6 +233,7 @@ app.use("/api/v1/users", userRouter);
 // userRouter.route("/:id").get(getUser).patch(updateUser).delete(deleteUser);
 
 app.use("/api/v1/reviews", reviewRouter);
+app.use("/api/v1/bookings", bookingRouter);
 
 // Part: Handle unwanted routes (Operational Error)
 app.all("*", (req, _res, next) => {
