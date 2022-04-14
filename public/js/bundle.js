@@ -7063,28 +7063,26 @@ var bookTour = /*#__PURE__*/function () {
 
           case 6:
             session = _context.sent;
-            console.log(session); // Point: Create checkout form and charge credit card
-
-            _context.next = 10;
+            _context.next = 9;
             return stripe.redirectToCheckout({
               sessionId: session.session.id
             });
 
-          case 10:
-            _context.next = 15;
+          case 9:
+            _context.next = 14;
             break;
 
-          case 12:
-            _context.prev = 12;
+          case 11:
+            _context.prev = 11;
             _context.t0 = _context["catch"](0);
             (0, _alert.showAlert)("error", _context.t0.message);
 
-          case 15:
+          case 14:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 12]]);
+    }, _callee, null, [[0, 11]]);
   }));
 
   return function bookTour(_x) {
@@ -7516,7 +7514,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55547" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55305" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
