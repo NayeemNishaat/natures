@@ -2,6 +2,7 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const Tour = require("../models/tourModel");
 const Booking = require("../models/bookingModel");
 const catchAsync = require("../lib/catchAsync");
+const factory = require("./handlerFactory");
 
 exports.getCheckoutSession = catchAsync(async (req, res, next) => {
     // Point: Get the currently booked tour
@@ -52,3 +53,9 @@ exports.createBookingCheckout = catchAsync(async (req, res, next) => {
     res.redirect(req.originalUrl.split("?")[0]);
     // Note: Now this will hit the base url without the query string. So without query string then the upper if condition (if (!tour && !user && !price) return next();) will be fulfilled and then the next() middleware is called which in turn will render overview page.
 });
+
+exports.createBooking = factory.createOne(Booking);
+exports.getBooking = factory.getOne(Booking);
+exports.getAllBooking = factory.getAll(Booking);
+exports.updateBooking = factory.updateOne(Booking);
+exports.deleteBooking = factory.deleteOne(Booking);

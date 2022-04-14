@@ -50,6 +50,7 @@ exports.getAccount = (req, res) => {
     });
 };
 
+// Important: Could be implemnted via "Virtual Populate"
 exports.getMyBookings = catchAsync(async (req, res, next) => {
     // Point: Find all bookings
     const bookings = await Booking.find({ user: req.user.id });
