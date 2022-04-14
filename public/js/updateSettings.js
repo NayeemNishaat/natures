@@ -4,8 +4,8 @@ export const updateSettings = async (settings, type) => {
     try {
         const url =
             type === "password"
-                ? "http://localhost:3000/api/v1/users/update-password"
-                : "http://localhost:3000/api/v1/users/update-me";
+                ? "/api/v1/users/update-password"
+                : "/api/v1/users/update-me"; // Important: Note: We can omit the base url (http://localhost:3000) if our API/backend and frontend are hosted in the same server otherwise it won't work!
 
         const res =
             type !== "photo"

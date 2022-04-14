@@ -6708,7 +6708,7 @@ var login = /*#__PURE__*/function () {
           case 0:
             _context.prev = 0;
             _context.next = 3;
-            return fetch("http://localhost:3000/api/v1/users/login", {
+            return fetch("/api/v1/users/login", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json"
@@ -6775,7 +6775,7 @@ var logout = /*#__PURE__*/function () {
           case 0:
             _context2.prev = 0;
             _context2.next = 3;
-            return fetch("http://localhost:3000/api/v1/users/logout", {
+            return fetch("/api/v1/users/logout", {
               method: "GET",
               headers: {
                 "Content-Type": "application/json"
@@ -6827,7 +6827,7 @@ var signup = /*#__PURE__*/function () {
           case 0:
             _context3.prev = 0;
             _context3.next = 3;
-            return fetch("http://localhost:3000/api/v1/users/signup", {
+            return fetch("/api/v1/users/signup", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json"
@@ -6949,7 +6949,7 @@ var updateSettings = /*#__PURE__*/function () {
         switch (_context.prev = _context.next) {
           case 0:
             _context.prev = 0;
-            url = type === "password" ? "http://localhost:3000/api/v1/users/update-password" : "http://localhost:3000/api/v1/users/update-me";
+            url = type === "password" ? "/api/v1/users/update-password" : "/api/v1/users/update-me"; // Important: Note: We can omit the base url (http://localhost:3000) if our API/backend and frontend are hosted in the same server otherwise it won't work!
 
             if (!(type !== "photo")) {
               _context.next = 8;
@@ -7049,7 +7049,7 @@ var bookTour = /*#__PURE__*/function () {
           case 0:
             _context.prev = 0;
             _context.next = 3;
-            return fetch("http://localhost:3000/api/v1/bookings/checkout-session/".concat(tourId), {
+            return fetch("/api/v1/bookings/checkout-session/".concat(tourId), {
               method: "GET",
               headers: {
                 "Content-Type": "application/json"
