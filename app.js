@@ -5,6 +5,7 @@ const xss = require("xss-clean");
 const hpp = require("hpp");
 const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
+const compression = require("compression");
 const tourRouter = require("./routes/tourRoutes");
 const userRouter = require("./routes/userRoutes");
 const reviewRouter = require("./routes/reviewRoutes");
@@ -69,18 +70,21 @@ app.use(
     })
 );
 
+// Part: Compression Middleware
+app.use(compression());
+
 // Part: Serving static files
 // app.use(express.static(`${__dirname}/public`)); // Note: We don't need to include public in the url because it acts as root when no route is defined for the entered url! All files inside this directory will be served automatically!
 app.use(express.static(path.join(__dirname, "public")));
 
 // Part: Test middleware
-app.use((_req, _res, next) => {
+/* app.use((_req, _res, next) => {
     // const ip = _req.headers["x-forwarded-for"] || _req.socket.remoteAddress;
     // console.log();
     // console.log("From Middleware");
     // Important: Must call next else the req, res cycle will stuck here.
     next();
-});
+}); */
 
 app.use((req, _res, next) => {
     req.requestTime = new Date().toISOString();

@@ -26,7 +26,7 @@ const importData = async () => {
         await Review.create(reviews);
         console.log("Imported!");
     } catch (err) {
-        console.log(err);
+        console.error(err);
     }
 
     process.exit();
@@ -39,7 +39,7 @@ const deleteData = async () => {
         await Review.deleteMany();
         console.log("Deleted!");
     } catch (err) {
-        console.log(err);
+        console.error(err);
     }
 
     process.exit();

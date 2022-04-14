@@ -14,6 +14,7 @@ const sendError = (req, res, err, env) => {
         }
 
         // Key: Rendered Website
+        console.error(err);
         return res.status(err.statusCode).render("error", {
             title: "Something went wrong!",
             msg: err.message
@@ -32,6 +33,7 @@ const sendError = (req, res, err, env) => {
         }
 
         // Key: Rendered Website
+        console.error(err);
         return res.status(err.statusCode).render("error", {
             title: "Something went wrong!",
             msg: err.message
@@ -39,6 +41,7 @@ const sendError = (req, res, err, env) => {
     }
 
     // Point: Programming/unknown error
+    console.error(err);
     return res.status(err.statusCode).render("error", {
         title: "Something went wrong!",
         msg: "Please try again later!"
