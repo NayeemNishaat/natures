@@ -126,3 +126,5 @@ process.on("SIGTERM", () => {
 // Key: Point: Set environment variable using "heroku config:set NODE_ENV=production"
 // Key: Change application link with "heroku apps:rename natours"
 // Key: Add remote repo and app -> "heroku git:remote -a natours-lby"
+// Key: To check dyno use "heroku ps"
+// Key: Restart dyno with "heroku ps:restart"
