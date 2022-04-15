@@ -70,6 +70,15 @@ process.on("unhandledRejection", (err) => {
     server.close(() => process.exit(1)); // Note: 1 -> Uncaught exception, 0 -> Success.
 });
 
+process.on("SIGTERM", () => {
+    console.log("SIGTERM received. Shutting down gracefully!");
+
+    // Note: Gracefully shutting down to complete all the pending requests.
+    server.close(() => {
+        console.log("Process terminated!");
+    });
+});
+
 // Chapter: With Mongoose
 // const DB = DB_CONNECTION_STRING;
 // mongoose
