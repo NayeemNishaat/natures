@@ -58,7 +58,7 @@ mongoose
         // console.log("DB connection failed!");
     });
 
-const port = process.env.port || 8080;
+const port = process.env.PORT || 8080;
 
 const server = app.listen(port, () => {
     // console.log(`App listening on port ${port}.`);
@@ -103,3 +103,14 @@ process.on("unhandledRejection", (err) => {
 // testTour.save();
 
 // Colors springgreen, gold, dodgerblue, deeppink, blueviolet
+
+// Chapter: Deploy with Heroku
+// Key: Login with "heroku login"
+// Key: Define start npm script -> "start": "node server.js"
+// Key: Define engine -> "engines": { "node": ">=14.0.0"}
+// Key: Set port by using "process.env.port"
+// Key: Create project repo on heroku with "heroku create"
+// Key: Push repo on heroku using "git push heroku main"
+// Key: View error logs using "heroku logs --tail"
+// Key: Open project with "heroku open"
+// Key: Point: Set environment variable using "heroku config:set NODE_ENV=production"
