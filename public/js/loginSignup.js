@@ -4,6 +4,7 @@ export const login = async (email, password) => {
     try {
         const res = await fetch("/api/v1/users/login", {
             method: "POST",
+            // credentials: "include", // Warning: When using fetch by default cookies are only sent for same origin ("same-origin"). For cross origin use "include" and to discard cookie use "omit".
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password })
         });

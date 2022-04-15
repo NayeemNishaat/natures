@@ -92,7 +92,11 @@ exports.protect = catchAsync(async (req, res, next) => {
         req.headers.authorization.startsWith("Bearer ")
     ) {
         token = req.headers.authorization.split(" ")[1];
-    } else if (req.headers.cookie) token = req.headers.cookie.split("=")[1];
+    } else if (req.headers.cookie)
+        req.headers.cookie.split("; ").forEach((el) => {
+            const arr = el.split("=");
+            if (arr[0] === "jwt") token = arr[1];
+        });
 
     if (!token) {
         return next(new AppError("You are not logged in!"), 401);
@@ -129,7 +133,11 @@ exports.protect = catchAsync(async (req, res, next) => {
 // Note: To check if user logged in for rendered pages, Important: no errors will be sent to the client if so, that will result in a white error page because we are using get here and sending it as a document response to the browser not to the JS. In rendered website token will always be sent with the cookie.
 exports.isLoggedIn = async (req, res, next) => {
     let token;
-    if (req.headers.cookie) token = req.headers.cookie.split("=")[1];
+    if (req.headers.cookie)
+        req.headers.cookie.split("; ").forEach((el) => {
+            const arr = el.split("=");
+            if (arr[0] === "jwt") token = arr[1];
+        });
 
     if (!token) {
         return next();
