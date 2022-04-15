@@ -70,6 +70,7 @@ process.on("unhandledRejection", (err) => {
     server.close(() => process.exit(1)); // Note: 1 -> Uncaught exception, 0 -> Success.
 });
 
+// Remark: Heroku sends SIGTERM signal everyday to restart the node application for better application health.
 process.on("SIGTERM", () => {
     console.log("SIGTERM received. Shutting down gracefully!");
 
