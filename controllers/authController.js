@@ -12,17 +12,20 @@ const signToken = (id) =>
         expiresIn: process.env.JWT_EXPIRES_IN
     });
 
-const createSendToken = (user, statusCode, res) => {
+const createSendToken = (user, statusCode, req, res) => {
     const token = signToken(user._id);
 
     const cookieOptions = {
         expires: new Date(
             Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 84600000
         ),
-        httpOnly: true // Remark: To prevent xss!
+        httpOnly: true, // Remark: To prevent xss!,
+        secure: req.secure || req.headers["x-forwarded-proto"] === "https" // Remark: This header will be available when trust proxy is enabled.
     };
 
-    if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
+    // if (process.env.NODE_ENV === "production") // Note: Not all production app is secure.
+    // if (req.secure || req.headers["x-forwarded-proto"] === "https")
+    //     cookieOptions.secure = true;
 
     res.cookie("jwt", token, cookieOptions);
 
@@ -49,7 +52,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     const url = `${req.protocol}://${req.get("host")}/me`;
     await new Email(newUser, url).sendWelcome();
 
-    createSendToken(newUser, 201, res);
+    createSendToken(newUser, 201, req, res);
 });
 
 // Chapter: LogIn
@@ -68,7 +71,7 @@ exports.login = catchAsync(async (req, res, next) => {
         return next(new AppError("Incorrect email or password.", 401));
 
     // Part: If everything is ok send the token to the client!
-    createSendToken(user, 200, res);
+    createSendToken(user, 200, req, res);
 });
 
 // Chapter: LogOut
@@ -276,7 +279,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
     // Point: Update changedPasswordAt property for the curent user.
     // Changed it in the pre save() middleware.
     // Point: Log the user in, send JWT
-    createSendToken(user, 201, res);
+    createSendToken(user, 201, req, res);
 });
 
 exports.updatePassword = catchAsync(async (req, res, next) => {
@@ -292,5 +295,5 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
 
     await user.save(); // Important: Always use save() never try to use findByIdAndUpdate() because that will not trigger pre-save() middlewares and validators!
     // Point: Log user in, send JWT
-    createSendToken(user, 201, res);
+    createSendToken(user, 201, req, res);
 });

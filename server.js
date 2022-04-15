@@ -114,3 +114,5 @@ process.on("unhandledRejection", (err) => {
 // Key: View error logs using "heroku logs --tail"
 // Key: Open project with "heroku open"
 // Key: Point: Set environment variable using "heroku config:set NODE_ENV=production"
+// Key: Change application link with "heroku apps:rename natours"
+// Key: Add remote repo and app -> "heroku git:remote -a natours-lby"
