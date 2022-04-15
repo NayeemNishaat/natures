@@ -24,12 +24,12 @@ app.set("views", path.join(__dirname, "views"));
 // Important: Using middleware (a function that can modify the incoming data)
 // Important: Point: Position is very important in express. We must define the middlewares before the route handlers send the response.
 // Part: Set security http headers
-app.use(
-    helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false })
-); // Note: Called a function but app.use() expects a function not a function call. But the called function will return a function so no worries. Important: csp and coep are disabled in order to add script from remote source!
+// app.use(
+//     helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false })
+// ); // Note: Called a function but app.use() expects a function not a function call. But the called function will return a function so no worries. Important: csp and coep are disabled in order to add script from remote source!
 
 // Part: Development logging
-if (process.env.NODE_ENV === "development") {
+if (process.env.NODE_ENV === "development ") {
     // Do development logging!
 }
 
