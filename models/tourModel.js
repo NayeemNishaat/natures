@@ -223,7 +223,7 @@ tourSchema.pre(/^find/, function (next) {
     // Note: Current query is "this" i.e. -> Tour.findById(req.params.id)
     this.populate({
         path: "guides", // Name of the key to populate.
-        select: "-__v -passwordChangedAt"
+        select: "-passwordChangedAt"
     }); // .populate("reviews"); // Important: Not populating here because we dont want to show reviews when the user requests for all tours. Rateher we will populate for a specific tour.
 
     next();
