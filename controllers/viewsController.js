@@ -70,7 +70,7 @@ exports.getMyBookings = catchAsync(async (req, res, next) => {
     const tours = await Tour.find({ _id: { $in: tourIDs } }); // Remark: $in is a great operator for finding elements of an array from DB.
 
     res.status(200).render("overview", {
-        title: "My Bookings",
+        title: "Your Bookings",
         tours
     });
 });
@@ -96,3 +96,7 @@ exports.getActivated = catchAsync(async (req, res) => {
         title: "Account Activation"
     });
 });
+
+exports.getReviews = (req, res) => {
+    return res.status(200).render("reviews", { title: "Your Reviews" });
+};

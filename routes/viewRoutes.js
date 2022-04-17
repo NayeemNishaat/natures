@@ -30,6 +30,7 @@ router.get(
     authController.protect,
     viewsController.getMyBookings
 );
+router.get("/reviews", authController.protect, viewsController.getReviews);
 
 router.post(
     "/submit-user-data",
