@@ -13,6 +13,7 @@ const bookingRouter = require("./routes/bookingRoutes");
 const viewRouter = require("./routes/viewRoutes");
 const AppError = require("./lib/appError");
 const globalErrorHandler = require("./controllers/errorController");
+const cors = require("cors");
 
 const app = express();
 
@@ -25,6 +26,31 @@ app.set("views", path.join(__dirname, "views"));
 // Chapter: Global Middlewares
 // Important: Using middleware (a function that can modify the incoming data)
 // Important: Point: Position is very important in express. We must define the middlewares before the route handlers send the response.
+
+// Part: CORS
+// CORS occurs between different domain/sub-domain/port.
+app.use(cors());
+// Point: Allow specific origin
+// app.use(
+//     cors({
+//         origin: "https://www.natours-lby.com"
+//     })
+// );
+
+// Point: Alternative
+// app.use((req, res, next) => {
+//     res.set({
+//         "key": "value"
+//     });
+
+//     next();
+// });
+
+// Part: Listen to preflight/option request for complex request and allowing cors
+// Note: Browser automatically sends preflight request to figure out wheter the request is safe to perform or not.
+app.options("*", cors());
+// app.options("/api/v1/tours/:id", cors()); // Remark: Allowing complex request to specific route.
+
 // Part: Set security http headers
 app.use(
     helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false })
