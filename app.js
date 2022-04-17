@@ -5,15 +5,16 @@ const xss = require("xss-clean");
 const hpp = require("hpp");
 const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
+const cors = require("cors");
 const compression = require("compression");
 const tourRouter = require("./routes/tourRoutes");
 const userRouter = require("./routes/userRoutes");
 const reviewRouter = require("./routes/reviewRoutes");
 const bookingRouter = require("./routes/bookingRoutes");
 const viewRouter = require("./routes/viewRoutes");
+const bookingController = require("./controllers/bookingController");
 const AppError = require("./lib/appError");
 const globalErrorHandler = require("./controllers/errorController");
-const cors = require("cors");
 
 const app = express();
 
@@ -69,6 +70,13 @@ const limiter = rateLimit({
 });
 
 app.use("/api", limiter);
+
+// Key: Stripe Webhook
+app.post(
+    "/webhook-checkout",
+    express.raw({ type: "application/json" }),
+    bookingController.webhookCheckout
+); // Important: Reason for defining "/webhook-checkout" route right in app.js is, stripe uses the raw format to read the body not the json format. That's why we put this middleware right before the json body parser.
 
 // Part: Json body parser
 app.use(express.json({ limit: "10kb" }));
