@@ -64,7 +64,7 @@ const createBooking = async (session) => {
         email: session.customer_email
     }).select("_id");
     const price = session.object.amount_total / 100;
-    console.log(tour, user, price);
+    console.log(`😍😍😍 ${tour} ${user} ${price}`);
     // await Booking.create({ tour, user, price });
 };
 
@@ -83,7 +83,6 @@ exports.webhookCheckout = (req, res, next) => {
     }
 
     if (event.type === "checkout.session.completed") createBooking(event.data);
-    console.log(event);
     res.status(200).json({ received: true });
 };
 
