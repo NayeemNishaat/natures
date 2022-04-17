@@ -53,10 +53,13 @@ export const signup = async (name, email, password, passwordConfirm) => {
 
         const data = await res.json();
         if (data.status === "success") {
-            showAlert("success", "Account created successfully!");
+            showAlert(
+                "success",
+                "Account created successfully! Now please check your Email to activate and log into your account!"
+            );
             setTimeout(() => {
                 location.assign("/");
-            }, 1500);
+            }, 5000);
         }
     } catch (err) {
         showAlert("error", "Error when trying to sign up. Please try again!");

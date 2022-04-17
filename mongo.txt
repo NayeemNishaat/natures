@@ -16,6 +16,8 @@ Chapter: Update
 Part: Update Partially
 db.tours.updateOne({name:"The Snow Advanturer"},{$set:{price:597}})
 db.tours.updateMany({price:{$gt:500},rating:{$gte:4.8}},{$set:{premium:true}})
+db.users.updateOne({ _id: id },{ $set: { active: true }, $unset: { otp: 1 } });
+db.findOneAndUpdate({ "_id": bookId }, { "$set": { "name": name, "genre": genre, "author": author}});
 
 Part: Update Totally
 db.tours.replaceOne({query},{data})

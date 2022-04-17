@@ -5,6 +5,7 @@ const authController = require("../controllers/authController");
 const router = express.Router({ mergeParams: true }); // Remark: Because we want to get access to the id that exist in another router not in this router.
 
 // POST /tours/125dsfd/reviews
+// GET /tours/125dsfd/reviews
 // POST /reviews
 
 router.use(authController.protect);
@@ -12,7 +13,7 @@ router.use(authController.protect);
 router
     .route("/")
     .get(
-        reviewController.getAllReviewsSecificTour,
+        reviewController.getAllReviewsSpecificTour,
         reviewController.getAllReviews
     )
     .post(

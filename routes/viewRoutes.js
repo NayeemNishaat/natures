@@ -8,6 +8,12 @@ const router = express.Router();
 router.use(viewsController.alerts);
 
 router.get(
+    "/activate/:id/:otp",
+    authController.activate,
+    viewsController.getActivated
+);
+
+router.get(
     "/",
     authController.isLoggedIn,
     // bookingController.createBookingCheckout,

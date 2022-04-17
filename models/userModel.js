@@ -43,10 +43,13 @@ const userSchema = new mongoose.Schema(
                 message: "Passwords didn't match!"
             }
         },
+        otp: {
+            type: Number
+        },
         passwordChangedAt: Date,
         passwordResetToken: String,
         passwordResetExpires: Date,
-        active: { type: Boolean, default: true, select: false }
+        active: { type: Boolean, select: false }
     }
     // { id: false } // Remark: Need the id for getting current user info and for other reasons! Important: .select("+id") doesn't work in this case!
 );

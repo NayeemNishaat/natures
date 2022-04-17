@@ -19,7 +19,7 @@ const createSendToken = (user, statusCode, req, res) => {
         expires: new Date(
             Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 84600000
         ),
-        httpOnly: true, // Remark: To prevent xss!,
+        httpOnly: true, // Remark: To prevent xss!
         secure: req.secure || req.headers["x-forwarded-proto"] === "https" // Remark: This header will be available when trust proxy is enabled.
     };
 
@@ -41,18 +41,40 @@ const createSendToken = (user, statusCode, req, res) => {
 
 // Chapter: SignUp
 exports.signup = catchAsync(async (req, res, next) => {
+    const otp = Math.random().toFixed(6).slice(2);
+
     const newUser = await User.create({
         name: req.body.name,
         email: req.body.email,
         password: req.body.password,
-        passwordConfirm: req.body.passwordConfirm
+        passwordConfirm: req.body.passwordConfirm,
+        otp
     });
     //  Important: Password select is false but we still get it in the response because when creating a document select false doesn't work!
 
-    const url = `${req.protocol}://${req.get("host")}/me`;
+    const url = `${req.protocol}://${req.get("host")}/activate/${
+        newUser.id
+    }/${otp}`;
     await new Email(newUser, url).sendWelcome();
 
     createSendToken(newUser, 201, req, res);
+});
+
+exports.activate = catchAsync(async (req, res, next) => {
+    const { id, otp } = req.params;
+    const { otp: storedOtp } = await User.findById(id).select("otp");
+
+    if (+otp !== storedOtp)
+        return next(
+            new AppError("Account activation failed or already activated!", 401)
+        );
+
+    await User.updateOne(
+        { _id: id },
+        { $set: { active: true }, $unset: { otp: 1 } }
+    );
+
+    return next();
 });
 
 // Chapter: LogIn
@@ -64,11 +86,24 @@ exports.login = catchAsync(async (req, res, next) => {
         return next(new AppError("Please provide email and password.", 400));
 
     // Part: Check if user exist && password is correct.
-    const user = await User.findOne({ email }).select("+password");
+    const user = await User.findOne({ email }).select("+password +active");
     // Note: Here user is a document of User collection.
 
     if (!user || !(await user.correctPassword(password, user.password)))
-        return next(new AppError("Incorrect email or password.", 401));
+        return next(
+            new AppError(
+                "Incorrect email or password or account is deleted!",
+                401
+            )
+        );
+
+    if (!user.active)
+        return next(
+            new AppError(
+                "Your account isn't activated please check your email to activate.",
+                401
+            )
+        );
 
     // Part: If everything is ok send the token to the client!
     createSendToken(user, 200, req, res);

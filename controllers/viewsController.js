@@ -90,3 +90,9 @@ exports.updateUserData = catchAsync(async (req, res, next) => {
         user: updatedUser
     });
 });
+
+exports.getActivated = catchAsync(async (req, res) => {
+    return res.status(200).render("activated", {
+        title: "Account Activation"
+    });
+});

@@ -17,7 +17,7 @@ const router = express.Router();
 // End|
 
 // Note: Redirecting to review router!
-router.use("/:id/reviews", reviewRouter); // Important: A major problem in this approach is we don't have access to the query params (id) to the reviewRouter middleware. So we have to us merge-params to solve this problem.
+router.use("/:id/reviews", reviewRouter); // Important: A major problem in this approach is we don't have access to the query params (id) to the reviewRouter middleware. So we have to use merge-params to solve this problem. And in reviewRouter it will trigger the url "/"!
 
 router
     .route("/top-5-cheap")
