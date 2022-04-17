@@ -91,6 +91,7 @@ block main
 			p.cta__text= `${tour.duration} days. 1 adventure. Infinite memories. Make it yours today!`
 
 			if(user)
-				button.btn.btn--green.span-all-rows#book-tour(data-tour-id=`${tour.id}`) Book Tour Now!
+				button.btn.btn--green.span-all-rows#book-tour(data-tour-id=`${tour.id}`) Book Tour Now
+				a.btn.btn--green.span-all-rows#provide-review(style={"margin-left":"2rem"}, data-tour-id=`${tour.id}`, href="/provide-review") Review
 			else 
 				a.btn.btn--green.span-all-rows(href="/login") Log In to Book!

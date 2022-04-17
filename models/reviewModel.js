@@ -67,7 +67,7 @@ reviewSchema.statics.calcAverageRatings = async function (tourId) {
         },
         {
             $group: {
-                _id: "$tour", // Note: Grouping all the matched/filtered reviews by the tour!
+                _id: "$tour", // Note: Grouping all the matched/filtered reviews by the $tour -> stored tour's id (toudId) in review model.
                 nRating: { $sum: 1 },
                 averageRating: { $avg: "$rating" }
             }
@@ -97,6 +97,7 @@ reviewSchema.post("save", function () {
     // next(); Warning: Post middleware doesn't have access to next()
 });
 
+// Chapter: Again Query Middleware
 // findOneAndUpdate -> find by id and update
 // findOneAndDelete -> find by id and dlete
 // Important: Can not simply use post here because the query has already executed. And without query we can not get the review document potentially can not run calcAverageRatings().

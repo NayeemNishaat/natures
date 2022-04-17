@@ -107,3 +107,7 @@ exports.getReviews = catchAsync(async (req, res) => {
         .status(200)
         .render("reviews", { title: "Your Reviews", reviews });
 });
+
+exports.getReviewForm = (req, res) => {
+    res.status(200).render("reviewForm");
+};

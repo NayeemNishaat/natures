@@ -21,7 +21,6 @@ router.get(
 );
 
 router.get("/tour/:slug", authController.isLoggedIn, viewsController.getTour);
-
 router.get("/login", authController.isLoggedIn, viewsController.getLoginForm);
 router.get("/signup", authController.isLoggedIn, viewsController.getsignupForm);
 router.get("/me", authController.protect, viewsController.getAccount);
@@ -31,6 +30,11 @@ router.get(
     viewsController.getMyBookings
 );
 router.get("/reviews", authController.protect, viewsController.getReviews);
+router.get(
+    "/provide-review",
+    authController.protect,
+    viewsController.getReviewForm
+);
 
 router.post(
     "/submit-user-data",
