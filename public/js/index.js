@@ -5,6 +5,7 @@ import { login, logout, signup } from "./loginSignup";
 import { displayMap } from "./mapbox";
 import { updateSettings } from "./updateSettings";
 import { bookTour } from "./stripe";
+import { showAlert } from "./alert";
 
 // Chapter: DOM Elements
 const mapBox = document.getElementById("map");
@@ -16,8 +17,11 @@ const userPasswordForm = document.querySelector(".form-user-password");
 const logoutBtn = document.querySelector(".nav__el--logout");
 const photo = document.getElementById("photo");
 const bookBtn = document.getElementById("book-tour");
+const alertMessage = document.querySelector("body").dataset.alert;
 
 // Chapter: Delegation
+if (alertMessage) showAlert("success", alertMessage, 20);
+
 if (mapBox) {
     const locations = JSON.parse(mapBox.dataset.locations);
     displayMap(locations);
