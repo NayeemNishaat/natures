@@ -4,12 +4,12 @@ block main
 	main.main
 		.login-form
 			h2.heading-secondary.ma-bt-lg Please Provide Your Review
-			form.form.form--signup
+			form.form.form--review
 				.form__group
-					label.form__label(for='name') Review
-					textarea#name.form__input(placeholder='Your Review', required, rows="3")
+					label.form__label(for='review') Review
+					textarea#review.form__input(placeholder='Your Review', required, rows="3")
 				.form__group
-					label.form__label(for='name') Rating
-					input#name.form__input(type='number', placeholder='Your Rating', required, min="1", max="5")
+					label.form__label(for='rating') Rating
+					input#rating.form__input(type='number', placeholder='Your Rating', required, min="1", max="5", step="any")
 				.form__group
 					button.btn.btn--green Submit

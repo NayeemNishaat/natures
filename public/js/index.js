@@ -6,6 +6,7 @@ import { displayMap } from "./mapbox";
 import { updateSettings } from "./updateSettings";
 import { bookTour } from "./stripe";
 import { showAlert } from "./alert";
+import { submitReview } from "./review";
 
 // Chapter: DOM Elements
 const mapBox = document.getElementById("map");
@@ -18,6 +19,7 @@ const logoutBtn = document.querySelector(".nav__el--logout");
 const photo = document.getElementById("photo");
 const bookBtn = document.getElementById("book-tour");
 const alertMessage = document.querySelector("body").dataset.alert;
+const reviewBtn = document.querySelector(".form--review");
 
 // Chapter: Delegation
 if (alertMessage) showAlert("success", alertMessage, 20);
@@ -119,3 +121,15 @@ if (bookBtn)
 
         bookTour(tourId);
     });
+
+if (reviewBtn) {
+    reviewBtn.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const tourId = location.pathname.slice(1).split("/")[0];
+        const review = document.getElementById("review").value;
+        const rating = +document.getElementById("rating").value;
+
+        submitReview(tourId, review, rating);
+    });
+}

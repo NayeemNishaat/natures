@@ -90,8 +90,9 @@ block main
 			h2.heading-secondary What are you waiting for?
 			p.cta__text= `${tour.duration} days. 1 adventure. Infinite memories. Make it yours today!`
 
+			-(user && user.role === "user")? user = true: user = false
 			if(user)
 				button.btn.btn--green.span-all-rows#book-tour(data-tour-id=`${tour.id}`) Book Tour Now
-				a.btn.btn--green.span-all-rows#provide-review(style={"margin-left":"2rem"}, data-tour-id=`${tour.id}`, href="/provide-review") Review
+				a.btn.btn--green.span-all-rows#provide-review(style={"margin-left":"2rem"}, href=`/${tour.id}/provide-review`) Review
 			else 
 				a.btn.btn--green.span-all-rows(href="/login") Log In to Book!

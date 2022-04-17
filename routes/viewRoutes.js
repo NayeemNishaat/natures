@@ -31,7 +31,7 @@ router.get(
 );
 router.get("/reviews", authController.protect, viewsController.getReviews);
 router.get(
-    "/provide-review",
+    "/:tourId/provide-review",
     authController.protect,
     viewsController.getReviewForm
 );
