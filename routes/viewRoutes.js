@@ -35,6 +35,7 @@ router.get(
     authController.protect,
     viewsController.getReviewForm
 );
+router.get("/billing", authController.protect, viewsController.getBilling);
 
 router.post(
     "/submit-user-data",
