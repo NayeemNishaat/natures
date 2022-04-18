@@ -11,13 +11,10 @@ block main
 					li= "Status"
 
 			div.table__body
-				ul.list
-					li= "The Start Gazer"
-					li= "2022-04-17"
-					li= "2997"
-					li= "Paid"
-				ul.list
-					li= "The Start Gazer"
-					li= "2022-04-17"
-					li= "2997"
-					li= "Paid"
+				each booking in bookings
+					- const date = booking.date.toISOString().split("T")[0]
+					ul.list
+						li= booking.name
+						li= date
+						li= `${booking.price}`
+						li= booking.paid ? "Paid" : "Unpaid"

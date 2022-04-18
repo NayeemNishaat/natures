@@ -112,6 +112,22 @@ exports.getReviewForm = (req, res) => {
     res.status(200).render("reviewForm");
 };
 
-exports.getBilling = (req, res) => {
-    res.status(200).render("billing");
-};
+exports.getBilling = catchAsync(async (req, res) => {
+    // Important: This query middleware runs before the pre/save middlewares.
+    const bookings = await Booking.find({
+        user: { _id: req.user.id }
+    }).select("tour createdAt price paid");
+
+    const formattedBookings = bookings.map((booking) => {
+        const {
+            tour: { name },
+            createdAt: date,
+            price,
+            paid
+        } = booking;
+
+        return { name, date, price, paid };
+    });
+
+    res.status(200).render("billing", { bookings: formattedBookings });
+});
