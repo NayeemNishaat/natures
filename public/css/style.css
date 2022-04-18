@@ -1389,8 +1389,8 @@ body {
     position: absolute;
     cursor: pointer;
     z-index: 1;
-    right: 1rem;
     top: 1rem;
+    right: 7rem;
 }
 .checkbox:checked:hover {
     opacity: 1;
@@ -1418,15 +1418,15 @@ body {
     z-index: 1;
     border-radius: 2px;
     background-image: linear-gradient(to right bottom, #e714d6, #eb4d4b);
-    right: 4rem;
+    right: 1rem;
     top: 1rem;
 }
 
 .edit__icon {
     height: 2rem;
     width: 2rem;
+    right: 4rem;
     top: 1rem;
-    right: 7rem;
     cursor: pointer;
     z-index: 1;
     position: absolute;

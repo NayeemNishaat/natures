@@ -5,11 +5,11 @@ block main
 	.card-container
 
 		each tour in tours
-			.card
-				input.checkbox(type="checkbox")
+			.card(data-tour-id=`${tour.id}`)
 				button.button X
 				svg.edit__icon
 					use(xlink:href='img/icons.svg#icon-edit')
+				input.checkbox(type="checkbox")
 					
 				.card__header
 					.card__picture
