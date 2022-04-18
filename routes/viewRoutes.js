@@ -36,6 +36,12 @@ router.get(
     viewsController.getReviewForm
 );
 router.get("/billing", authController.protect, viewsController.getBilling);
+router.get(
+    "/manage-tours",
+    authController.protect,
+    authController.restrictTo("admin", "lead-guide"),
+    viewsController.getManageTours
+);
 
 router.post(
     "/submit-user-data",

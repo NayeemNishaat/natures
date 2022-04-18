@@ -109,7 +109,7 @@ exports.getReviews = catchAsync(async (req, res) => {
 });
 
 exports.getReviewForm = (req, res) => {
-    res.status(200).render("reviewForm");
+    res.status(200).render("reviewForm", { title: "Provide Feedback" });
 };
 
 exports.getBilling = catchAsync(async (req, res) => {
@@ -129,5 +129,14 @@ exports.getBilling = catchAsync(async (req, res) => {
         return { name, date, price, paid };
     });
 
-    res.status(200).render("billing", { bookings: formattedBookings });
+    res.status(200).render("billing", {
+        title: "Your Billings",
+        bookings: formattedBookings
+    });
+});
+
+exports.getManageTours = catchAsync(async (req, res) => {
+    const tours = await Tour.find();
+
+    res.status(200).render("manageTours", { title: "Manage Tours", tours });
 });

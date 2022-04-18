@@ -1080,6 +1080,7 @@ body {
 
 .card {
     border-radius: 3px;
+    position: relative;
     overflow: hidden;
     -webkit-box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.1);
     box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.1);
@@ -1361,19 +1362,6 @@ body {
     text-align: center;
 }
 
-/* Key: Responsive */
-@media only screen and (max-width: 768px) {
-    .sectionTable {
-        margin-top: 3.2rem;
-    }
-
-    .table {
-        width: 100%;
-        padding: 1.6rem;
-        font-size: 1rem;
-    }
-}
-
 .list {
     padding: 0.8rem 0;
 }
@@ -1393,8 +1381,70 @@ body {
     gap: 1.6rem;
 }
 
+/* Chapter: Manage Tours */
+.checkbox {
+    accent-color: #e714d6;
+    width: 2rem;
+    height: 2rem;
+    position: absolute;
+    cursor: pointer;
+    z-index: 1;
+    right: 1rem;
+    top: 1rem;
+}
+.checkbox:checked:hover {
+    opacity: 1;
+}
+.checkbox::before {
+    content: linear-gradient(to right bottom, #e714d6, #eb4d4b);
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid #7dd56f;
+    display: inline-block;
+}
+.checkbox:checked::before {
+    content: "";
+}
+
+.button {
+    width: 2rem;
+    height: 2rem;
+    font-weight: bold;
+    font-size: 1.5rem;
+    cursor: pointer;
+    border: none;
+    color: white;
+    position: absolute;
+    z-index: 1;
+    border-radius: 2px;
+    background-image: linear-gradient(to right bottom, #e714d6, #eb4d4b);
+    right: 4rem;
+    top: 1rem;
+}
+
+.edit__icon {
+    height: 2rem;
+    width: 2rem;
+    top: 1rem;
+    right: 7rem;
+    cursor: pointer;
+    z-index: 1;
+    position: absolute;
+    fill: #e821b7;
+}
+
 /* Key: Responsive */
 @media only screen and (max-width: 768px) {
+    .sectionTable {
+        margin-top: 3.2rem;
+    }
+
+    .table {
+        width: 100%;
+        padding: 1.6rem;
+        font-size: 1rem;
+    }
+
     .list__editable {
         gap: 0.4rem;
     }
