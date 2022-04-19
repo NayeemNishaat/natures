@@ -22,6 +22,7 @@ const bookBtn = document.getElementById("book-tour");
 const alertMessage = document.querySelector("body").dataset.alert;
 const reviewBtn = document.querySelector(".form--review");
 const deleteBtns = document.querySelectorAll(".button");
+const deleteSelected = document.getElementById("delete-selected");
 
 // Chapter: Delegation
 if (alertMessage) showAlert("success", alertMessage, 20);
@@ -141,5 +142,19 @@ if (deleteBtns) {
         btn.addEventListener("click", (e) => {
             showModal(e.target.parentElement.dataset.tourId);
         });
+    });
+}
+
+if (deleteSelected) {
+    deleteSelected.addEventListener("click", () => {
+        if (document.querySelectorAll(".checkbox:checked").length === 0)
+            return showAlert("error", "Please Select First!", 2);
+
+        const tourIds = [];
+        document.querySelectorAll(".checkbox:checked").forEach((el) => {
+            tourIds.push(el.closest(".card").dataset.tourId);
+        });
+
+        showModal(tourIds);
     });
 }

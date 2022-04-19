@@ -50,7 +50,9 @@ export const hideModal = (tourId) => {
 
             if (e.target.textContent !== "Confirm") return;
 
-            new manageModel("tours", tourId).deleteOne();
+            tourId.constructor === Array
+                ? new manageModel("tours", tourId).deleteMultiple()
+                : new manageModel("tours", tourId).deleteOne();
         })
     );
 };

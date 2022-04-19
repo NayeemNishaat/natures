@@ -519,6 +519,8 @@ exports.deleteTour = factory.deleteOne(Tour); // Important: Remark: Not using fa
     // }
 }); */
 
+exports.deleteMultipleTour = factory.deleteMultiple(Tour);
+
 // Segment: Aggrigation Middleware
 exports.getTourStats = catchAsync(async (req, res, next) => {
     // try {

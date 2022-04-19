@@ -49,7 +49,18 @@ router
         authController.restrictTo("admin", "lead-guide"),
         tourController.createTour
     );
+
 // .post(tourController.checkBody, tourController.createTour);
+
+router
+    .route("/delete-multiple")
+    .delete(
+        authController.protect,
+        authController.restrictTo("admin", "lead-guide"),
+        tourController.deleteMultipleTour
+    );
+
+// Important: Warning: This route should be the last because if we put any other route after this then that route will be treated as the Note: value of the url param "id"!
 router
     .route("/:id")
     .get(tourController.getTour)

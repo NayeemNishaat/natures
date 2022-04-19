@@ -12,6 +12,16 @@ exports.deleteOne = (Model) =>
         });
     });
 
+exports.deleteMultiple = (Model) =>
+    catchAsync(async (req, res) => {
+        await Model.deleteMany({ _id: req.body.docId }); // Remark: Always use "_id" for fields not "id". "id" can only be used for value.
+
+        res.status(200).json({
+            status: "success",
+            data: null
+        });
+    });
+
 exports.updateOne = (Model) =>
     catchAsync(async (req, res, next) => {
         const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {

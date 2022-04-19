@@ -132,6 +132,12 @@ body {
     gap: 2rem;
 }
 
+.btn-delete {
+    margin-bottom: 2rem;
+    display: flex;
+    gap: 2rem;
+}
+
 .overlay {
     display: block;
     position: fixed;
