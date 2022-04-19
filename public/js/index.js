@@ -7,7 +7,7 @@ import { updateSettings } from "./updateSettings";
 import { bookTour } from "./stripe";
 import { showAlert } from "./alert";
 import { submitReview } from "./review";
-import manageModel from "./manageModel";
+import { showModal } from "./alert";
 
 // Chapter: DOM Elements
 const mapBox = document.getElementById("map");
@@ -139,10 +139,7 @@ if (reviewBtn) {
 if (deleteBtns) {
     deleteBtns.forEach((btn) => {
         btn.addEventListener("click", (e) => {
-            new manageModel(
-                "tours",
-                e.target.parentElement.dataset.tourId
-            ).deleteOne();
+            showModal(e.target.parentElement.dataset.tourId);
         });
     });
 }

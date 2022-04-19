@@ -110,6 +110,39 @@ body {
     background-color: #eb4d4b;
 }
 
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    color: #fff;
+    font-size: 1.8rem;
+    font-weight: 400;
+    text-align: center;
+    border-radius: 0.6rem;
+    padding: 8rem 12rem;
+    -webkit-box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.25);
+    box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.25);
+}
+
+.btn-container {
+    margin-top: 2rem;
+    display: flex;
+    gap: 2rem;
+}
+
+.overlay {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9998;
+    background: #777777af;
+    right: 0;
+    bottom: 0;
+}
+
 .heading-secondary {
     font-size: 2.25rem;
     text-transform: uppercase;
@@ -246,8 +279,8 @@ body {
 .btn-small,
 .btn-small:link,
 .btn-small:visited {
-    background-color: #55c57a;
-    color: #fff;
+    /* background-color: #55c57a; */
+    /* color: #fff; */
     font-size: 1.4rem;
     padding: 1.25rem 3rem;
     border-radius: 10rem;
