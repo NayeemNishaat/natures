@@ -1477,6 +1477,14 @@ body {
     margin-top: 1rem;
 }
 
+.add__icon {
+    margin: 1rem auto;
+    height: 3.5rem;
+    width: 3.5rem;
+    fill: #55c57a;
+    display: block;
+}
+
 /* Key: Responsive */
 @media only screen and (max-width: 768px) {
     .sectionTable {

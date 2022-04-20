@@ -21,7 +21,11 @@ block main
 					label.form__label(for='location') Locations
 					input#location.form__input(type='text', placeholder='Lat, Lng, name, day', required)
 					input#location.form__input.loc(type='text', placeholder='Lat, Lng, name, day', required)
-					div +
+					svg.add__icon.js__loc
+						use(xlink:href='img/icons.svg#icon-plus')
+				.form__group
+					label.form__label(for='guide') Guides
+					input#guide.form__input(type='text', placeholder='guide1@mail.com, guide2@mail.com', required)
 				.form__group
 					label.form__label(for='duration') Tour Duration
 					input#duration.form__input(type='number', placeholder='Duration in Days', required)
@@ -40,11 +44,31 @@ block main
 				.form__group
 					label.form__label(for='stertDate1') First Starting Date
 					input#stertDate1.form__input(type='datetime-local', placeholder='Tour Starting Date', required)
-				.form__group
 					label.form__label(for='stertDate1') Second Starting Date
 					input#stertDate2.form__input(type='datetime-local', placeholder='Tour Starting Date', required)
+					svg.add__icon.js__date
+						use(xlink:href='img/icons.svg#icon-plus')
 				.form__group
-					label.form__label(for='stertDate1') Third Starting Date
-					input#stertDate3.form__input(type='datetime-local', placeholder='Tour Starting Date', required)
+					label.form__label Cover Image
+				.form__group.form__photo-upload
+					input.form__upload(type="file",accept="image/*",id="coverImage",name="photo")
+					label.label-photo(for="coverImage") Choose New Photo
+				.form__group
+					label.form__label Images
+					
+				.form__group.form__photo-upload
+					input.form__upload(type="file",accept="image/*",id="image1",name="photo")
+					label.label-photo(for="image1") Choose New Photo
+			
+				.form__group.form__photo-upload
+					input.form__upload(type="file",accept="image/*",id="image2",name="photo")
+					label.label-photo(for="image2") Choose New Photo
+			
+				.form__group.form__photo-upload
+					input.form__upload(type="file",accept="image/*",id="image3",name="photo")
+					label.label-photo(for="image3") Choose New Photo
+				.form__group
+					label.form__label(for='price') Price
+					input#price.form__input(type='number', placeholder='Price', required)
 				.form__group
 					button.btn.btn--green Submit
