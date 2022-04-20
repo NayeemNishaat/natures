@@ -4,7 +4,7 @@ block main
 	main.main
 		.btn-delete
 			button.btn-small.btn--green#delete-selected Delete Selected
-			button.btn-small.btn--green#create Create
+			a(href="/create-tour").btn-small.btn--green#create Create Tour
 		.card-container
 			each tour in tours
 				.card(data-tour-id=`${tour.id}`)

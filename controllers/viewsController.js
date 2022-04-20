@@ -140,3 +140,9 @@ exports.getManageTours = catchAsync(async (req, res) => {
 
     res.status(200).render("manageTours", { title: "Manage Tours", tours });
 });
+
+exports.getCreateTour = catchAsync(async (req, res) => {
+    res.status(200).render("createUpdateTour", {
+        title: "Create Tour"
+    });
+});

@@ -1,0 +1,50 @@
+extends base
+
+block main
+	main.main
+		.login-form
+			h2.heading-secondary.ma-bt-lg Create a New Tour
+			form.form.form--signup
+				.form__group
+					label.form__label(for='name') Tour Name
+					input#name.form__input(type='text', placeholder='Tour Name', required)
+				.form__group
+					label.form__label(for='coords') Starting Coordinates
+					input#coords.form__input(type='text', placeholder='Longitude, Latitude', required)
+				.form__group
+					label.form__label(for='address') Starting Address
+					input#address.form__input(type='text', placeholder='Address', required)
+				.form__group
+					label.form__label(for='locInfo') Starting Location Info
+					input#locInfo.form__input(type='text', placeholder='About the Starting Location', required)
+				.form__group
+					label.form__label(for='location') Locations
+					input#location.form__input(type='text', placeholder='Lat, Lng, name, day', required)
+					input#location.form__input.loc(type='text', placeholder='Lat, Lng, name, day', required)
+					div +
+				.form__group
+					label.form__label(for='duration') Tour Duration
+					input#duration.form__input(type='number', placeholder='Duration in Days', required)
+				.form__group
+					label.form__label(for='groupSize') Max Group Size
+					input#groupSize.form__input(type='number', placeholder='Maximum Tourists', required)
+				.form__group
+					label.form__label(for='difficulty') Tour Difficulty
+					input#difficulty.form__input(type='text', placeholder='Easy, Medium or Difficult', required)
+				.form__group
+					label.form__label(for='summary') Tour Summary
+					input#summary.form__input(type='text', placeholder='Summary', required)
+				.form__group
+					label.form__label(for='tourDesc') Tour Description
+					input#tourDesc.form__input(type='text', placeholder='About Tour', required)
+				.form__group
+					label.form__label(for='stertDate1') First Starting Date
+					input#stertDate1.form__input(type='datetime-local', placeholder='Tour Starting Date', required)
+				.form__group
+					label.form__label(for='stertDate1') Second Starting Date
+					input#stertDate2.form__input(type='datetime-local', placeholder='Tour Starting Date', required)
+				.form__group
+					label.form__label(for='stertDate1') Third Starting Date
+					input#stertDate3.form__input(type='datetime-local', placeholder='Tour Starting Date', required)
+				.form__group
+					button.btn.btn--green Submit

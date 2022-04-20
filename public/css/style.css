@@ -1472,6 +1472,11 @@ body {
     fill: #e821b7;
 }
 
+/* Chapter: Create Tour */
+.loc {
+    margin-top: 1rem;
+}
+
 /* Key: Responsive */
 @media only screen and (max-width: 768px) {
     .sectionTable {
