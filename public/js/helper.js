@@ -20,7 +20,7 @@ export const getTourData = () => {
                     coordinates: data[0].split(","),
                     address: data[1],
                     description: data[2],
-                    day: +data[3]
+                    day: data[3]
                 };
             })
         )

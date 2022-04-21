@@ -237,6 +237,7 @@
 const multer = require("multer");
 const sharp = require("sharp");
 const Tour = require("../models/tourModel");
+const User = require("../models/userModel");
 const catchAsync = require("../lib/catchAsync");
 const AppError = require("../lib/appError");
 const factory = require("./handlerFactory");
@@ -437,6 +438,40 @@ exports.getTour = factory.getOne(Tour, { path: "reviews" });
 //     });
 // }
 // });
+
+exports.preprocessFormData = async (req, res, next) => {
+    const guideIds = (
+        await User.find({
+            email: JSON.parse(req.body.guides)
+        }).select("id")
+    ).map((gid) => gid._id);
+
+    let parsedStartLocation = JSON.parse(req.body.startLocation);
+    parsedStartLocation = {
+        ...parsedStartLocation,
+        coordinates: parsedStartLocation.coordinates.map((c) => +c)
+    };
+
+    let parsedLocations = JSON.parse(req.body.locations);
+    parsedLocations = parsedLocations.map((pl) => ({
+        ...pl,
+        coordinates: pl.coordinates.map((c) => +c),
+        day: +pl.day
+    }));
+
+    req.body = {
+        ...req.body,
+        startLocation: parsedStartLocation,
+        locations: parsedLocations,
+        guides: guideIds,
+        duration: +req.body.duration,
+        maxGroupSize: +req.body.maxGroupSize,
+        startDates: JSON.parse(req.body.startDates),
+        price: +req.body.price
+    };
+
+    next();
+};
 
 exports.createTour = factory.createOne(Tour);
 

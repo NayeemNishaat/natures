@@ -7256,7 +7256,7 @@ var getTourData = function getTourData() {
       coordinates: data[0].split(","),
       address: data[1],
       description: data[2],
-      day: +data[3]
+      day: data[3]
     };
   })));
   form.append("guides", JSON.stringify(document.getElementById("guides").value.split("|")));
