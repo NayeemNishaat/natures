@@ -8,6 +8,8 @@ import { bookTour } from "./stripe";
 import { showAlert } from "./alert";
 import { submitReview } from "./review";
 import { showModal, hideModal } from "./alert";
+import { getTourData } from "./helper";
+import manageModel from "./manageModel";
 
 // Chapter: DOM Elements
 const mapBox = document.getElementById("map");
@@ -17,7 +19,7 @@ const userDateForm = document.querySelector(".form-user-data");
 const userPhotoForm = document.querySelector(".form-user-photo");
 const userPasswordForm = document.querySelector(".form-user-password");
 const logoutBtn = document.querySelector(".nav__el--logout");
-const photo = document.getElementById("photo");
+const photoes = document.querySelectorAll(".photo");
 const bookBtn = document.getElementById("book-tour");
 const alertMessage = document.querySelector("body").dataset.alert;
 const reviewBtn = document.querySelector(".form--review");
@@ -55,12 +57,14 @@ if (userDateForm) {
     });
 }
 
-if (photo) {
-    photo.addEventListener("change", (e) => {
-        const filepath = e.target.value;
-        const filenameStart = filepath.lastIndexOf("\\");
-        const filename = filepath.slice(filenameStart + 1);
-        document.querySelector(".label-photo").textContent = filename;
+if (photoes) {
+    photoes.forEach((photo) => {
+        photo.addEventListener("change", (e) => {
+            const filepath = e.target.value;
+            const filenameStart = filepath.lastIndexOf("\\");
+            const filename = filepath.slice(filenameStart + 1);
+            photo.nextElementSibling.textContent = filename;
+        });
     });
 }
 
@@ -184,7 +188,11 @@ if (deleteSelected) {
 }
 
 if (tourForm) {
-    tourForm.addEventListener("submit", () => {
-        console.log(45);
+    tourForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const formData = getTourData();
+
+        new manageModel("tours").createUpdate(formData);
     });
 }

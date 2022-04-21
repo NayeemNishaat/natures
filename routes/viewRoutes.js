@@ -47,7 +47,7 @@ router.get(
     "/create-tour",
     authController.protect,
     authController.restrictTo("admin", "lead-guide"),
-    viewsController.getManageTours
+    viewsController.getCreateTour
 );
 
 router.post(

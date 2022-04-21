@@ -53,7 +53,23 @@ class manageModel {
         }
     }
 
-    async createUpdate() {}
+    async createUpdate(formData) {
+        try {
+            const res = await fetch(`/api/v1/${this.collection}`, {
+                method: "POST",
+                body: formData
+            });
+
+            const data = await res.json();
+
+            if (data.status === "success") {
+                showAlert("success", "Successful!", 2);
+                setTimeout(() => location.reload(true), 2000);
+            } else throw new Error(data.message);
+        } catch (err) {
+            showAlert("error", err.message, 2);
+        }
+    }
 }
 
 export default manageModel;

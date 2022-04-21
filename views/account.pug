@@ -49,9 +49,9 @@ block main
 					form.form.form-user-photo
 						.form__group.form__photo-upload
 							img.form__user-photo(src=`/img/users/${user.photo}`, alt='User photo')
-							input.form__upload(type="file",accept="image/*",id="photo",name="photo")
+							input.form__upload(type="file",accept="image/*",class="photo",name="photo",id="image")
 							//- Important: Multer expecting name="photo"
-							label.label-photo(for="photo") Choose new photo
+							label.label-photo(for="image") Choose new photo
 						.form__group.right
 							button.btn.btn--small.btn--green Save Photo
 
