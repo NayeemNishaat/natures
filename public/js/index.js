@@ -184,5 +184,7 @@ if (deleteSelected) {
 }
 
 if (tourForm) {
-    //
+    tourForm.addEventListener("submit", () => {
+        console.log(45);
+    });
 }

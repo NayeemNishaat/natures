@@ -24,18 +24,41 @@ router.get("/tour/:slug", authController.isLoggedIn, viewsController.getTour);
 router.get("/login", authController.isLoggedIn, viewsController.getLoginForm);
 router.get("/signup", authController.isLoggedIn, viewsController.getsignupForm);
 
-router.use(authController.protect);
+router.get("/me", authController.protect, viewsController.getAccount);
+router.get(
+    "/my-bookings",
+    authController.protect,
+    viewsController.getMyBookings
+);
+// router.get("/reviews", authController.protect, viewsController.getReviews);
+router.get(
+    "/:tourId/provide-review",
+    authController.protect,
+    viewsController.getReviewForm
+);
+// router.get("/billing", authController.protect, viewsController.getBilling);
+router.get(
+    "/manage-tours",
+    authController.protect,
+    authController.restrictTo("admin", "lead-guide"),
+    viewsController.getManageTours
+);
+router.get(
+    "/create-tour",
+    authController.protect,
+    authController.restrictTo("admin", "lead-guide"),
+    viewsController.getManageTours
+);
 
-router.get("/me", viewsController.getAccount);
-router.get("/my-bookings", viewsController.getMyBookings);
-router.get("/reviews", viewsController.getReviews);
-router.get("/:tourId/provide-review", viewsController.getReviewForm);
-router.get("/billing", viewsController.getBilling);
-router.post("/submit-user-data", viewsController.updateUserData);
-
-router.use(authController.restrictTo("admin", "lead-guide"));
-
-router.get("/manage-tours", viewsController.getManageTours);
-router.get("/create-tour", viewsController.getCreateTour);
+router.post(
+    "/submit-user-data",
+    authController.protect,
+    viewsController.updateUserData
+);
 
 module.exports = router;
+
+// router.use(authController.protect);
+// router.use(authController.restrictTo("admin", "lead-guide"));
+// Important: Warning: Remark: Point: Never try to use router.use(middleware) inside public root ("/") route. Because for each of the browser's request this whole file will be executed at first because it's mounted on "/" and all the routes starts with "/" so if we assign a router.use(middleware) like above then it will be set for all the requests and for all routes and even worse for all the other middlewares that comes after middleware. Note: All the api middlewares come after this file. So never do like this. Instead use this way:
+// router.get("/me", authController.protect, viewsController.getAccount);
