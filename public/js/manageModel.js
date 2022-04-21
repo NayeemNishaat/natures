@@ -64,7 +64,7 @@ class manageModel {
 
             if (data.status === "success") {
                 showAlert("success", "Successful!", 2);
-                setTimeout(() => location.reload(true), 2000);
+                setTimeout(() => location.assign("/manage-tours"), 2000);
             } else throw new Error(data.message);
         } catch (err) {
             showAlert("error", err.message, 2);

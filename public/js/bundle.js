@@ -7467,7 +7467,7 @@ var manageModel = /*#__PURE__*/function () {
 
                 (0, _alert.showAlert)("success", "Successful!", 2);
                 setTimeout(function () {
-                  return location.reload(true);
+                  return location.assign("/manage-tours");
                 }, 2000);
                 _context3.next = 13;
                 break;
