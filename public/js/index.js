@@ -7,7 +7,7 @@ import { updateSettings } from "./updateSettings";
 import { bookTour } from "./stripe";
 import { showAlert } from "./alert";
 import { submitReview } from "./review";
-import { showModal } from "./alert";
+import { showModal, hideModal } from "./alert";
 
 // Chapter: DOM Elements
 const mapBox = document.getElementById("map");
@@ -23,6 +23,7 @@ const alertMessage = document.querySelector("body").dataset.alert;
 const reviewBtn = document.querySelector(".form--review");
 const deleteBtns = document.querySelectorAll(".button");
 const deleteSelected = document.getElementById("delete-selected");
+const tourForm = document.querySelector(".tour-form");
 
 // Chapter: Delegation
 if (alertMessage) showAlert("success", alertMessage, 20);
@@ -139,8 +140,21 @@ if (reviewBtn) {
 
 if (deleteBtns) {
     deleteBtns.forEach((btn) => {
-        btn.addEventListener("click", (e) => {
-            showModal(e.target.parentElement.dataset.tourId);
+        btn.addEventListener("click", (event) => {
+            showModal();
+
+            document.querySelectorAll(".js__btn").forEach((el) =>
+                el.addEventListener("click", (e) => {
+                    hideModal();
+
+                    if (e.target.textContent !== "Confirm") return;
+
+                    new manageModel(
+                        "tours",
+                        event.target.parentElement.dataset.tourId
+                    ).deleteMultiple();
+                })
+            );
         });
     });
 }
@@ -155,6 +169,20 @@ if (deleteSelected) {
             tourIds.push(el.closest(".card").dataset.tourId);
         });
 
-        showModal(tourIds);
+        showModal();
+
+        document.querySelectorAll(".js__btn").forEach((el) =>
+            el.addEventListener("click", (e) => {
+                hideModal();
+
+                if (e.target.textContent !== "Confirm") return;
+
+                new manageModel("tours", tourIds).deleteMultiple();
+            })
+        );
     });
+}
+
+if (tourForm) {
+    //
 }

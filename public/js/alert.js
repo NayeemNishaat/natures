@@ -1,5 +1,3 @@
-import manageModel from "./manageModel";
-
 export const hideAlert = () => {
     const el = document.querySelector(".alert");
 
@@ -41,28 +39,16 @@ function enableScroll() {
 }
 
 // Part: Hide Modal
-export const hideModal = (tourId) => {
-    document.querySelectorAll(".js__btn").forEach((el) =>
-        el.addEventListener("click", (e) => {
-            enableScroll();
-            document.querySelector(".modal").remove();
-            document.querySelector(".overlay").remove();
-
-            if (e.target.textContent !== "Confirm") return;
-
-            tourId.constructor === Array
-                ? new manageModel("tours", tourId).deleteMultiple()
-                : new manageModel("tours", tourId).deleteOne();
-        })
-    );
+export const hideModal = () => {
+    enableScroll();
+    document.querySelector(".modal").remove();
+    document.querySelector(".overlay").remove();
 };
 
 // Part: Show Modal
-export const showModal = (tourId) => {
+export const showModal = () => {
     const markup = `<div class="modal alert--error"><p>Confirm Delete?</p><div class="btn-container"><button class="btn-small btn--white js__btn">Cancel</button><button class="btn-small btn--green js__btn">Confirm</button></div></div><div class="overlay"></div>`;
 
     disableScroll();
     document.querySelector("body").insertAdjacentHTML("afterbegin", markup);
-
-    hideModal(tourId);
 };

@@ -52,6 +52,8 @@ class manageModel {
             showAlert("error", err.message, 2);
         }
     }
+
+    async createUpdate() {}
 }
 
 export default manageModel;
