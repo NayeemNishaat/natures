@@ -116,10 +116,6 @@ exports.logout = (req, res) => {
         httpOnly: true
     });
 
-    res.header("Cache-Control", "private, no-cache, no-store, must-revalidate");
-    res.header("Pragma", "no-cache");
-    res.header("Expires", "-1");
-
     res.status(200).json({
         status: "success"
     });

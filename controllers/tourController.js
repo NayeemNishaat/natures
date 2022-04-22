@@ -238,6 +238,7 @@ const multer = require("multer");
 const sharp = require("sharp");
 const Tour = require("../models/tourModel");
 const User = require("../models/userModel");
+const Review = require("../models/reviewModel");
 const catchAsync = require("../lib/catchAsync");
 const AppError = require("../lib/appError");
 const factory = require("./handlerFactory");
@@ -532,7 +533,7 @@ exports.updateTour = factory.updateOne(Tour);
 // }
 // });
 
-exports.deleteTour = factory.deleteOne(Tour); // Important: Remark: Not using factory.deleteOne("Tour")() because we dont call this function. It is express who will call this whenever a request to this route initiated.
+exports.deleteTour = factory.deleteOne(Tour, Review); // Important: Remark: Not using factory.deleteOne("Tour")() because we dont call this function. It is express who will call this whenever a request to this route initiated.
 
 /* exports.deleteTour = catchAsync(async (req, res, next) => {
     // try {
@@ -554,7 +555,7 @@ exports.deleteTour = factory.deleteOne(Tour); // Important: Remark: Not using fa
     // }
 }); */
 
-exports.deleteMultipleTour = factory.deleteMultiple(Tour);
+exports.deleteMultipleTour = factory.deleteMultiple(Tour, Review);
 
 // Segment: Aggrigation Middleware
 exports.getTourStats = catchAsync(async (req, res, next) => {

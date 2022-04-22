@@ -6,6 +6,14 @@ const authController = require("../controllers/authController");
 const router = express.Router();
 
 router.use(viewsController.alerts);
+router.use((req, res, next) => {
+    res.set(
+        "Cache-Control",
+        "no-cache,private,no-store,must-revalidate,max-stale=0,post-check=0,pre-check=0"
+    );
+
+    next();
+});
 
 router.get(
     "/activate/:id/:otp",
@@ -30,13 +38,13 @@ router.get(
     authController.protect,
     viewsController.getMyBookings
 );
-// router.get("/reviews", authController.protect, viewsController.getReviews);
+router.get("/reviews", authController.protect, viewsController.getReviews);
 router.get(
     "/:tourId/provide-review",
     authController.protect,
     viewsController.getReviewForm
 );
-// router.get("/billing", authController.protect, viewsController.getBilling);
+router.get("/billing", authController.protect, viewsController.getBilling);
 router.get(
     "/manage-tours",
     authController.protect,

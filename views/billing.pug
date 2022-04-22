@@ -11,6 +11,9 @@ block main
 					li= "Status"
 
 			div.table__body
+				if bookings.length===0
+					h2(style={"text-align":"center"}) No Billing Info Available!
+
 				each booking in bookings
 					- const date = booking.date.toISOString().split("T")[0]
 					ul.list
@@ -18,3 +21,4 @@ block main
 						li= date
 						li= `${booking.price}`
 						li= booking.paid ? "Paid" : "Unpaid"
+				
