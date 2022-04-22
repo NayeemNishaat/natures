@@ -9,8 +9,9 @@ block main
 			each tour in tours
 				.card(data-tour-id=`${tour.id}`)
 					button.button X
-					svg.edit__icon
-						use(xlink:href='img/icons.svg#icon-edit')
+					a(href="/update-tour")
+						svg.edit__icon
+							use(xlink:href='img/icons.svg#icon-edit')
 					input.checkbox(type="checkbox")
 						
 					.card__header
@@ -45,7 +46,7 @@ block main
 							span.card__footer-value= `$${tour.price}`
 							//- |<space> pipe is used to create a space manually between two inline elemnts.
 							| 
-							span.card__footer-text per person
+							span.card__footer-text Per Person
 						- const ratingsAverage = tour.ratingsAverage?.toFixed(1)||"—"
 						p.card__ratings
 							span.card__footer-value= ratingsAverage

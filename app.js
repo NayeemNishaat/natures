@@ -13,6 +13,7 @@ const reviewRouter = require("./routes/reviewRoutes");
 const bookingRouter = require("./routes/bookingRoutes");
 const viewRouter = require("./routes/viewRoutes");
 const bookingController = require("./controllers/bookingController");
+const authController = require("./controllers/authController");
 const AppError = require("./lib/appError");
 const globalErrorHandler = require("./controllers/errorController");
 
@@ -276,7 +277,7 @@ app.use("/api/v1/reviews", reviewRouter);
 app.use("/api/v1/bookings", bookingRouter);
 
 // Part: Handle unwanted routes (Operational Error)
-app.all("*", (req, _res, next) => {
+app.all("*", authController.isLoggedIn, (req, _res, next) => {
     // res.status(404).json({
     //     status: "fail",
     //     message: `Can't find ${req.originalUrl} on this server.`
