@@ -1480,6 +1480,7 @@ body {
 
 .add__icon {
     margin: 1rem auto;
+    cursor: pointer;
     height: 3.5rem;
     width: 3.5rem;
     fill: #55c57a;

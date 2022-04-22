@@ -7808,7 +7808,9 @@ var alertMessage = document.querySelector("body").dataset.alert;
 var reviewBtn = document.querySelector(".form--review");
 var deleteBtns = document.querySelectorAll(".button");
 var deleteSelected = document.getElementById("delete-selected");
-var tourForm = document.querySelector(".tour-form"); // Chapter: Delegation
+var tourForm = document.querySelector(".tour-form");
+var addLocation = document.querySelector(".js__loc");
+var addDate = document.querySelector(".js__date"); // Chapter: Delegation
 
 if (alertMessage) (0, _alert.showAlert)("success", alertMessage, 20);
 
@@ -7963,6 +7965,15 @@ if (deleteSelected) {
   });
 }
 
+if (addLocation && addDate) {
+  addLocation.addEventListener("click", function () {
+    document.querySelector(".js__loc").insertAdjacentHTML("beforeBegin", "<input class=\"location form__input loc\" type=\"text\" placeholder=\"Lng,Lat|address|description|day\" required>");
+  });
+  addDate.addEventListener("click", function () {
+    document.querySelector(".js__date").insertAdjacentHTML("beforeBegin", "<input class=\"form__input stertDate\" id=\"stertDate2\" type=\"datetime-local\" placeholder=\"Tour Starting Date\" required>");
+  });
+}
+
 if (tourForm) {
   tourForm.addEventListener("submit", function (e) {
     e.preventDefault();
@@ -7998,7 +8009,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54440" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62077" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

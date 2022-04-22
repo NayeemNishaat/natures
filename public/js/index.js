@@ -26,6 +26,8 @@ const reviewBtn = document.querySelector(".form--review");
 const deleteBtns = document.querySelectorAll(".button");
 const deleteSelected = document.getElementById("delete-selected");
 const tourForm = document.querySelector(".tour-form");
+const addLocation = document.querySelector(".js__loc");
+const addDate = document.querySelector(".js__date");
 
 // Chapter: Delegation
 if (alertMessage) showAlert("success", alertMessage, 20);
@@ -184,6 +186,26 @@ if (deleteSelected) {
                 new manageModel("tours", tourIds).deleteMultiple();
             })
         );
+    });
+}
+
+if (addLocation && addDate) {
+    addLocation.addEventListener("click", () => {
+        document
+            .querySelector(".js__loc")
+            .insertAdjacentHTML(
+                "beforeBegin",
+                `<input class="location form__input loc" type="text" placeholder="Lng,Lat|address|description|day" required>`
+            );
+    });
+
+    addDate.addEventListener("click", () => {
+        document
+            .querySelector(".js__date")
+            .insertAdjacentHTML(
+                "beforeBegin",
+                `<input class="form__input stertDate" id="stertDate2" type="datetime-local" placeholder="Tour Starting Date" required>`
+            );
     });
 }
 
