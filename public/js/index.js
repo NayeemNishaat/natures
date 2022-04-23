@@ -215,6 +215,12 @@ if (tourForm) {
 
         const formData = getTourData();
 
+        if (location.pathname.startsWith("/update-tour"))
+            return new manageModel("tours").createUpdate(
+                formData,
+                location.pathname.slice(location.pathname.lastIndexOf("/") + 1)
+            );
+
         new manageModel("tours").createUpdate(formData);
     });
 }

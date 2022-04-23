@@ -86,4 +86,4 @@ block main
 					label.form__label(for='price') Price
 					input#price.form__input(type='number', value= tour && tour.price, placeholder='Price', required)
 				.form__group
-					button.btn.btn--green Submit
+					button.btn.btn--green= tour?"Update":"Submit"

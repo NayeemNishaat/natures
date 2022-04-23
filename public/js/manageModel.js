@@ -53,12 +53,20 @@ class manageModel {
         }
     }
 
-    async createUpdate(formData) {
+    async createUpdate(formData, tourId = null) {
         try {
-            const res = await fetch(`/api/v1/${this.collection}`, {
-                method: "POST",
-                body: formData
-            });
+            let res;
+
+            if (!tourId)
+                res = await fetch(`/api/v1/${this.collection}`, {
+                    method: "POST",
+                    body: formData
+                });
+            else
+                res = await fetch(`/api/v1/${this.collection}/${tourId}`, {
+                    method: "PATCH",
+                    body: formData
+                });
 
             const data = await res.json();
 

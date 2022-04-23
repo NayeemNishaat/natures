@@ -450,12 +450,14 @@ exports.preprocessFormData = async (req, res, next) => {
     let parsedStartLocation = JSON.parse(req.body.startLocation);
     parsedStartLocation = {
         ...parsedStartLocation,
+        type: "Point",
         coordinates: parsedStartLocation.coordinates.map((c) => +c)
     };
 
     let parsedLocations = JSON.parse(req.body.locations);
     parsedLocations = parsedLocations.map((pl) => ({
         ...pl,
+        type: "Point",
         coordinates: pl.coordinates.map((c) => +c),
         day: +pl.day
     }));

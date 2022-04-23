@@ -7440,28 +7440,52 @@ var manageModel = /*#__PURE__*/function () {
     key: "createUpdate",
     value: function () {
       var _createUpdate = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(formData) {
-        var res, data;
+        var tourId,
+            res,
+            data,
+            _args3 = arguments;
         return regeneratorRuntime.wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                _context3.prev = 0;
-                _context3.next = 3;
+                tourId = _args3.length > 1 && _args3[1] !== undefined ? _args3[1] : null;
+                _context3.prev = 1;
+
+                if (tourId) {
+                  _context3.next = 8;
+                  break;
+                }
+
+                _context3.next = 5;
                 return fetch("/api/v1/".concat(this.collection), {
                   method: "POST",
                   body: formData
                 });
 
-              case 3:
+              case 5:
                 res = _context3.sent;
-                _context3.next = 6;
+                _context3.next = 11;
+                break;
+
+              case 8:
+                _context3.next = 10;
+                return fetch("/api/v1/".concat(this.collection, "/").concat(tourId), {
+                  method: "PATCH",
+                  body: formData
+                });
+
+              case 10:
+                res = _context3.sent;
+
+              case 11:
+                _context3.next = 13;
                 return res.json();
 
-              case 6:
+              case 13:
                 data = _context3.sent;
 
                 if (!(data.status === "success")) {
-                  _context3.next = 12;
+                  _context3.next = 19;
                   break;
                 }
 
@@ -7469,27 +7493,27 @@ var manageModel = /*#__PURE__*/function () {
                 setTimeout(function () {
                   return location.assign("/manage-tours");
                 }, 2000);
-                _context3.next = 13;
+                _context3.next = 20;
                 break;
 
-              case 12:
+              case 19:
                 throw new Error(data.message);
 
-              case 13:
-                _context3.next = 18;
+              case 20:
+                _context3.next = 25;
                 break;
 
-              case 15:
-                _context3.prev = 15;
-                _context3.t0 = _context3["catch"](0);
+              case 22:
+                _context3.prev = 22;
+                _context3.t0 = _context3["catch"](1);
                 (0, _alert.showAlert)("error", _context3.t0.message, 2);
 
-              case 18:
+              case 25:
               case "end":
                 return _context3.stop();
             }
           }
-        }, _callee3, this, [[0, 15]]);
+        }, _callee3, this, [[1, 22]]);
       }));
 
       function createUpdate(_x) {
@@ -7978,6 +8002,7 @@ if (tourForm) {
   tourForm.addEventListener("submit", function (e) {
     e.preventDefault();
     var formData = (0, _helper.getTourData)();
+    if (location.pathname.startsWith("/update-tour")) return new _manageModel.default("tours").createUpdate(formData, location.pathname.slice(location.pathname.lastIndexOf("/") + 1));
     new _manageModel.default("tours").createUpdate(formData);
   });
 }
