@@ -195,7 +195,7 @@ if (addLocation && addDate) {
             .querySelector(".js__loc")
             .insertAdjacentHTML(
                 "beforeBegin",
-                `<input class="location form__input loc" type="text" placeholder="Lng,Lat|address|description|day" required>`
+                `<input class="location form__input" type="text" placeholder="Lng,Lat|address|description|day" required>`
             );
     });
 

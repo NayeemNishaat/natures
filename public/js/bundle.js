@@ -7967,7 +7967,7 @@ if (deleteSelected) {
 
 if (addLocation && addDate) {
   addLocation.addEventListener("click", function () {
-    document.querySelector(".js__loc").insertAdjacentHTML("beforeBegin", "<input class=\"location form__input loc\" type=\"text\" placeholder=\"Lng,Lat|address|description|day\" required>");
+    document.querySelector(".js__loc").insertAdjacentHTML("beforeBegin", "<input class=\"location form__input\" type=\"text\" placeholder=\"Lng,Lat|address|description|day\" required>");
   });
   addDate.addEventListener("click", function () {
     document.querySelector(".js__date").insertAdjacentHTML("beforeBegin", "<input class=\"form__input stertDate\" id=\"stertDate2\" type=\"datetime-local\" placeholder=\"Tour Starting Date\" required>");

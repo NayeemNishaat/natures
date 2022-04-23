@@ -17,16 +17,24 @@ block main
 				.form__group
 					label.form__label(for='locInfo') Short Starting Address
 					input#locInfo.form__input(type='text', value= tour && tour.startLocation.description, placeholder='Starting Location Short Address', required)
-				.form__group
-					label.form__label(for='location') Locations
-					input.location.form__input#location(type='text', placeholder='Lng,Lat|address|description|day', required)
-					input.location.form__input.loc(type='text', placeholder='Lng,Lat|address|description|day', required)
-					if(!tour)
+				
+				if !tour
+					.form__group
+						label.form__label(for='location') Locations
+						textarea.location.form__input#location(type='text', placeholder='Lng,Lat|address|description|day', required)
+						textarea.location.form__input(type='text', placeholder='Lng,Lat|address|description|day', required)
 						svg.add__icon.js__loc
 							use(xlink:href='/img/icons.svg#icon-plus')
+
+				if tour
+					label.form__label(for='location') Locations
+						each location, i in tour.locations
+							textarea.location.form__input(id= i===0&&"location", type='text', placeholder='Lng,Lat|address|description|day', required)= value= tour && `${location.coordinates.toString()}|${location.address||"address"}|${location.description}|${location.day}`
+
+				- const guideEmails = tour && tour.guides.map(guide=>guide.email).join("|")
 				.form__group
 					label.form__label(for='guides') Guides
-					input#guides.form__input(type='text', placeholder='guide1@mail.com|guide2@mail.com', required)
+					input#guides.form__input(type='text', value= tour && guideEmails, placeholder='guide1@mail.com|guide2@mail.com', required)
 				.form__group
 					label.form__label(for='duration') Tour Duration
 					input#duration.form__input(type='number', value= tour && tour.duration, placeholder='Duration in Days', required)
@@ -42,13 +50,22 @@ block main
 				.form__group
 					label.form__label(for='tourDesc') Tour Description
 					input#tourDesc.form__input(type='text', value= tour && tour.description, placeholder='About Tour', required)
-				.form__group
-					label.form__label(for='stertDate1') Starting Dates
-					input#stertDate1.form__input.stertDate(type='datetime-local', placeholder='Tour Starting Date', required)
-					input#stertDate2.form__input.stertDate(type='datetime-local', placeholder='Tour Starting Date', required)
-					if(!tour)
-						svg.add__icon.js__loc
+				
+				if !tour
+					.form__group
+						label.form__label(for='stertDate1') Starting Dates
+						input#stertDate1.form__input.stertDate(type='datetime-local', placeholder='Tour Starting Date', required)
+						input#stertDate2.form__input.stertDate(type='datetime-local', placeholder='Tour Starting Date', required)
+						svg.add__icon.js__date
 							use(xlink:href='/img/icons.svg#icon-plus')
+
+				if tour
+					.form__group
+						label.form__label(for='startDate') Starting Dates
+						each startDate, i in tour.startDates
+							- const date = new Date(startDate).toISOString().slice(0,-5)
+							input.form__input.stertDate(id= i===0&&"startDate", value= date, type='datetime-local', placeholder='Tour Starting Date', required)
+
 				.form__group
 					label.form__label Cover Image
 				.form__group.form__photo-upload

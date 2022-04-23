@@ -1474,8 +1474,12 @@ body {
 }
 
 /* Chapter: Create Tour */
-.loc {
-    margin-top: 1rem;
+.location:not(:last-child) {
+    margin-bottom: 1rem;
+}
+
+.stertDate:not(:last-child) {
+    margin-bottom: 1rem;
 }
 
 .add__icon {
