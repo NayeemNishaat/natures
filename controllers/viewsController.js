@@ -149,10 +149,9 @@ exports.getCreateTour = catchAsync(async (req, res) => {
 
 exports.getUpdateTour = catchAsync(async (req, res) => {
     const tour = await Tour.findById(req.params.tourId);
-    console.log(tour);
 
     res.status(200).render("createUpdateTour", {
-        title: "Update Tour"
-        // tour
+        title: "Update Tour",
+        tour
     });
 });

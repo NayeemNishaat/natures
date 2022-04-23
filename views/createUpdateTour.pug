@@ -3,68 +3,70 @@ extends base
 block main
 	main.main
 		.tour-form
-			h2.heading-secondary.ma-bt-lg Create a New Tour
+			h2.heading-secondary.ma-bt-lg= tour? "Update Tour" : "Create a New Tour"
 			form.form
 				.form__group
 					label.form__label(for='name') Tour Name
-					input#name.form__input(type='text', placeholder='Tour Name', required)
+					input#name.form__input(type='text', value= tour && tour.name, placeholder='Tour Name', required)
 				.form__group
 					label.form__label(for='coords') Starting Coordinates
-					input#coords.form__input(type='text', placeholder='Lng,Lat', required)
+					input#coords.form__input(type='text', value= tour && tour.startLocation.coordinates.toString(), placeholder='Lng,Lat', required)
 				.form__group
 					label.form__label(for='address') Starting Address
-					input#address.form__input(type='text', placeholder='Address', required)
+					input#address.form__input(type='text', value= tour && tour.startLocation.address, placeholder='Address', required)
 				.form__group
-					label.form__label(for='locInfo') Starting Location Info
-					input#locInfo.form__input(type='text', placeholder='About the Starting Location', required)
+					label.form__label(for='locInfo') Short Starting Address
+					input#locInfo.form__input(type='text', value= tour && tour.startLocation.description, placeholder='Starting Location Short Address', required)
 				.form__group
 					label.form__label(for='location') Locations
 					input.location.form__input#location(type='text', placeholder='Lng,Lat|address|description|day', required)
 					input.location.form__input.loc(type='text', placeholder='Lng,Lat|address|description|day', required)
-					svg.add__icon.js__loc
-						use(xlink:href='/img/icons.svg#icon-plus')
+					if(!tour)
+						svg.add__icon.js__loc
+							use(xlink:href='/img/icons.svg#icon-plus')
 				.form__group
 					label.form__label(for='guides') Guides
 					input#guides.form__input(type='text', placeholder='guide1@mail.com|guide2@mail.com', required)
 				.form__group
 					label.form__label(for='duration') Tour Duration
-					input#duration.form__input(type='number', placeholder='Duration in Days', required)
+					input#duration.form__input(type='number', value= tour && tour.duration, placeholder='Duration in Days', required)
 				.form__group
 					label.form__label(for='groupSize') Max Group Size
-					input#groupSize.form__input(type='number', placeholder='Maximum Tourists', required)
+					input#groupSize.form__input(type='number', value= tour && tour.maxGroupSize, placeholder='Maximum Tourists', required)
 				.form__group
 					label.form__label(for='difficulty') Tour Difficulty
-					input#difficulty.form__input(type='text', placeholder='easy/medium/difficult', required)
+					input#difficulty.form__input(type='text', value= tour && tour.difficulty, placeholder='easy/medium/difficult', required)
 				.form__group
 					label.form__label(for='summary') Tour Summary
-					input#summary.form__input(type='text', placeholder='Summary', required)
+					textarea#summary.form__input(placeholder='Summary', required)= tour && tour.summary
 				.form__group
 					label.form__label(for='tourDesc') Tour Description
-					input#tourDesc.form__input(type='text', placeholder='About Tour', required)
+					input#tourDesc.form__input(type='text', value= tour && tour.description, placeholder='About Tour', required)
 				.form__group
 					label.form__label(for='stertDate1') Starting Dates
 					input#stertDate1.form__input.stertDate(type='datetime-local', placeholder='Tour Starting Date', required)
 					input#stertDate2.form__input.stertDate(type='datetime-local', placeholder='Tour Starting Date', required)
-					svg.add__icon.js__date
-						use(xlink:href='/img/icons.svg#icon-plus')
+					if(!tour)
+						svg.add__icon.js__loc
+							use(xlink:href='/img/icons.svg#icon-plus')
 				.form__group
 					label.form__label Cover Image
 				.form__group.form__photo-upload
 					input.photo.form__upload(type="file",accept="image/*",id="coverImage",name="photo")
-					label.label-photo(for="coverImage") Choose New Photo
+					label.label-photo(for="coverImage")= tour ? tour.imageCover : "Choose New Photo"
 				.form__group
 					label.form__label Images
 				.form__group.form__photo-upload
 					input.photo.form__upload(type="file",accept="image/*",id="image1",name="photo")
-					label.label-photo(for="image1") Choose New Photo
+					label.label-photo(for="image1")= tour ? tour.images[0] : "Choose New Photo"
 				.form__group.form__photo-upload
 					input.photo.form__upload(type="file",accept="image/*",id="image2",name="photo")
-					label.label-photo(for="image2") Choose New Photo
+					label.label-photo(for="image2")= tour ? tour.images[1] : "Choose New Photo"
 				.form__group.form__photo-upload
 					input.photo.form__upload(type="file",accept="image/*",id="image3",name="photo")
-					label.label-photo(for="image3") Choose New Photo
+					label.label-photo(for="image3")= tour ? tour.images[2] : "Choose New Photo"
 				.form__group
 					label.form__label(for='price') Price
-					input#price.form__input(type='number', placeholder='Price', required)
+					input#price.form__input(type='number', value= tour && tour.price, placeholder='Price', required)
 				.form__group
 					button.btn.btn--green Submit
