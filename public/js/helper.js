@@ -37,7 +37,7 @@ export const getTourData = () => {
     form.append(
         "startDates",
         JSON.stringify(
-            Array.from(document.querySelectorAll(".stertDate")).map((date) =>
+            Array.from(document.querySelectorAll(".startDate")).map((date) =>
                 new Date(date.value).toISOString()
             )
         )

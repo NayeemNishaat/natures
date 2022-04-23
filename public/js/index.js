@@ -204,7 +204,7 @@ if (addLocation && addDate) {
             .querySelector(".js__date")
             .insertAdjacentHTML(
                 "beforeBegin",
-                `<input class="form__input stertDate" id="stertDate2" type="datetime-local" placeholder="Tour Starting Date" required>`
+                `<input class="form__input startDate" type="datetime-local" placeholder="Tour Starting Date" required>`
             );
     });
 }

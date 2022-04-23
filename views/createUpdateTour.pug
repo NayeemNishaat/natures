@@ -53,9 +53,9 @@ block main
 				
 				if !tour
 					.form__group
-						label.form__label(for='stertDate1') Starting Dates
-						input#stertDate1.form__input.stertDate(type='datetime-local', placeholder='Tour Starting Date', required)
-						input#stertDate2.form__input.stertDate(type='datetime-local', placeholder='Tour Starting Date', required)
+						label.form__label(for='startDate') Starting Dates
+						input.form__input.startDate#startDate(type='datetime-local', placeholder='Tour Starting Date', required)
+						input.form__input.startDate(type='datetime-local', placeholder='Tour Starting Date', required)
 						svg.add__icon.js__date
 							use(xlink:href='/img/icons.svg#icon-plus')
 
@@ -64,7 +64,7 @@ block main
 						label.form__label(for='startDate') Starting Dates
 						each startDate, i in tour.startDates
 							- const date = new Date(startDate).toISOString().slice(0,-5)
-							input.form__input.stertDate(id= i===0&&"startDate", value= date, type='datetime-local', placeholder='Tour Starting Date', required)
+							input.form__input.startDate(id= i===0&&"startDate", value= date, type='datetime-local', placeholder='Tour Starting Date', required)
 
 				.form__group
 					label.form__label Cover Image

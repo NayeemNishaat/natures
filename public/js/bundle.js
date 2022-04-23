@@ -7265,7 +7265,7 @@ var getTourData = function getTourData() {
   form.append("difficulty", document.getElementById("difficulty").value);
   form.append("summary", document.getElementById("summary").value);
   form.append("description", document.getElementById("tourDesc").value);
-  form.append("startDates", JSON.stringify(Array.from(document.querySelectorAll(".stertDate")).map(function (date) {
+  form.append("startDates", JSON.stringify(Array.from(document.querySelectorAll(".startDate")).map(function (date) {
     return new Date(date.value).toISOString();
   })));
   form.append("imageCover", document.getElementById("coverImage").files[0]);
@@ -7970,7 +7970,7 @@ if (addLocation && addDate) {
     document.querySelector(".js__loc").insertAdjacentHTML("beforeBegin", "<input class=\"location form__input\" type=\"text\" placeholder=\"Lng,Lat|address|description|day\" required>");
   });
   addDate.addEventListener("click", function () {
-    document.querySelector(".js__date").insertAdjacentHTML("beforeBegin", "<input class=\"form__input stertDate\" id=\"stertDate2\" type=\"datetime-local\" placeholder=\"Tour Starting Date\" required>");
+    document.querySelector(".js__date").insertAdjacentHTML("beforeBegin", "<input class=\"form__input startDate\" type=\"datetime-local\" placeholder=\"Tour Starting Date\" required>");
   });
 }
 
