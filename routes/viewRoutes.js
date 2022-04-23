@@ -57,6 +57,12 @@ router.get(
     authController.restrictTo("admin", "lead-guide"),
     viewsController.getCreateTour
 );
+router.get(
+    "/update-tour",
+    authController.protect,
+    authController.restrictTo("admin", "lead-guide"),
+    viewsController.getUpdateTour
+);
 
 router.post(
     "/submit-user-data",

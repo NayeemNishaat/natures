@@ -146,3 +146,12 @@ exports.getCreateTour = catchAsync(async (req, res) => {
         title: "Create Tour"
     });
 });
+
+exports.getUpdateTour = catchAsync(async (req, res) => {
+    const tour = "";
+
+    res.status(200).render("createUpdateTour", {
+        title: "Update Tour",
+        tour
+    });
+});
