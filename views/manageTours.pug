@@ -9,7 +9,7 @@ block main
 			each tour in tours
 				.card(data-tour-id=`${tour.id}`)
 					button.button X
-					a(href="/update-tour")
+					a(href=`/update-tour/${tour.id}`)
 						svg.edit__icon
 							use(xlink:href='img/icons.svg#icon-edit')
 					input.checkbox(type="checkbox")

@@ -58,7 +58,7 @@ router.get(
     viewsController.getCreateTour
 );
 router.get(
-    "/update-tour",
+    "/update-tour/:tourId",
     authController.protect,
     authController.restrictTo("admin", "lead-guide"),
     viewsController.getUpdateTour
