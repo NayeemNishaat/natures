@@ -1,5 +1,6 @@
 // /* eslint-disable */ // Disabling because es-lint is configured for nodeJs only not for client side! // Note: But now I configured env for es-lint. So it works without disabling es-lint.
 
+const slugify = require("slugify");
 import "@babel/polyfill";
 import { login, logout, signup } from "./loginSignup";
 import { displayMap } from "./mapbox";
@@ -148,6 +149,15 @@ if (deleteBtns) {
     deleteBtns.forEach((btn) => {
         btn.addEventListener("click", (event) => {
             showModal();
+            const tourSlug = slugify(
+                event.target.parentElement.querySelector(
+                    ".heading-tertirary span"
+                ).textContent,
+                {
+                    replacement: "",
+                    lower: true
+                }
+            );
 
             document.querySelectorAll(".js__btn").forEach((el) =>
                 el.addEventListener("click", (e) => {
@@ -157,7 +167,8 @@ if (deleteBtns) {
 
                     new manageModel(
                         "tours",
-                        event.target.parentElement.dataset.tourId
+                        event.target.parentElement.dataset.tourId,
+                        tourSlug
                     ).delete();
                 })
             );
@@ -171,8 +182,20 @@ if (deleteSelected) {
             return showAlert("error", "Please Select First!", 2);
 
         const tourIds = [];
+        const tourSlugs = [];
+
         document.querySelectorAll(".checkbox:checked").forEach((el) => {
             tourIds.push(el.closest(".card").dataset.tourId);
+            tourSlugs.push(
+                slugify(
+                    el.closest(".card").querySelector(".heading-tertirary span")
+                        .textContent,
+                    {
+                        replacement: "",
+                        lower: true
+                    }
+                )
+            );
         });
 
         showModal();
@@ -183,7 +206,7 @@ if (deleteSelected) {
 
                 if (e.target.textContent !== "Confirm") return;
 
-                new manageModel("tours", tourIds).delete();
+                new manageModel("tours", tourIds, tourSlugs).delete();
             })
         );
     });

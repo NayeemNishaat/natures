@@ -1,9 +1,10 @@
 import { showAlert } from "./alert";
 
 class manageModel {
-    constructor(collection, docId) {
+    constructor(collection, docId, tourSlug) {
         this.collection = collection;
         this.docId = docId;
+        this.tourSlug = tourSlug;
     }
 
     // async deleteOne() {
@@ -36,7 +37,10 @@ class manageModel {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ docId: this.docId })
+                body: JSON.stringify({
+                    docId: this.docId,
+                    tourSlug: this.tourSlug
+                })
             });
 
             const data = await res.json();

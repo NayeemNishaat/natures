@@ -1,3 +1,4 @@
+const fs = require("fs/promises");
 const catchAsync = require("../lib/catchAsync");
 const APIFeatures = require("../lib/apiFeatures");
 const AppError = require("../lib/appError");
@@ -21,7 +22,39 @@ exports.delete = (Model, ModelDependency) =>
         await Model.deleteMany({ _id: req.body.docId || req.params.id }); // Remark: Always use "_id" for fields not "id". "id" can only be used for value.
 
         if (ModelDependency) {
-            await ModelDependency.deleteMany({ tour: req.body.docId });
+            await ModelDependency.deleteMany({
+                tour: req.body.docId || req.params.id
+            });
+        }
+
+        if (Model.modelName === "Tour") {
+            try {
+                let deletableFiles;
+
+                const files = await fs.readdir(
+                    `${__dirname}/../public/img/tours`
+                );
+
+                if (req.body.tourSlug.constructor === Array) {
+                    deletableFiles = req.body.tourSlug
+                        .map((slug) =>
+                            files.filter((file) => file.includes(slug))
+                        )
+                        .flat();
+                } else
+                    deletableFiles = files.filter((file) =>
+                        file.includes(req.body.tourSlug)
+                    );
+
+                deletableFiles.forEach(
+                    async (df) =>
+                        await fs.unlink(
+                            `${__dirname}/../public/img/tours/${df}`
+                        )
+                );
+            } catch (err) {
+                console.log(err);
+            }
         }
 
         res.status(200).json({

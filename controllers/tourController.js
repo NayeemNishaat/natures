@@ -598,7 +598,7 @@ exports.updateTour = factory.updateOne(Tour);
     // }
 }); */
 
-exports.deleteMultipleTour = factory.delete(Tour, Review);
+exports.deleteTour = factory.delete(Tour, Review);
 
 // Segment: Aggrigation Middleware
 exports.getTourStats = catchAsync(async (req, res, next) => {

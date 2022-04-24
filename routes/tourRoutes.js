@@ -58,7 +58,7 @@ router
     .delete(
         authController.protect,
         authController.restrictTo("admin", "lead-guide"),
-        tourController.deleteMultipleTour
+        tourController.deleteTour
     );
 
 // Important: Warning: This route should be the last because if we put any other route after this then that route will be treated as the Note: value of the url param "id"!
