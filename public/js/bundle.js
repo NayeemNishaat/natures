@@ -7303,12 +7303,32 @@ var manageModel = /*#__PURE__*/function () {
 
     this.collection = collection;
     this.docId = docId;
-  }
+  } // async deleteOne() {
+  //     try {
+  //         const res = await fetch(
+  //             `/api/v1/${this.collection}/${this.docId}`,
+  //             {
+  //                 method: "DELETE",
+  //                 headers: {
+  //                     "Content-Type": "application/json"
+  //                 }
+  //             }
+  //         );
+  //         const data = await res.json();
+  //         if (data.status === "success") {
+  //             showAlert("success", "Successfully Deleted!", 2);
+  //             setTimeout(() => location.reload(true), 2000);
+  //         } else throw new Error(data.message);
+  //     } catch (err) {
+  //         showAlert("error", err.message, 2);
+  //     }
+  // }
+
 
   _createClass(manageModel, [{
-    key: "deleteOne",
+    key: "delete",
     value: function () {
-      var _deleteOne = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+      var _delete2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
         var res, data;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
@@ -7316,11 +7336,14 @@ var manageModel = /*#__PURE__*/function () {
               case 0:
                 _context.prev = 0;
                 _context.next = 3;
-                return fetch("/api/v1/".concat(this.collection, "/").concat(this.docId), {
+                return fetch("/api/v1/".concat(this.collection, "/delete"), {
                   method: "DELETE",
                   headers: {
                     "Content-Type": "application/json"
-                  }
+                  },
+                  body: JSON.stringify({
+                    docId: this.docId
+                  })
                 });
 
               case 3:
@@ -7363,129 +7386,62 @@ var manageModel = /*#__PURE__*/function () {
         }, _callee, this, [[0, 15]]);
       }));
 
-      function deleteOne() {
-        return _deleteOne.apply(this, arguments);
+      function _delete() {
+        return _delete2.apply(this, arguments);
       }
 
-      return deleteOne;
-    }()
-  }, {
-    key: "deleteMultiple",
-    value: function () {
-      var _deleteMultiple = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-        var res, data;
-        return regeneratorRuntime.wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                _context2.prev = 0;
-                _context2.next = 3;
-                return fetch("/api/v1/".concat(this.collection, "/delete-multiple"), {
-                  method: "DELETE",
-                  headers: {
-                    "Content-Type": "application/json"
-                  },
-                  body: JSON.stringify({
-                    docId: this.docId
-                  })
-                });
-
-              case 3:
-                res = _context2.sent;
-                _context2.next = 6;
-                return res.json();
-
-              case 6:
-                data = _context2.sent;
-
-                if (!(data.status === "success")) {
-                  _context2.next = 12;
-                  break;
-                }
-
-                (0, _alert.showAlert)("success", "Successfully Deleted!", 2);
-                setTimeout(function () {
-                  return location.reload(true);
-                }, 2000);
-                _context2.next = 13;
-                break;
-
-              case 12:
-                throw new Error(data.message);
-
-              case 13:
-                _context2.next = 18;
-                break;
-
-              case 15:
-                _context2.prev = 15;
-                _context2.t0 = _context2["catch"](0);
-                (0, _alert.showAlert)("error", _context2.t0.message, 2);
-
-              case 18:
-              case "end":
-                return _context2.stop();
-            }
-          }
-        }, _callee2, this, [[0, 15]]);
-      }));
-
-      function deleteMultiple() {
-        return _deleteMultiple.apply(this, arguments);
-      }
-
-      return deleteMultiple;
+      return _delete;
     }()
   }, {
     key: "createUpdate",
     value: function () {
-      var _createUpdate = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(formData) {
+      var _createUpdate = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(formData) {
         var tourId,
             res,
             data,
-            _args3 = arguments;
-        return regeneratorRuntime.wrap(function _callee3$(_context3) {
+            _args2 = arguments;
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
-            switch (_context3.prev = _context3.next) {
+            switch (_context2.prev = _context2.next) {
               case 0:
-                tourId = _args3.length > 1 && _args3[1] !== undefined ? _args3[1] : null;
-                _context3.prev = 1;
+                tourId = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : null;
+                _context2.prev = 1;
 
                 if (tourId) {
-                  _context3.next = 8;
+                  _context2.next = 8;
                   break;
                 }
 
-                _context3.next = 5;
+                _context2.next = 5;
                 return fetch("/api/v1/".concat(this.collection), {
                   method: "POST",
                   body: formData
                 });
 
               case 5:
-                res = _context3.sent;
-                _context3.next = 11;
+                res = _context2.sent;
+                _context2.next = 11;
                 break;
 
               case 8:
-                _context3.next = 10;
+                _context2.next = 10;
                 return fetch("/api/v1/".concat(this.collection, "/").concat(tourId), {
                   method: "PATCH",
                   body: formData
                 });
 
               case 10:
-                res = _context3.sent;
+                res = _context2.sent;
 
               case 11:
-                _context3.next = 13;
+                _context2.next = 13;
                 return res.json();
 
               case 13:
-                data = _context3.sent;
+                data = _context2.sent;
 
                 if (!(data.status === "success")) {
-                  _context3.next = 19;
+                  _context2.next = 19;
                   break;
                 }
 
@@ -7493,27 +7449,27 @@ var manageModel = /*#__PURE__*/function () {
                 setTimeout(function () {
                   return location.assign("/manage-tours");
                 }, 2000);
-                _context3.next = 20;
+                _context2.next = 20;
                 break;
 
               case 19:
                 throw new Error(data.message);
 
               case 20:
-                _context3.next = 25;
+                _context2.next = 25;
                 break;
 
               case 22:
-                _context3.prev = 22;
-                _context3.t0 = _context3["catch"](1);
-                (0, _alert.showAlert)("error", _context3.t0.message, 2);
+                _context2.prev = 22;
+                _context2.t0 = _context2["catch"](1);
+                (0, _alert.showAlert)("error", _context2.t0.message, 2);
 
               case 25:
               case "end":
-                return _context3.stop();
+                return _context2.stop();
             }
           }
-        }, _callee3, this, [[1, 22]]);
+        }, _callee2, this, [[1, 22]]);
       }));
 
       function createUpdate(_x) {
@@ -7964,7 +7920,7 @@ if (deleteBtns) {
         return el.addEventListener("click", function (e) {
           (0, _alert.hideModal)();
           if (e.target.textContent !== "Confirm") return;
-          new _manageModel.default("tours", event.target.parentElement.dataset.tourId).deleteMultiple();
+          new _manageModel.default("tours", event.target.parentElement.dataset.tourId).delete();
         });
       });
     });
@@ -7983,7 +7939,7 @@ if (deleteSelected) {
       return el.addEventListener("click", function (e) {
         (0, _alert.hideModal)();
         if (e.target.textContent !== "Confirm") return;
-        new _manageModel.default("tours", tourIds).deleteMultiple();
+        new _manageModel.default("tours", tourIds).delete();
       });
     });
   });

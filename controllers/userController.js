@@ -130,4 +130,4 @@ exports.createUser = (req, res) => {
 // Warning: Don't try to update password with this!
 exports.updateUser = factory.updateOne(User);
 
-exports.deleteUser = factory.deleteOne(User);
+exports.deleteUser = factory.delete(User);

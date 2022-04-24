@@ -576,7 +576,7 @@ exports.updateTour = factory.updateOne(Tour);
 // }
 // });
 
-exports.deleteTour = factory.deleteOne(Tour, Review); // Important: Remark: Not using factory.deleteOne("Tour")() because we dont call this function. It is express who will call this whenever a request to this route initiated.
+// exports.deleteTour = factory.deleteOne(Tour, Review); // Important: Remark: Not using factory.deleteOne("Tour")() because we dont call this function. It is express who will call this whenever a request to this route initiated.
 
 /* exports.deleteTour = catchAsync(async (req, res, next) => {
     // try {
@@ -598,7 +598,7 @@ exports.deleteTour = factory.deleteOne(Tour, Review); // Important: Remark: Not 
     // }
 }); */
 
-exports.deleteMultipleTour = factory.deleteMultiple(Tour, Review);
+exports.deleteMultipleTour = factory.delete(Tour, Review);
 
 // Segment: Aggrigation Middleware
 exports.getTourStats = catchAsync(async (req, res, next) => {

@@ -158,7 +158,7 @@ if (deleteBtns) {
                     new manageModel(
                         "tours",
                         event.target.parentElement.dataset.tourId
-                    ).deleteMultiple();
+                    ).delete();
                 })
             );
         });
@@ -183,7 +183,7 @@ if (deleteSelected) {
 
                 if (e.target.textContent !== "Confirm") return;
 
-                new manageModel("tours", tourIds).deleteMultiple();
+                new manageModel("tours", tourIds).delete();
             })
         );
     });

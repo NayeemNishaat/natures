@@ -2,26 +2,26 @@ const catchAsync = require("../lib/catchAsync");
 const APIFeatures = require("../lib/apiFeatures");
 const AppError = require("../lib/appError");
 
-exports.deleteOne = (Model, ModelDependent) =>
+// exports.deleteOne = (Model, ModelDependency) =>
+//     catchAsync(async (req, res) => {
+//         // await Model.findByIdAndDelete(req.params.id);
+
+//         if (ModelDependency) {
+//             // await ModelDependency.deleteMany({ tour: req.params.id });
+//         }
+
+//         res.status(200).json({
+//             status: "success",
+//             data: null
+//         });
+//     });
+
+exports.delete = (Model, ModelDependency) =>
     catchAsync(async (req, res) => {
-        await Model.findByIdAndDelete(req.params.id);
+        await Model.deleteMany({ _id: req.body.docId || req.params.id }); // Remark: Always use "_id" for fields not "id". "id" can only be used for value.
 
-        if (ModelDependent) {
-            await ModelDependent.deleteMany({ tour: req.params.id });
-        }
-
-        res.status(200).json({
-            status: "success",
-            data: null
-        });
-    });
-
-exports.deleteMultiple = (Model, ModelDependent) =>
-    catchAsync(async (req, res) => {
-        await Model.deleteMany({ _id: req.body.docId }); // Remark: Always use "_id" for fields not "id". "id" can only be used for value.
-
-        if (ModelDependent) {
-            await ModelDependent.deleteMany({ tour: req.body.docId });
+        if (ModelDependency) {
+            await ModelDependency.deleteMany({ tour: req.body.docId });
         }
 
         res.status(200).json({

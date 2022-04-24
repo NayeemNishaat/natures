@@ -53,10 +53,8 @@ router
         tourController.createTour
     );
 
-// .post(tourController.checkBody, tourController.createTour);
-
 router
-    .route("/delete-multiple")
+    .route("/delete")
     .delete(
         authController.protect,
         authController.restrictTo("admin", "lead-guide"),
@@ -74,11 +72,11 @@ router
         tourController.resizeTourImages,
         tourController.preprocessFormData,
         tourController.updateTour
-    )
-    .delete(
-        authController.protect,
-        authController.restrictTo("admin", "lead-guide"),
-        tourController.deleteTour
     );
+// .delete(
+//     authController.protect,
+//     authController.restrictTo("admin", "lead-guide"),
+//     tourController.deleteTour
+// );
 
 module.exports = router;
