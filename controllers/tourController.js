@@ -279,7 +279,10 @@ exports.uploadTourImages = upload.fields([
 exports.resizeTourImages = catchAsync(async (req, res, next) => {
     if (req.files.imageCover) {
         // Key: Cover Image
-        req.body.imageCover = `tour-${req.params.id}-${Date.now()}-cover.jpeg`; // Important: By setting imageCover in req.body we are potentially updating the image name in the DB by using updateTour() middleware.
+        req.body.imageCover = `tour-${slugify(req.body.name, {
+            replacement: "",
+            lower: true
+        })}-${Date.now()}-cover.jpeg`; // Important: By setting imageCover in req.body we are potentially updating the image name in the DB by using updateTour() middleware.
 
         await sharp(req.files.imageCover[0].buffer)
             .resize(2000, 1333) // 3:2 ration
