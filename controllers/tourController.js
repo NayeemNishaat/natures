@@ -236,6 +236,7 @@
 
 const multer = require("multer");
 const sharp = require("sharp");
+const slugify = require("slugify");
 const Tour = require("../models/tourModel");
 const User = require("../models/userModel");
 const Review = require("../models/reviewModel");
@@ -297,11 +298,14 @@ exports.resizeTourImages = catchAsync(async (req, res, next) => {
             });
         }
 
-        const computeFilename = (tourId, date) => {
+        const computeFilename = (name, date) => {
             let filename;
             images.some((image, i) => {
                 if (image === undefined)
-                    filename = `tour-${tourId}-${date}-${i + 1}.jpeg`;
+                    filename = `tour-${slugify(name, {
+                        replacement: "",
+                        lower: true
+                    })}-${date}-${i + 1}.jpeg`;
                 return;
             });
 
@@ -313,7 +317,7 @@ exports.resizeTourImages = catchAsync(async (req, res, next) => {
             req.files.images.map(async (file) => {
                 // Important: Point: Remark: Note: Here we are using async/await inside forEach but the outside function is not awaited but if we do so it will not still work. Because forEach loop will return promises but those promises are not saved anywhere so how could we be able to resolve them? So we will use map() to create an array of promises and by awaiting it and using Promise.all() we will get the resolved values of the promises!
 
-                const filename = computeFilename(req.params.id, Date.now());
+                const filename = computeFilename(req.body.name, Date.now());
 
                 images[+filename.at(-6) - 1] = filename;
 
@@ -323,7 +327,7 @@ exports.resizeTourImages = catchAsync(async (req, res, next) => {
                     .jpeg({ quality: 90 })
                     .toFile(`public/img/tours/${filename}`);
 
-                // images[+filename.at(-6) - 1] = filename; // Important: Point: Key: Remark: Note: So, the problem is updating images[] array here after the async sharp() function. The looping over the map doesn't halted for this async sharp() function. But the Important: catch is the portion after the async sharp() is halted until the async sharp() function resolved. So the execution sequence of this function is given below:
+                // images[+filename.at(-6) - 1] = filename; // Important: Point: Key: Remark: Note: So, the problem is in async functions's callback(), updating images[] array here after the async sharp() function. The looping over the map doesn't halted for this async sharp() function. But the Important: catch is the portion after the async sharp() is halted until the async sharp() function resolved. So the execution sequence of this function is given below:
                 // Point: const filename = computeFilename(req.params.id, Date.now()); this line is executed for all elements of the array, three times because the array has 3 elements.
                 // Point: After that the three promises of async sharp function is resolved again three because this array's length is three. Hence, sharp runs three times and three promises are returned.
                 // And after that finally the images[] array is updated three times subsequently not for each iteration.
