@@ -59,7 +59,6 @@ export const getTourData = () => {
             document.querySelector("#image3").nextElementSibling.textContent
     );
     form.append("price", document.getElementById("price").value);
-    console.log(form.getAll("images"));
-    alert("5");
+
     return form;
 };
