@@ -43,10 +43,23 @@ export const getTourData = () => {
         )
     );
     form.append("imageCover", document.getElementById("coverImage").files[0]);
-    form.append("images", document.getElementById("image1").files[0]);
-    form.append("images", document.getElementById("image2").files[0]);
-    form.append("images", document.getElementById("image3").files[0]);
+    form.append(
+        "images",
+        document.getElementById("image1").files[0] ||
+            document.querySelector("#image1").nextElementSibling.textContent
+    );
+    form.append(
+        "images",
+        document.getElementById("image2").files[0] ||
+            document.querySelector("#image2").nextElementSibling.textContent
+    );
+    form.append(
+        "images",
+        document.getElementById("image3").files[0] ||
+            document.querySelector("#image3").nextElementSibling.textContent
+    );
     form.append("price", document.getElementById("price").value);
-
+    console.log(form.getAll("images"));
+    alert("5");
     return form;
 };

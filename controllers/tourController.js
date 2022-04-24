@@ -276,38 +276,60 @@ exports.uploadTourImages = upload.fields([
 ]);
 
 exports.resizeTourImages = catchAsync(async (req, res, next) => {
-    if (!req.files.imageCover || !req.files.images) return next();
+    if (req.files.imageCover) {
+        // Key: Cover Image
+        req.body.imageCover = `tour-${req.params.id}-${Date.now()}-cover.jpeg`; // Important: By setting imageCover in req.body we are potentially updating the image name in the DB by using updateTour() middleware.
 
-    // Key: Cover Image
-    req.body.imageCover = `tour-${req.params.id}-${Date.now()}-cover.jpeg`; // Important: By setting imageCover in req.body we are potentially updating the image name in the DB by using updateTour() middleware.
+        await sharp(req.files.imageCover[0].buffer)
+            .resize(2000, 1333) // 3:2 ration
+            .toFormat("jpeg")
+            .jpeg({ quality: 90 })
+            .toFile(`public/img/tours/${req.body.imageCover}`);
+    }
 
-    await sharp(req.files.imageCover[0].buffer)
-        .resize(2000, 1333) // 3:2 ration
-        .toFormat("jpeg")
-        .jpeg({ quality: 90 })
-        .toFile(`public/img/tours/${req.body.imageCover}`);
+    if (req.files.images) {
+        // Key: images
+        console.log(req.body.images);
+        const images = Array(3).fill(undefined);
 
-    // Key: images
-    req.body.images = [];
+        if (req.body.images) {
+            req.body.images.forEach((image) => {
+                images[image.at(-6) - 1] = image;
+            });
+        }
 
-    // Warning: Always use this trick when dealing with async callbacks!
-    await Promise.all(
-        req.files.images.map(async (file, i) => {
-            // Important: Point: Remark: Note: Here we are using async/await inside forEach but the outside function is not awaited but if we do so it will not still work. Because forEach loop will return promises but those promises are not saved anywhere so how could we be able to resolve them? So we will use map() to create an array of promises and by awaiting it and using Promise.all() we will get the resolved values of the promises!
-            const filename = `tour-${req.params.id}-${Date.now()}-${
-                i + 1
-            }.jpeg`;
+        const computeFilename = (tourId, date) => {
+            let filename;
+            images.some((image, i) => {
+                if (image === undefined)
+                    filename = `tour-${tourId}-${date}-${i + 1}.jpeg`;
+                return;
+            });
+            console.log(filename);
+            return filename;
+        };
 
-            await sharp(file.buffer)
-                .resize(2000, 1333)
-                .toFormat("jpeg")
-                .jpeg({ quality: 90 })
-                .toFile(`public/img/tours/${filename}`);
+        // Warning: Always use this trick when dealing with async callbacks!
+        await Promise.all(
+            req.files.images.map(async (file) => {
+                // Important: Point: Remark: Note: Here we are using async/await inside forEach but the outside function is not awaited but if we do so it will not still work. Because forEach loop will return promises but those promises are not saved anywhere so how could we be able to resolve them? So we will use map() to create an array of promises and by awaiting it and using Promise.all() we will get the resolved values of the promises!
 
-            req.body.images.push(filename);
-        })
-    );
+                const filename = computeFilename(req.params.id, Date.now());
+                console.log(1);
 
+                await sharp(file.buffer)
+                    .resize(2000, 1333)
+                    .toFormat("jpeg")
+                    .jpeg({ quality: 90 })
+                    .toFile(`public/img/tours/${filename}`);
+                console.log(2);
+                images[+filename.at(-6) - 1] = filename;
+            })
+        );
+
+        req.body.images = images;
+    }
+    console.log(req.body.images);
     next();
 });
 
@@ -472,6 +494,14 @@ exports.preprocessFormData = async (req, res, next) => {
         startDates: JSON.parse(req.body.startDates),
         price: +req.body.price
     };
+
+    if (req.body.imageCover === "undefined") {
+        delete req.body.imageCover;
+    }
+
+    req.body.images.forEach((image, i) => {
+        if (image === "undefined") req.body.images.splice(i, 1);
+    });
 
     next();
 };
