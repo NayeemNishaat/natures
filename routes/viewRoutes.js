@@ -52,6 +52,12 @@ router.get(
     viewsController.getManageTours
 );
 router.get(
+    "/manage-users",
+    authController.protect,
+    authController.restrictTo("admin"),
+    viewsController.getManageUsers
+);
+router.get(
     "/create-tour",
     authController.protect,
     authController.restrictTo("admin", "lead-guide"),

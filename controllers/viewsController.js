@@ -155,3 +155,9 @@ exports.getUpdateTour = catchAsync(async (req, res) => {
         tour
     });
 });
+
+exports.getManageUsers = catchAsync(async (req, res) => {
+    const users = await User.find({ role: { $ne: "admin" } });
+
+    res.status(200).render("manageUsers", { title: "Manage Users", users });
+});
