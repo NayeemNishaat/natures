@@ -12,15 +12,16 @@ const resolvePage = (currentPage) => {
 module.exports = handlePagination = () => {
     document.querySelectorAll(".page__item").forEach((page) => {
         page.addEventListener("click", (e) => {
-            document.querySelector(".active").classList.remove("active");
             const currentPage = +e.target.textContent;
             const middlePageEl = document.querySelector(".middle");
+            const prevPageEl = document.querySelector(".prev");
+            const nextPageEl = document.querySelector(".next");
+
+            document.querySelector(".active").classList.remove("active");
             if (currentPage !== 1 && currentPage !== 6)
                 middlePageEl.classList.add("active");
             if (currentPage === 1) prevPageEl.classList.add("active");
-
-            const prevPageEl = document.querySelector(".prev");
-            const nextPageEl = document.querySelector(".next");
+            if (currentPage === lastPage) nextPageEl.classList.add("active");
 
             let prevPage;
             let nextPage;
@@ -33,13 +34,13 @@ module.exports = handlePagination = () => {
                 [prevPage, nextPage] = resolvePage(currentPage);
             }
 
-            if (currentPage !== 1 && currentPage !== 6) {
+            if (currentPage !== 1 && currentPage !== lastPage) {
                 prevPageEl.textContent = prevPage;
                 middlePageEl.textContent = currentPage;
                 nextPageEl.textContent = nextPage;
             }
 
-            console.log(prevPage, currentPage, nextPage);
+            // console.log(prevPage, currentPage, nextPage);
         });
     });
 };

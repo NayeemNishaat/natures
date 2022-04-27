@@ -7581,13 +7581,14 @@ var resolvePage = function resolvePage(currentPage) {
 module.exports = handlePagination = function handlePagination() {
   document.querySelectorAll(".page__item").forEach(function (page) {
     page.addEventListener("click", function (e) {
-      document.querySelector(".active").classList.remove("active");
       var currentPage = +e.target.textContent;
       var middlePageEl = document.querySelector(".middle");
-      if (currentPage !== 1 && currentPage !== 6) middlePageEl.classList.add("active");
-      if (currentPage === 1) prevPageEl.classList.add("active");
       var prevPageEl = document.querySelector(".prev");
       var nextPageEl = document.querySelector(".next");
+      document.querySelector(".active").classList.remove("active");
+      if (currentPage !== 1 && currentPage !== 6) middlePageEl.classList.add("active");
+      if (currentPage === 1) prevPageEl.classList.add("active");
+      if (currentPage === lastPage) nextPageEl.classList.add("active");
       var prevPage;
       var nextPage;
 
@@ -7606,13 +7607,12 @@ module.exports = handlePagination = function handlePagination() {
         nextPage = _resolvePage2[1];
       }
 
-      if (currentPage !== 1 && currentPage !== 6) {
+      if (currentPage !== 1 && currentPage !== lastPage) {
         prevPageEl.textContent = prevPage;
         middlePageEl.textContent = currentPage;
         nextPageEl.textContent = nextPage;
-      }
+      } // console.log(prevPage, currentPage, nextPage);
 
-      console.log(prevPage, currentPage, nextPage);
     });
   });
 };
