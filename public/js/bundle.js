@@ -7569,13 +7569,10 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-var lastPageEl = document.querySelector(".last");
-var lastPage = +lastPageEl.textContent;
+var lastPage = +document.querySelector(".last").textContent;
 
 var resolvePage = function resolvePage(currentPage) {
-  var prevPage = currentPage === "start" ? null : currentPage - 1;
-  var nextPage = currentPage === "end" ? null : currentPage + 1;
-  return [prevPage, nextPage];
+  return [currentPage - 1, currentPage + 1];
 };
 
 module.exports = handlePagination = function handlePagination() {
@@ -7586,11 +7583,10 @@ module.exports = handlePagination = function handlePagination() {
       var prevPageEl = document.querySelector(".prev");
       var nextPageEl = document.querySelector(".next");
       document.querySelector(".active").classList.remove("active");
-      if (currentPage !== 1 && currentPage !== 6) middlePageEl.classList.add("active");
+      if (currentPage !== 1 && currentPage !== lastPage) middlePageEl.classList.add("active");
       if (currentPage === 1) prevPageEl.classList.add("active");
       if (currentPage === lastPage) nextPageEl.classList.add("active");
-      var prevPage;
-      var nextPage;
+      var prevPage, nextPage;
 
       if (currentPage === 1) {
         prevPage = null;

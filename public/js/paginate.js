@@ -1,12 +1,7 @@
-const lastPageEl = document.querySelector(".last");
-
-const lastPage = +lastPageEl.textContent;
+const lastPage = +document.querySelector(".last").textContent;
 
 const resolvePage = (currentPage) => {
-    const prevPage = currentPage === "start" ? null : currentPage - 1;
-    const nextPage = currentPage === "end" ? null : currentPage + 1;
-
-    return [prevPage, nextPage];
+    return [currentPage - 1, currentPage + 1];
 };
 
 module.exports = handlePagination = () => {
@@ -18,13 +13,13 @@ module.exports = handlePagination = () => {
             const nextPageEl = document.querySelector(".next");
 
             document.querySelector(".active").classList.remove("active");
-            if (currentPage !== 1 && currentPage !== 6)
+
+            if (currentPage !== 1 && currentPage !== lastPage)
                 middlePageEl.classList.add("active");
             if (currentPage === 1) prevPageEl.classList.add("active");
             if (currentPage === lastPage) nextPageEl.classList.add("active");
 
-            let prevPage;
-            let nextPage;
+            let prevPage, nextPage;
 
             if (currentPage === 1) {
                 [prevPage, nextPage] = [null, 2];
