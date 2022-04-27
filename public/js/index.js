@@ -11,6 +11,7 @@ import { submitReview } from "./review";
 import { showModal, hideModal } from "./alert";
 import { getTourData } from "./helper";
 import manageModel from "./manageModel";
+import handlePagination from "./paginate";
 
 // Chapter: DOM Elements
 const mapBox = document.getElementById("map");
@@ -29,6 +30,7 @@ const deleteSelected = document.getElementById("delete-selected");
 const tourForm = document.querySelector(".tour-form");
 const addLocation = document.querySelector(".js__loc");
 const addDate = document.querySelector(".js__date");
+const paginate = document.querySelector(".paginate");
 
 // Chapter: Delegation
 if (alertMessage) showAlert("success", alertMessage, 20);
@@ -246,4 +248,8 @@ if (tourForm) {
 
         new manageModel("tours").createUpdate(formData);
     });
+}
+
+if (paginate) {
+    handlePagination();
 }

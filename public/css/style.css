@@ -1497,6 +1497,26 @@ body {
     display: block;
 }
 
+/* Chapter: Pagination */
+.page__list {
+    display: flex;
+    list-style: none;
+    justify-content: center;
+    gap: 4rem;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-top: 3rem;
+}
+
+.page__item {
+    cursor: pointer;
+}
+
+.page__item.active {
+    color: #20bf6b;
+    cursor: auto;
+}
+
 /* Key: Responsive */
 @media only screen and (max-width: 768px) {
     .sectionTable {
