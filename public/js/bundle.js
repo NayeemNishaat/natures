@@ -7557,6 +7557,12 @@ var manageModel = /*#__PURE__*/function () {
 var _default = manageModel;
 exports.default = _default;
 },{"./alert":"alert.js"}],"paginate.js":[function(require,module,exports) {
+"use strict";
+
+var _alert = require("./alert");
+
+var _document$querySelect;
+
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -7569,7 +7575,11 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-var lastPage = +document.querySelector(".last").dataset.page;
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+var lastPage = +((_document$querySelect = document.querySelector(".last")) === null || _document$querySelect === void 0 ? void 0 : _document$querySelect.dataset.page);
 var middlePageEl = document.querySelector(".middle");
 var prevPageEl = document.querySelector(".prev");
 var nextPageEl = document.querySelector(".next");
@@ -7591,58 +7601,112 @@ var resolvePage = function resolvePage(currentPage) {
   return [currentPage - 1, currentPage + 1];
 };
 
-module.exports = handlePagination = function handlePagination() {
+var handlePagination = function handlePagination() {
   pageEls.forEach(function (pageEl) {
-    pageEl.addEventListener("click", function (e) {
-      var currentPage = +e.target.dataset.page;
-      document.querySelectorAll(".active").forEach(function (activeEl) {
-        return activeEl.classList.remove("active");
-      }); // Note: Selecting active elements here not outside of the event listener because we need updated current active elements!
+    pageEl.addEventListener("click", /*#__PURE__*/function () {
+      var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(e) {
+        var currentPage, prevPage, nextPage, _resolvePage, _resolvePage2, res, data, markup;
 
-      if (currentPage !== 1 && currentPage !== lastPage) middlePageEl.classList.add("active");
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                currentPage = +e.target.dataset.page;
+                document.querySelectorAll(".active").forEach(function (activeEl) {
+                  return activeEl.classList.remove("active");
+                }); // Note: Selecting active elements here not outside of the event listener because we need updated current active elements!
 
-      if (currentPage === 1) {
-        prevPageEl.classList.add("active");
-        firstPageEl.classList.add("active");
-        updatePage(currentPage);
-      }
+                if (currentPage !== 1 && currentPage !== lastPage) middlePageEl.classList.add("active");
 
-      if (currentPage === lastPage) {
-        nextPageEl.classList.add("active");
-        lastPageEl.classList.add("active");
-        updatePage(currentPage, false);
-      }
+                if (currentPage === 1) {
+                  prevPageEl.classList.add("active");
+                  firstPageEl.classList.add("active");
+                  updatePage(currentPage);
+                }
 
-      var prevPage, nextPage;
+                if (currentPage === lastPage) {
+                  nextPageEl.classList.add("active");
+                  lastPageEl.classList.add("active");
+                  updatePage(currentPage, false);
+                }
 
-      if (currentPage === 1) {
-        prevPage = null;
-        nextPage = 2;
-      } else if (currentPage === lastPage) {
-        prevPage = lastPage - 1;
-        nextPage = null;
-      } else {
-        var _resolvePage = resolvePage(currentPage);
+                if (currentPage === 1) {
+                  prevPage = null;
+                  nextPage = 2;
+                } else if (currentPage === lastPage) {
+                  prevPage = lastPage - 1;
+                  nextPage = null;
+                } else {
+                  _resolvePage = resolvePage(currentPage);
+                  _resolvePage2 = _slicedToArray(_resolvePage, 2);
+                  prevPage = _resolvePage2[0];
+                  nextPage = _resolvePage2[1];
+                }
 
-        var _resolvePage2 = _slicedToArray(_resolvePage, 2);
+                if (currentPage !== 1 && currentPage !== lastPage) {
+                  prevPageEl.textContent = prevPage;
+                  prevPageEl.dataset.page = prevPage;
+                  middlePageEl.textContent = currentPage;
+                  middlePageEl.dataset.page = currentPage;
+                  nextPageEl.textContent = nextPage;
+                  nextPageEl.dataset.page = nextPage;
+                } // console.log(prevPage, currentPage, nextPage);
 
-        prevPage = _resolvePage2[0];
-        nextPage = _resolvePage2[1];
-      }
 
-      if (currentPage !== 1 && currentPage !== lastPage) {
-        prevPageEl.textContent = prevPage;
-        prevPageEl.dataset.page = prevPage;
-        middlePageEl.textContent = currentPage;
-        middlePageEl.dataset.page = currentPage;
-        nextPageEl.textContent = nextPage;
-        nextPageEl.dataset.page = nextPage;
-      } // console.log(prevPage, currentPage, nextPage);
+                _context.prev = 7;
+                _context.next = 10;
+                return fetch("/api/v1/users?role[ne]=admin&page=".concat(currentPage, "&limit=12"));
 
-    });
+              case 10:
+                res = _context.sent;
+                _context.next = 13;
+                return res.json();
+
+              case 13:
+                data = _context.sent;
+                markup = "";
+
+                if (!(data.status === "success")) {
+                  _context.next = 20;
+                  break;
+                }
+
+                data.data.doc.forEach(function (d) {
+                  markup = markup + "\n                        <div class=\"card\" data-user-id=\"".concat(d._id, "\"><button class=\"button\">X</button><a href=\"/update-user/").concat(d._id, "\"><svg class=\"edit__icon\"><use xlink:href=\"img/icons.svg#icon-edit\"></use></svg></a><input class=\"checkbox\" type=\"checkbox\"><div class=\"card__header\"><div class=\"card__picture\"><img class=\"card__picture-img\" src=\"/img/users/").concat(d.photo, "\" alt=\"Photo of ").concat(d.name, "\"></div><h3 class=\"heading-quaternary\"><span>").concat(d.name, "</span></h3></div><div class=\"card__footer\"><p><span class=\"card__footer-value\">").concat(d.email, "</span> <span class=\"card__footer-text\"></span></p><p class=\"card__ratings\"><span class=\"card__footer-value\">").concat(d.role, "</span></p></div></div>");
+                });
+                document.querySelector(".card-container").innerHTML = markup;
+                _context.next = 21;
+                break;
+
+              case 20:
+                throw new Error(data.message);
+
+              case 21:
+                _context.next = 26;
+                break;
+
+              case 23:
+                _context.prev = 23;
+                _context.t0 = _context["catch"](7);
+                (0, _alert.showAlert)("error", _context.t0.message);
+
+              case 26:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[7, 23]]);
+      }));
+
+      return function (_x) {
+        return _ref.apply(this, arguments);
+      };
+    }());
   });
 };
-},{}],"index.js":[function(require,module,exports) {
+
+module.exports = handlePagination;
+},{"./alert":"alert.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 require("core-js/modules/es6.array.copy-within.js");
@@ -8166,7 +8230,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63674" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59511" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -1,4 +1,6 @@
-const lastPage = +document.querySelector(".last").dataset.page;
+import { showAlert } from "./alert";
+
+const lastPage = +document.querySelector(".last")?.dataset.page;
 const middlePageEl = document.querySelector(".middle");
 const prevPageEl = document.querySelector(".prev");
 const nextPageEl = document.querySelector(".next");
@@ -19,9 +21,9 @@ const resolvePage = (currentPage) => {
     return [currentPage - 1, currentPage + 1];
 };
 
-module.exports = handlePagination = () => {
+const handlePagination = () => {
     pageEls.forEach((pageEl) => {
-        pageEl.addEventListener("click", (e) => {
+        pageEl.addEventListener("click", async (e) => {
             const currentPage = +e.target.dataset.page;
 
             document
@@ -61,6 +63,30 @@ module.exports = handlePagination = () => {
             }
 
             // console.log(prevPage, currentPage, nextPage);
+            try {
+                const res = await fetch(
+                    `/api/v1/users?role[ne]=admin&page=${currentPage}&limit=12`
+                );
+
+                const data = await res.json();
+                let markup = "";
+
+                if (data.status === "success") {
+                    data.data.doc.forEach((d) => {
+                        markup =
+                            markup +
+                            `
+                        <div class="card" data-user-id="${d._id}"><button class="button">X</button><a href="/update-user/${d._id}"><svg class="edit__icon"><use xlink:href="img/icons.svg#icon-edit"></use></svg></a><input class="checkbox" type="checkbox"><div class="card__header"><div class="card__picture"><img class="card__picture-img" src="/img/users/${d.photo}" alt="Photo of ${d.name}"></div><h3 class="heading-quaternary"><span>${d.name}</span></h3></div><div class="card__footer"><p><span class="card__footer-value">${d.email}</span> <span class="card__footer-text"></span></p><p class="card__ratings"><span class="card__footer-value">${d.role}</span></p></div></div>`;
+                    });
+
+                    document.querySelector(".card-container").innerHTML =
+                        markup;
+                } else throw new Error(data.message);
+            } catch (err) {
+                showAlert("error", err.message);
+            }
         });
     });
 };
+
+module.exports = handlePagination;

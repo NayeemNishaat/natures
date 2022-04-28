@@ -158,10 +158,11 @@ exports.getUpdateTour = catchAsync(async (req, res) => {
 
 exports.getManageUsers = catchAsync(async (req, res) => {
     const users = await User.find({ role: { $ne: "admin" } })
-        .skip(0)
+        .sort("-createdAt")
+        .skip(1)
         .limit(12);
 
-    const count = await User.countDocuments();
+    const count = await User.countDocuments({ role: { $ne: "admin" } });
     const lastPage = Math.ceil(count / 12);
 
     res.status(200).render("manageUsers", {
