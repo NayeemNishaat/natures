@@ -62,7 +62,6 @@ const handlePagination = () => {
                 nextPageEl.dataset.page = nextPage;
             }
 
-            // console.log(prevPage, currentPage, nextPage);
             try {
                 const res = await fetch(
                     `/api/v1/users?role[ne]=admin&page=${currentPage}&limit=12`

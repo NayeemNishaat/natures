@@ -7650,8 +7650,7 @@ var handlePagination = function handlePagination() {
                   middlePageEl.dataset.page = currentPage;
                   nextPageEl.textContent = nextPage;
                   nextPageEl.dataset.page = nextPage;
-                } // console.log(prevPage, currentPage, nextPage);
-
+                }
 
                 _context.prev = 7;
                 _context.next = 10;
