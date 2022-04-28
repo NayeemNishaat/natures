@@ -158,7 +158,7 @@ exports.getUpdateTour = catchAsync(async (req, res) => {
 
 exports.getManageUsers = catchAsync(async (req, res) => {
     const users = await User.find({ role: { $ne: "admin" } })
-        .sort("-createdAt")
+        .sort("_id")
         .skip(1)
         .limit(12);
 

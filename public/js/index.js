@@ -147,7 +147,7 @@ if (reviewBtn) {
     });
 }
 
-if (deleteBtns) {
+if (deleteBtns && document.querySelector(".card")?.dataset.tourId) {
     deleteBtns.forEach((btn) => {
         btn.addEventListener("click", (event) => {
             showModal();
@@ -252,4 +252,26 @@ if (tourForm) {
 
 if (paginate) {
     handlePagination();
+}
+
+if (deleteBtns && document.querySelector(".card")?.dataset.userId) {
+    deleteBtns.forEach((btn) => {
+        btn.addEventListener("click", (event) => {
+            showModal();
+            console.log(77);
+
+            document.querySelectorAll(".js__btn").forEach((el) =>
+                el.addEventListener("click", (e) => {
+                    hideModal();
+
+                    if (e.target.textContent !== "Confirm") return;
+
+                    new manageModel(
+                        "users",
+                        event.target.parentElement.dataset.userId
+                    ).delete();
+                })
+            );
+        });
+    });
 }
