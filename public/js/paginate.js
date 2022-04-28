@@ -26,7 +26,7 @@ module.exports = handlePagination = () => {
 
             document
                 .querySelectorAll(".active")
-                .forEach((activeEl) => activeEl.classList.remove("active"));
+                .forEach((activeEl) => activeEl.classList.remove("active")); // Note: Selecting active elements here not outside of the event listener because we need updated current active elements!
 
             if (currentPage !== 1 && currentPage !== lastPage)
                 middlePageEl.classList.add("active");

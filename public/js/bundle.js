@@ -7597,7 +7597,8 @@ module.exports = handlePagination = function handlePagination() {
       var currentPage = +e.target.dataset.page;
       document.querySelectorAll(".active").forEach(function (activeEl) {
         return activeEl.classList.remove("active");
-      });
+      }); // Note: Selecting active elements here not outside of the event listener because we need updated current active elements!
+
       if (currentPage !== 1 && currentPage !== lastPage) middlePageEl.classList.add("active");
 
       if (currentPage === 1) {
