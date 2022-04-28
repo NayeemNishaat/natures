@@ -7569,23 +7569,49 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-var lastPage = +document.querySelector(".last").textContent;
+var lastPage = +document.querySelector(".last").dataset.page;
+var middlePageEl = document.querySelector(".middle");
+var prevPageEl = document.querySelector(".prev");
+var nextPageEl = document.querySelector(".next");
+var firstPageEl = document.querySelector(".first");
+var lastPageEl = document.querySelector(".last");
+var pageEls = document.querySelectorAll(".page__item");
+
+var updatePage = function updatePage(currentPage) {
+  var first = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+  prevPageEl.textContent = first ? currentPage : currentPage - 2;
+  prevPageEl.dataset.page = first ? currentPage : currentPage - 2;
+  middlePageEl.textContent = first ? currentPage + 1 : currentPage - 1;
+  middlePageEl.dataset.page = first ? currentPage + 1 : currentPage - 1;
+  nextPageEl.textContent = first ? currentPage + 2 : currentPage;
+  nextPageEl.dataset.page = first ? currentPage + 2 : currentPage;
+};
 
 var resolvePage = function resolvePage(currentPage) {
   return [currentPage - 1, currentPage + 1];
 };
 
 module.exports = handlePagination = function handlePagination() {
-  document.querySelectorAll(".page__item").forEach(function (page) {
-    page.addEventListener("click", function (e) {
-      var currentPage = +e.target.textContent;
-      var middlePageEl = document.querySelector(".middle");
-      var prevPageEl = document.querySelector(".prev");
-      var nextPageEl = document.querySelector(".next");
-      document.querySelector(".active").classList.remove("active");
+  pageEls.forEach(function (pageEl) {
+    pageEl.addEventListener("click", function (e) {
+      var currentPage = +e.target.dataset.page;
+      document.querySelectorAll(".active").forEach(function (activeEl) {
+        return activeEl.classList.remove("active");
+      });
       if (currentPage !== 1 && currentPage !== lastPage) middlePageEl.classList.add("active");
-      if (currentPage === 1) prevPageEl.classList.add("active");
-      if (currentPage === lastPage) nextPageEl.classList.add("active");
+
+      if (currentPage === 1) {
+        prevPageEl.classList.add("active");
+        firstPageEl.classList.add("active");
+        updatePage(currentPage);
+      }
+
+      if (currentPage === lastPage) {
+        nextPageEl.classList.add("active");
+        lastPageEl.classList.add("active");
+        updatePage(currentPage, false);
+      }
+
       var prevPage, nextPage;
 
       if (currentPage === 1) {
@@ -7605,8 +7631,11 @@ module.exports = handlePagination = function handlePagination() {
 
       if (currentPage !== 1 && currentPage !== lastPage) {
         prevPageEl.textContent = prevPage;
+        prevPageEl.dataset.page = prevPage;
         middlePageEl.textContent = currentPage;
+        middlePageEl.dataset.page = currentPage;
         nextPageEl.textContent = nextPage;
+        nextPageEl.dataset.page = nextPage;
       } // console.log(prevPage, currentPage, nextPage);
 
     });
