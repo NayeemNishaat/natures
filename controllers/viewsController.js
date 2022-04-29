@@ -4,6 +4,7 @@ const Review = require("../models/reviewModel");
 const Booking = require("../models/bookingModel");
 const catchAsync = require("../lib/catchAsync");
 const AppError = require("../lib/appError");
+const handlerFactory = require("./handlerFactory");
 
 exports.alerts = (req, res, next) => {
     const { alert } = req.query;
@@ -159,6 +160,7 @@ exports.getUpdateTour = catchAsync(async (req, res) => {
 exports.getManageUsers = catchAsync(async (req, res) => {
     const users = await User.find({ role: { $ne: "admin" } })
         .sort("_id")
+        .select("-__v")
         .skip(1)
         .limit(12);
 
