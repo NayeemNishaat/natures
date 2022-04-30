@@ -8037,6 +8037,8 @@ var reviewBtn = document.querySelector(".form--review");
 var deleteBtns = document.querySelectorAll(".button");
 var deleteSelected = document.getElementById("delete-selected");
 var tourForm = document.querySelector(".tour-form");
+var tourId = (_document$querySelect = document.querySelector(".card")) === null || _document$querySelect === void 0 ? void 0 : _document$querySelect.dataset.tourId;
+var userId = (_document$querySelect2 = document.querySelector(".card")) === null || _document$querySelect2 === void 0 ? void 0 : _document$querySelect2.dataset.userId;
 var addLocation = document.querySelector(".js__loc");
 var addDate = document.querySelector(".js__date");
 var paginate = document.querySelector(".paginate"); // Chapter: Delegation
@@ -8161,7 +8163,7 @@ if (reviewBtn) {
   });
 }
 
-if (deleteBtns && (_document$querySelect = document.querySelector(".card")) !== null && _document$querySelect !== void 0 && _document$querySelect.dataset.tourId) {
+if (deleteBtns && tourId) {
   deleteBtns.forEach(function (btn) {
     btn.addEventListener("click", function (event) {
       (0, _alert.showModal)();
@@ -8180,7 +8182,7 @@ if (deleteBtns && (_document$querySelect = document.querySelector(".card")) !== 
   });
 }
 
-if (deleteSelected) {
+if (deleteSelected && tourId) {
   deleteSelected.addEventListener("click", function () {
     if (document.querySelectorAll(".checkbox:checked").length === 0) return (0, _alert.showAlert)("error", "Please Select First!", 2);
     var tourIds = [];
@@ -8223,19 +8225,38 @@ if (tourForm) {
 
 if (paginate) {
   (0, _paginate.default)();
-}
+} // Warning: This deleteBtns only selects the initial page's buttons not the other page's buttons. So to select those buttons the logics are written inside paginate.js
 
-if (deleteBtns && (_document$querySelect2 = document.querySelector(".card")) !== null && _document$querySelect2 !== void 0 && _document$querySelect2.dataset.userId) {
+
+if (deleteBtns && userId) {
   deleteBtns.forEach(function (btn) {
     btn.addEventListener("click", function (event) {
       (0, _alert.showModal)();
-      console.log(77);
+      console.log(event.target.parentElement.dataset.userId);
       document.querySelectorAll(".js__btn").forEach(function (el) {
         return el.addEventListener("click", function (e) {
           (0, _alert.hideModal)();
           if (e.target.textContent !== "Confirm") return;
           new _manageModel.default("users", event.target.parentElement.dataset.userId).delete();
         });
+      });
+    });
+  });
+}
+
+if (deleteSelected && userId) {
+  deleteSelected.addEventListener("click", function () {
+    if (document.querySelectorAll(".checkbox:checked").length === 0) return (0, _alert.showAlert)("error", "Please Select First!", 2);
+    var userIds = [];
+    document.querySelectorAll(".checkbox:checked").forEach(function (el) {
+      userIds.push(el.closest(".card").dataset.userId);
+    });
+    (0, _alert.showModal)();
+    document.querySelectorAll(".js__btn").forEach(function (el) {
+      return el.addEventListener("click", function (e) {
+        (0, _alert.hideModal)();
+        if (e.target.textContent !== "Confirm") return;
+        new _manageModel.default("users", userIds).delete();
       });
     });
   });
@@ -8268,7 +8289,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58731" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49923" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

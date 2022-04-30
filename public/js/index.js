@@ -28,6 +28,8 @@ const reviewBtn = document.querySelector(".form--review");
 const deleteBtns = document.querySelectorAll(".button");
 const deleteSelected = document.getElementById("delete-selected");
 const tourForm = document.querySelector(".tour-form");
+const tourId = document.querySelector(".card")?.dataset.tourId;
+const userId = document.querySelector(".card")?.dataset.userId;
 const addLocation = document.querySelector(".js__loc");
 const addDate = document.querySelector(".js__date");
 const paginate = document.querySelector(".paginate");
@@ -147,7 +149,7 @@ if (reviewBtn) {
     });
 }
 
-if (deleteBtns && document.querySelector(".card")?.dataset.tourId) {
+if (deleteBtns && tourId) {
     deleteBtns.forEach((btn) => {
         btn.addEventListener("click", (event) => {
             showModal();
@@ -178,7 +180,7 @@ if (deleteBtns && document.querySelector(".card")?.dataset.tourId) {
     });
 }
 
-if (deleteSelected) {
+if (deleteSelected && tourId) {
     deleteSelected.addEventListener("click", () => {
         if (document.querySelectorAll(".checkbox:checked").length === 0)
             return showAlert("error", "Please Select First!", 2);
@@ -254,12 +256,12 @@ if (paginate) {
     handlePagination();
 }
 
-if (deleteBtns && document.querySelector(".card")?.dataset.userId) {
+// Warning: This deleteBtns only selects the initial page's buttons not the other page's buttons. So to select those buttons the logics are written inside paginate.js
+if (deleteBtns && userId) {
     deleteBtns.forEach((btn) => {
         btn.addEventListener("click", (event) => {
             showModal();
-            console.log(77);
-
+            console.log(event.target.parentElement.dataset.userId);
             document.querySelectorAll(".js__btn").forEach((el) =>
                 el.addEventListener("click", (e) => {
                     hideModal();
@@ -273,5 +275,28 @@ if (deleteBtns && document.querySelector(".card")?.dataset.userId) {
                 })
             );
         });
+    });
+}
+
+if (deleteSelected && userId) {
+    deleteSelected.addEventListener("click", () => {
+        if (document.querySelectorAll(".checkbox:checked").length === 0)
+            return showAlert("error", "Please Select First!", 2);
+        const userIds = [];
+
+        document.querySelectorAll(".checkbox:checked").forEach((el) => {
+            userIds.push(el.closest(".card").dataset.userId);
+        });
+
+        showModal();
+
+        document.querySelectorAll(".js__btn").forEach((el) =>
+            el.addEventListener("click", (e) => {
+                hideModal();
+
+                if (e.target.textContent !== "Confirm") return;
+                new manageModel("users", userIds).delete();
+            })
+        );
     });
 }
