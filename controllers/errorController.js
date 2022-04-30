@@ -2,7 +2,7 @@ const AppError = require("../lib/appError");
 
 const sendError = (req, res, err, env) => {
     // Chapter: Development Error
-    if (env === "development") {
+    if (env === "development ") {
         // Key: API
         if (req.originalUrl.startsWith("/api")) {
             return res.status(err.statusCode).json({
