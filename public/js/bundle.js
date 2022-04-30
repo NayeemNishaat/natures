@@ -7590,6 +7590,7 @@ var nextPageEl = document.querySelector(".next");
 var firstPageEl = document.querySelector(".first");
 var lastPageEl = document.querySelector(".last");
 var pageEls = document.querySelectorAll(".page__item");
+var container = document.querySelector(".card-container");
 
 var updatePage = function updatePage(currentPage) {
   var first = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
@@ -7670,14 +7671,20 @@ var handlePagination = function handlePagination() {
                 markup = "";
 
                 if (!(data.status === "success")) {
-                  _context.next = 22;
+                  _context.next = 23;
                   break;
                 }
 
                 data.data.doc.forEach(function (d) {
                   markup = markup + "\n                        <div class=\"card\" data-user-id=\"".concat(d._id, "\"><button class=\"button\">X</button><a href=\"/update-user/").concat(d._id, "\"><svg class=\"edit__icon\"><use xlink:href=\"img/icons.svg#icon-edit\"></use></svg></a><input class=\"checkbox\" type=\"checkbox\"><div class=\"card__header\"><div class=\"card__picture\"><img class=\"card__picture-img\" src=\"/img/users/").concat(d.photo, "\" alt=\"Photo of ").concat(d.name, "\"></div><h3 class=\"heading-quaternary\"><span>").concat(d.name, "</span></h3></div><div class=\"card__footer\"><p><span class=\"card__footer-value\">").concat(d.email, "</span> <span class=\"card__footer-text\"></span></p><p class=\"card__ratings\"><span class=\"card__footer-value\">").concat(d.role, "</span></p></div></div>");
                 });
-                document.querySelector(".card-container").innerHTML = markup;
+
+                while (container.firstChild) {
+                  container.removeChild(container.firstChild);
+                } // container.replaceChildren(markup);
+
+
+                container.insertAdjacentHTML("afterbegin", markup);
                 deleteBtns = document.querySelectorAll(".button");
 
                 if (deleteBtns && (_document$querySelect2 = document.querySelector(".card")) !== null && _document$querySelect2 !== void 0 && _document$querySelect2.dataset.userId) {
@@ -7695,27 +7702,27 @@ var handlePagination = function handlePagination() {
                   });
                 }
 
-                _context.next = 23;
+                _context.next = 24;
                 break;
-
-              case 22:
-                throw new Error(data.message);
 
               case 23:
-                _context.next = 28;
+                throw new Error(data.message);
+
+              case 24:
+                _context.next = 29;
                 break;
 
-              case 25:
-                _context.prev = 25;
+              case 26:
+                _context.prev = 26;
                 _context.t0 = _context["catch"](7);
                 (0, _alert.showAlert)("error", _context.t0.message);
 
-              case 28:
+              case 29:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[7, 25]]);
+        }, _callee, null, [[7, 26]]);
       }));
 
       return function (_x) {

@@ -9,6 +9,7 @@ const nextPageEl = document.querySelector(".next");
 const firstPageEl = document.querySelector(".first");
 const lastPageEl = document.querySelector(".last");
 const pageEls = document.querySelectorAll(".page__item");
+const container = document.querySelector(".card-container");
 
 const updatePage = (currentPage, first = true) => {
     prevPageEl.textContent = first ? currentPage : currentPage - 2;
@@ -80,8 +81,12 @@ const handlePagination = () => {
                         <div class="card" data-user-id="${d._id}"><button class="button">X</button><a href="/update-user/${d._id}"><svg class="edit__icon"><use xlink:href="img/icons.svg#icon-edit"></use></svg></a><input class="checkbox" type="checkbox"><div class="card__header"><div class="card__picture"><img class="card__picture-img" src="/img/users/${d.photo}" alt="Photo of ${d.name}"></div><h3 class="heading-quaternary"><span>${d.name}</span></h3></div><div class="card__footer"><p><span class="card__footer-value">${d.email}</span> <span class="card__footer-text"></span></p><p class="card__ratings"><span class="card__footer-value">${d.role}</span></p></div></div>`;
                     });
 
-                    document.querySelector(".card-container").innerHTML =
-                        markup;
+                    while (container.firstChild) {
+                        container.removeChild(container.firstChild);
+                    }
+                    // container.replaceChildren(markup);
+
+                    container.insertAdjacentHTML("afterbegin", markup);
 
                     const deleteBtns = document.querySelectorAll(".button");
                     if (
