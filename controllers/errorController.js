@@ -2,7 +2,7 @@ const AppError = require("../lib/appError");
 
 const sendError = (req, res, err, env) => {
     // Chapter: Development Error
-    if (env === "development ") {
+    if (env === "development") {
         // Key: API
         if (req.originalUrl.startsWith("/api")) {
             return res.status(err.statusCode).json({
@@ -80,7 +80,7 @@ module.exports = (err, req, res, _next) => {
     err.statusCode = err.statusCode || 500;
     err.status = err.status || "Error!";
 
-    if (process.env.NODE_ENV === "development ")
+    if (process.env.NODE_ENV === "development")
         sendError(req, res, err, "development");
     else {
         let error = { ...err };

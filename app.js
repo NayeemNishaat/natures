@@ -59,7 +59,7 @@ app.use(
 ); // Note: Called a function but app.use() expects a function not a function call. But the called function will return a function so no worries. Important: csp and coep are disabled in order to add script from remote source!
 
 // Part: Development logging
-if (process.env.NODE_ENV === "development ") {
+if (process.env.NODE_ENV === "development") {
     // Do development logging!
 }
 

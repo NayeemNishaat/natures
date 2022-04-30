@@ -117,7 +117,7 @@ process.on("SIGTERM", () => {
 // Chapter: Deploy with Heroku
 // Key: Login with "heroku login"
 // Key: Define start npm script -> "start": "node server.js"
-// Key: Define engine -> "engines": { "node": ">=14.0.0"}
+// Key: Define engine -> "engines": { "node": "=18.0.0"}
 // Key: Set port by using "process.env.port"
 // Key: Create project repo on heroku with "heroku create"
 // Key: Push repo on heroku using "git push heroku main"
