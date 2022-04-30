@@ -9,7 +9,7 @@ import { bookTour } from "./stripe";
 import { showAlert } from "./alert";
 import { submitReview } from "./review";
 import { showModal, hideModal } from "./alert";
-import { getTourData } from "./helper";
+import { getTourData } from "./tour";
 import manageModel from "./manageModel";
 import handlePagination from "./paginate";
 
@@ -20,6 +20,8 @@ const signupForm = document.querySelector(".form--signup");
 const userDateForm = document.querySelector(".form-user-data");
 const userPhotoForm = document.querySelector(".form-user-photo");
 const userPasswordForm = document.querySelector(".form-user-password");
+const tourForm = document.querySelector(".tour-form");
+const userForm = document.querySelector(".user-form");
 const logoutBtn = document.querySelector(".nav__el--logout");
 const photoes = document.querySelectorAll(".photo");
 const bookBtn = document.getElementById("book-tour");
@@ -27,7 +29,6 @@ const alertMessage = document.querySelector("body").dataset.alert;
 const reviewBtn = document.querySelector(".form--review");
 const deleteBtns = document.querySelectorAll(".button");
 const deleteSelected = document.getElementById("delete-selected");
-const tourForm = document.querySelector(".tour-form");
 const tourId = document.querySelector(".card")?.dataset.tourId;
 const userId = document.querySelector(".card")?.dataset.userId;
 const addLocation = document.querySelector(".js__loc");
@@ -261,7 +262,7 @@ if (deleteBtns && userId) {
     deleteBtns.forEach((btn) => {
         btn.addEventListener("click", (event) => {
             showModal();
-            console.log(event.target.parentElement.dataset.userId);
+
             document.querySelectorAll(".js__btn").forEach((el) =>
                 el.addEventListener("click", (e) => {
                     hideModal();
@@ -297,6 +298,19 @@ if (deleteSelected && userId) {
                 if (e.target.textContent !== "Confirm") return;
                 new manageModel("users", userIds).delete();
             })
+        );
+    });
+}
+
+if (userForm) {
+    userForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const role = document.getElementById("role").value;
+
+        return new manageModel("users").createUpdate(
+            JSON.stringify({ role }),
+            location.pathname.slice(location.pathname.lastIndexOf("/") + 1)
         );
     });
 }

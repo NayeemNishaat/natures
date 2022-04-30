@@ -1,0 +1,12 @@
+extends base
+
+block main
+	main.main
+		.user-form
+			h2.heading-secondary.ma-bt-lg= "Update User"
+			form.form
+				.form__group
+					label.form__label(for='name') User Role
+					input#role.form__input(type='text', value= user.role, placeholder='admin/lead-guide/guide', required)
+				.form__group
+					button.btn.btn--green= "Submit"

@@ -54,26 +54,35 @@ class manageModel {
         }
     }
 
-    async createUpdate(formData, tourId = null) {
+    async createUpdate(userData, docId = null) {
         try {
             let res;
 
-            if (!tourId)
+            if (!docId)
                 res = await fetch(`/api/v1/${this.collection}`, {
                     method: "POST",
-                    body: formData
+                    body: userData
                 });
             else
-                res = await fetch(`/api/v1/${this.collection}/${tourId}`, {
+                res = await fetch(`/api/v1/${this.collection}/${docId}`, {
                     method: "PATCH",
-                    body: formData
+                    headers:
+                        this.collection === "users"
+                            ? {
+                                  "Content-Type": "application/json"
+                              }
+                            : {},
+                    body: userData
                 });
 
             const data = await res.json();
 
             if (data.status === "success") {
                 showAlert("success", "Successful!", 2);
-                setTimeout(() => location.assign("/manage-tours"), 2000);
+                setTimeout(
+                    () => location.assign(`/manage-${this.collection}`),
+                    2000
+                );
             } else throw new Error(data.message);
         } catch (err) {
             showAlert("error", err.message, 2);

@@ -4,7 +4,6 @@ block main
 	main.main
 		.btn-delete
 			button.btn-small.btn--green#delete-selected Delete Selected
-			a(href="/create-tour").btn-small.btn--green#create Create User
 		.card-container
 			each user in users
 				.card(data-user-id=`${user.id}`)

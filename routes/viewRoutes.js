@@ -52,12 +52,6 @@ router.get(
     viewsController.getManageTours
 );
 router.get(
-    "/manage-users",
-    authController.protect,
-    authController.restrictTo("admin"),
-    viewsController.getManageUsers
-);
-router.get(
     "/create-tour",
     authController.protect,
     authController.restrictTo("admin", "lead-guide"),
@@ -68,6 +62,18 @@ router.get(
     authController.protect,
     authController.restrictTo("admin", "lead-guide"),
     viewsController.getUpdateTour
+);
+router.get(
+    "/manage-users",
+    authController.protect,
+    authController.restrictTo("admin"),
+    viewsController.getManageUsers
+);
+router.get(
+    "/update-user/:userId",
+    authController.protect,
+    authController.restrictTo("admin"),
+    viewsController.getUpdateUser
 );
 
 router.post(

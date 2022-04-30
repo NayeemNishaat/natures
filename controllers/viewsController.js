@@ -171,3 +171,12 @@ exports.getManageUsers = catchAsync(async (req, res) => {
         lastPage
     });
 });
+
+exports.getUpdateUser = catchAsync(async (req, res) => {
+    const user = await User.findById(req.params.userId);
+
+    res.status(200).render("updateUser", {
+        title: "Update User",
+        user
+    });
+});
