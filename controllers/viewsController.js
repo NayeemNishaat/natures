@@ -177,6 +177,6 @@ exports.getUpdateUser = catchAsync(async (req, res) => {
 
     res.status(200).render("updateUser", {
         title: "Update User",
-        user
+        role: user.role
     });
 });
