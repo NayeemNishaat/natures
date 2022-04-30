@@ -91,7 +91,10 @@ module.exports = (err, req, res, _next) => {
         }
 
         if (error.code === 11000) error = handleDuplicateFieldsDB(error);
-        if (error._message === "Tour validation failed") {
+        if (
+            error._message === "Tour validation failed" ||
+            error._message === "Validation failed"
+        ) {
             error = handleValidationErrorDB(error);
         }
 
