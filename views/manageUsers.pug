@@ -28,8 +28,10 @@ block main
 							span.card__footer-value= user.role
 		div.paginate
 			ul.page__list
-				li.page__item.first.active(data-page=1) First
-				li.page__item.prev.active(data-page=1) 1
-				li.page__item.middle(data-page=2) 2
-				li.page__item.next(data-page=3) 3
-				li.page__item.last(data-page=lastPage) Last
+				if lastPage>1
+					li.page__item.first.active(data-page=1) First
+					li.page__item.prev.active(data-page=1) 1
+					li.page__item.middle(data-page=2) 2
+					if lastPage>2
+						li.page__item.next(data-page=3) 3
+					li.page__item.last(data-page=lastPage) Last

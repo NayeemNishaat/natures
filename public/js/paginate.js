@@ -15,8 +15,10 @@ const updatePage = (currentPage, first = true) => {
     prevPageEl.dataset.page = first ? currentPage : currentPage - 2;
     middlePageEl.textContent = first ? currentPage + 1 : currentPage - 1;
     middlePageEl.dataset.page = first ? currentPage + 1 : currentPage - 1;
-    nextPageEl.textContent = first ? currentPage + 2 : currentPage;
-    nextPageEl.dataset.page = first ? currentPage + 2 : currentPage;
+    if (lastPage > 2) {
+        nextPageEl.textContent = first ? currentPage + 2 : currentPage;
+        nextPageEl.dataset.page = first ? currentPage + 2 : currentPage;
+    }
 };
 
 const resolvePage = (currentPage) => {
@@ -40,9 +42,14 @@ const handlePagination = () => {
                 updatePage(currentPage);
             }
             if (currentPage === lastPage) {
-                nextPageEl.classList.add("active");
-                lastPageEl.classList.add("active");
-                updatePage(currentPage, false);
+                if (lastPage > 2) {
+                    nextPageEl.classList.add("active");
+                    lastPageEl.classList.add("active");
+                    updatePage(currentPage, false);
+                } else {
+                    middlePageEl.classList.add("active");
+                    lastPageEl.classList.add("active");
+                }
             }
 
             let prevPage, nextPage;
