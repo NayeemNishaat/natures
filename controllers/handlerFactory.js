@@ -122,7 +122,7 @@ exports.getOne = (Model, populateOptions) =>
         });
     });
 
-exports.getAll = (Model) =>
+exports.getAll = (Model, populateOption) =>
     catchAsync(async (req, res) => {
         // Warning: Hack to allow for nested  GET reviews on tour best would be using a middleware but a middleware will be too much for the two lines of code. But I changed my mind. Using middleware! 😉 Sorry my bad, middleware can only manipulate req/res object not other thing i.e. Model! So will use a helper function for this.
         // let filter = {};
@@ -144,7 +144,8 @@ exports.getAll = (Model) =>
         // Important: Executionstatistics
         // const doc = await features.query.explain(); Use index to make quering much more efficient!
 
-        const doc = await features.query;
+        const doc = await features.query.populate(populateOption);
+
         res.status(200).json({
             status: "success",
             results: doc.length,

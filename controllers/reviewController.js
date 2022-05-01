@@ -11,7 +11,10 @@ exports.getAllReviewsSpecificTour = (req, res, next) => {
     next();
 };
 
-exports.getAllReviews = factory.getAll(Review); // Important: Note: Express only calls first callback with (req, res, next). If we want this in 2nd level we need to call the 1st function() then declare the inner function. Then express will call the inner function as callback function. Btw in this way we can pass parameters to the callback function!
+exports.getAllReviews = factory.getAll(Review, {
+    path: "tour",
+    select: "name imageCover"
+}); // Important: Note: Express only calls first callback with (req, res, next). If we want this in 2nd level we need to call the 1st function() then declare the inner function. Then express will call the inner function as callback function. Btw in this way we can pass parameters to the callback function!
 
 // exports.getAllReviews = catchAsync(async (req, res, next) => {
 //     let filter = {};
