@@ -1,0 +1,36 @@
+extends base
+
+block main
+	main.main
+		.btn-delete
+			button.btn-small.btn--green#delete-selected Delete Selected
+		.card-container
+			- reviews.length ?  reviews = reviews : reviews = null
+			if !reviews
+				h2(style={"text-align":"center"})
+				h2(style={"text-align":"center"}) No Reviews Found
+			else
+				each review in reviews
+					.card(data-review-id=`${review.id}`)
+						button.button X
+						input.onlycb.checkbox(type="checkbox")
+						.card__header
+							.card__picture
+								.card__picture-overlay &nbsp;
+								img.card__picture-img(src=`/img/tours/${review.tour.imageCover}`, alt=`${review.tour.name}`)
+							h3.heading-tertirary
+								span= review.tour.name
+
+						.card__details
+							h4.card__sub-heading= "Review"
+							p.card__text= review.review
+
+						.card__footer
+							p
+								span.card__footer-text= "User"
+								| 
+								span.card__footer-value= review.user.name
+							p.card__ratings
+								span.card__footer-text= "Rating -"
+								| 
+								span.card__footer-value #{review.rating}

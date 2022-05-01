@@ -180,3 +180,12 @@ exports.getUpdateUser = catchAsync(async (req, res) => {
         role: user.role
     });
 });
+
+exports.getManageReviews = catchAsync(async (req, res) => {
+    const reviews = await Review.find().populate("tour", "name imageCover");
+
+    res.status(200).render("manageReviews", {
+        title: "Manage Reviews",
+        reviews
+    });
+});

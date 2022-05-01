@@ -1439,6 +1439,9 @@ body {
     top: 1rem;
     right: 7rem;
 }
+.onlycb {
+    right: 4rem;
+}
 .checkbox:checked:hover {
     opacity: 1;
 }

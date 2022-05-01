@@ -31,6 +31,7 @@ const deleteBtns = document.querySelectorAll(".button");
 const deleteSelected = document.getElementById("delete-selected");
 const tourId = document.querySelector(".card")?.dataset.tourId;
 const userId = document.querySelector(".card")?.dataset.userId;
+const reviewId = document.querySelector(".card")?.dataset.reviewId;
 const addLocation = document.querySelector(".js__loc");
 const addDate = document.querySelector(".js__date");
 const paginate = document.querySelector(".paginate");
@@ -311,6 +312,50 @@ if (userForm) {
         return new manageModel("users").createUpdate(
             JSON.stringify({ role }),
             location.pathname.slice(location.pathname.lastIndexOf("/") + 1)
+        );
+    });
+}
+
+if (deleteBtns && reviewId) {
+    deleteBtns.forEach((btn) => {
+        btn.addEventListener("click", (event) => {
+            showModal();
+
+            document.querySelectorAll(".js__btn").forEach((el) =>
+                el.addEventListener("click", (e) => {
+                    hideModal();
+
+                    if (e.target.textContent !== "Confirm") return;
+
+                    new manageModel(
+                        "reviews",
+                        event.target.parentElement.dataset.reviewId
+                    ).delete();
+                })
+            );
+        });
+    });
+}
+
+if (deleteSelected && reviewId) {
+    deleteSelected.addEventListener("click", () => {
+        if (document.querySelectorAll(".checkbox:checked").length === 0)
+            return showAlert("error", "Please Select First!", 2);
+        const reviewIds = [];
+
+        document.querySelectorAll(".checkbox:checked").forEach((el) => {
+            reviewIds.push(el.closest(".card").dataset.reviewId);
+        });
+
+        showModal();
+
+        document.querySelectorAll(".js__btn").forEach((el) =>
+            el.addEventListener("click", (e) => {
+                hideModal();
+
+                if (e.target.textContent !== "Confirm") return;
+                new manageModel("reviews", reviewIds).delete();
+            })
         );
     });
 }
