@@ -1,4 +1,5 @@
 import { showAlert } from "./alert";
+import { deleteReview } from ".";
 
 export const submitReview = async (tourId, review, rating) => {
     try {
@@ -51,6 +52,8 @@ export const showReviews = async (selectedTour) => {
             document.querySelector(".card-container").innerHTML =
                 markup ||
                 `""<h1 style="text-align:center;">No Reviews Found!</h1>`;
+
+            deleteReview();
         } else throw new Error(data.message);
     } catch (err) {
         showAlert("error", err.message);
