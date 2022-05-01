@@ -7636,11 +7636,9 @@ exports.default = _default;
 
 var _alert = require("./alert");
 
-var _manageModel = _interopRequireDefault(require("./manageModel"));
+var _ = require(".");
 
 var _document$querySelect;
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
@@ -7685,7 +7683,7 @@ var handlePagination = function handlePagination() {
   pageEls.forEach(function (pageEl) {
     pageEl.addEventListener("click", /*#__PURE__*/function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(e) {
-        var currentPage, prevPage, nextPage, _resolvePage, _resolvePage2, res, data, markup, _document$querySelect2, deleteBtns;
+        var currentPage, prevPage, nextPage, _resolvePage, _resolvePage2, res, data, markup;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
@@ -7746,7 +7744,7 @@ var handlePagination = function handlePagination() {
                 markup = "";
 
                 if (!(data.status === "success")) {
-                  _context.next = 23;
+                  _context.next = 22;
                   break;
                 }
 
@@ -7760,44 +7758,28 @@ var handlePagination = function handlePagination() {
 
 
                 container.insertAdjacentHTML("afterbegin", markup);
-                deleteBtns = document.querySelectorAll(".button");
-
-                if (deleteBtns && (_document$querySelect2 = document.querySelector(".card")) !== null && _document$querySelect2 !== void 0 && _document$querySelect2.dataset.userId) {
-                  deleteBtns.forEach(function (btn) {
-                    btn.addEventListener("click", function (event) {
-                      (0, _alert.showModal)();
-                      document.querySelectorAll(".js__btn").forEach(function (el) {
-                        return el.addEventListener("click", function (e) {
-                          (0, _alert.hideModal)();
-                          if (e.target.textContent !== "Confirm") return;
-                          new _manageModel.default("users", event.target.parentElement.dataset.userId).delete();
-                        });
-                      });
-                    });
-                  });
-                }
-
-                _context.next = 24;
+                (0, _.deleteUser)();
+                _context.next = 23;
                 break;
 
-              case 23:
+              case 22:
                 throw new Error(data.message);
 
-              case 24:
-                _context.next = 29;
+              case 23:
+                _context.next = 28;
                 break;
 
-              case 26:
-                _context.prev = 26;
+              case 25:
+                _context.prev = 25;
                 _context.t0 = _context["catch"](7);
                 (0, _alert.showAlert)("error", _context.t0.message);
 
-              case 29:
+              case 28:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[7, 26]]);
+        }, _callee, null, [[7, 25]]);
       }));
 
       return function (_x) {
@@ -7808,13 +7790,13 @@ var handlePagination = function handlePagination() {
 };
 
 module.exports = handlePagination;
-},{"./alert":"alert.js","./manageModel":"manageModel.js"}],"index.js":[function(require,module,exports) {
+},{"./alert":"alert.js",".":"index.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.deleteReview = void 0;
+exports.deleteUser = exports.deleteTour = exports.deleteReview = void 0;
 
 require("core-js/modules/es6.array.copy-within.js");
 
@@ -8098,8 +8080,6 @@ var _manageModel = _interopRequireDefault(require("./manageModel"));
 
 var _paginate = _interopRequireDefault(require("./paginate"));
 
-var _document$querySelect, _document$querySelect2;
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -8123,10 +8103,6 @@ var photoes = document.querySelectorAll(".photo");
 var bookBtn = document.getElementById("book-tour");
 var alertMessage = document.querySelector("body").dataset.alert;
 var reviewBtn = document.querySelector(".form--review");
-var deleteBtns = document.querySelectorAll(".button");
-var deleteSelected = document.getElementById("delete-selected");
-var tourId = (_document$querySelect = document.querySelector(".card")) === null || _document$querySelect === void 0 ? void 0 : _document$querySelect.dataset.tourId;
-var userId = (_document$querySelect2 = document.querySelector(".card")) === null || _document$querySelect2 === void 0 ? void 0 : _document$querySelect2.dataset.userId;
 var addLocation = document.querySelector(".js__loc");
 var addDate = document.querySelector(".js__date");
 var paginate = document.querySelector(".paginate");
@@ -8250,9 +8226,31 @@ if (reviewBtn) {
     var rating = +document.getElementById("rating").value;
     (0, _review.submitReview)(tourId, review, rating);
   });
+} // Chapter: Tour
+
+
+if (tourForm) {
+  addLocation.addEventListener("click", function () {
+    document.querySelector(".js__loc").insertAdjacentHTML("beforeBegin", "<input class=\"location form__input\" type=\"text\" placeholder=\"Lng,Lat|address|description|day\" required>");
+  });
+  addDate.addEventListener("click", function () {
+    document.querySelector(".js__date").insertAdjacentHTML("beforeBegin", "<input class=\"form__input startDate\" type=\"datetime-local\" placeholder=\"Tour Starting Date\" required>");
+  });
+  tourForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var formData = (0, _tour.getTourData)();
+    if (location.pathname.startsWith("/update-tour")) return new _manageModel.default("tours").createUpdate(formData, location.pathname.slice(location.pathname.lastIndexOf("/") + 1));
+    new _manageModel.default("tours").createUpdate(formData);
+  });
 }
 
-if (deleteBtns && tourId) {
+var deleteTour = function deleteTour() {
+  var _document$querySelect;
+
+  var tourId = (_document$querySelect = document.querySelector(".card")) === null || _document$querySelect === void 0 ? void 0 : _document$querySelect.dataset.tourId;
+  if (!tourId) return;
+  var deleteBtns = document.querySelectorAll(".button");
+  var deleteSelected = document.getElementById("delete-selected");
   deleteBtns.forEach(function (btn) {
     btn.addEventListener("click", function (event) {
       (0, _alert.showModal)();
@@ -8269,9 +8267,6 @@ if (deleteBtns && tourId) {
       });
     });
   });
-}
-
-if (deleteSelected && tourId) {
   deleteSelected.addEventListener("click", function () {
     if (document.querySelectorAll(".checkbox:checked").length === 0) return (0, _alert.showAlert)("error", "Please Select First!", 2);
     var tourIds = [];
@@ -8292,32 +8287,33 @@ if (deleteSelected && tourId) {
       });
     });
   });
-}
+};
 
-if (addLocation && addDate) {
-  addLocation.addEventListener("click", function () {
-    document.querySelector(".js__loc").insertAdjacentHTML("beforeBegin", "<input class=\"location form__input\" type=\"text\" placeholder=\"Lng,Lat|address|description|day\" required>");
-  });
-  addDate.addEventListener("click", function () {
-    document.querySelector(".js__date").insertAdjacentHTML("beforeBegin", "<input class=\"form__input startDate\" type=\"datetime-local\" placeholder=\"Tour Starting Date\" required>");
-  });
-}
+exports.deleteTour = deleteTour;
+deleteTour(); // Chapter: User
 
-if (tourForm) {
-  tourForm.addEventListener("submit", function (e) {
+if (userForm) {
+  userForm.addEventListener("submit", function (e) {
     e.preventDefault();
-    var formData = (0, _tour.getTourData)();
-    if (location.pathname.startsWith("/update-tour")) return new _manageModel.default("tours").createUpdate(formData, location.pathname.slice(location.pathname.lastIndexOf("/") + 1));
-    new _manageModel.default("tours").createUpdate(formData);
+    var role = document.getElementById("role").value;
+    return new _manageModel.default("users").createUpdate(JSON.stringify({
+      role: role
+    }), location.pathname.slice(location.pathname.lastIndexOf("/") + 1));
   });
 }
 
 if (paginate) {
   (0, _paginate.default)();
-} // Warning: This deleteBtns only selects the initial page's buttons not the other page's buttons. So to select those buttons the logics are written inside paginate.js
+} // Warning: This deleteBtns only selects the initial page's buttons not the other page's buttons. So to select those buttons the logics are written inside paginate.js but now refactored with a function technically the same!
 
 
-if (deleteBtns && userId) {
+var deleteUser = function deleteUser() {
+  var _document$querySelect2;
+
+  var userId = (_document$querySelect2 = document.querySelector(".card")) === null || _document$querySelect2 === void 0 ? void 0 : _document$querySelect2.dataset.userId;
+  if (!userId) return;
+  var deleteBtns = document.querySelectorAll(".button");
+  var deleteSelected = document.getElementById("delete-selected");
   deleteBtns.forEach(function (btn) {
     btn.addEventListener("click", function (event) {
       (0, _alert.showModal)();
@@ -8330,9 +8326,6 @@ if (deleteBtns && userId) {
       });
     });
   });
-}
-
-if (deleteSelected && userId) {
   deleteSelected.addEventListener("click", function () {
     if (document.querySelectorAll(".checkbox:checked").length === 0) return (0, _alert.showAlert)("error", "Please Select First!", 2);
     var userIds = [];
@@ -8348,17 +8341,10 @@ if (deleteSelected && userId) {
       });
     });
   });
-}
+};
 
-if (userForm) {
-  userForm.addEventListener("submit", function (e) {
-    e.preventDefault();
-    var role = document.getElementById("role").value;
-    return new _manageModel.default("users").createUpdate(JSON.stringify({
-      role: role
-    }), location.pathname.slice(location.pathname.lastIndexOf("/") + 1));
-  });
-}
+exports.deleteUser = deleteUser;
+deleteUser(); // Chapter: Review
 
 if (select) {
   select.addEventListener("change", function () {
@@ -8370,41 +8356,37 @@ if (select) {
 var deleteReview = function deleteReview() {
   var _document$querySelect3;
 
-  var deleteBtns = document.querySelectorAll(".button");
   var reviewId = (_document$querySelect3 = document.querySelector(".card")) === null || _document$querySelect3 === void 0 ? void 0 : _document$querySelect3.dataset.reviewId;
-
-  if (deleteBtns && reviewId) {
-    deleteBtns.forEach(function (btn) {
-      btn.addEventListener("click", function (event) {
-        (0, _alert.showModal)();
-        document.querySelectorAll(".js__btn").forEach(function (el) {
-          return el.addEventListener("click", function (e) {
-            (0, _alert.hideModal)();
-            if (e.target.textContent !== "Confirm") return;
-            new _manageModel.default("reviews", event.target.parentElement.dataset.reviewId).delete();
-          });
-        });
-      });
-    });
-  }
-
-  if (deleteSelected && reviewId) {
-    deleteSelected.addEventListener("click", function () {
-      if (document.querySelectorAll(".checkbox:checked").length === 0) return (0, _alert.showAlert)("error", "Please Select First!", 2);
-      var reviewIds = [];
-      document.querySelectorAll(".checkbox:checked").forEach(function (el) {
-        reviewIds.push(el.closest(".card").dataset.reviewId);
-      });
+  if (!reviewId) return;
+  var deleteBtns = document.querySelectorAll(".button");
+  var deleteSelected = document.getElementById("delete-selected");
+  deleteBtns.forEach(function (btn) {
+    btn.addEventListener("click", function (event) {
       (0, _alert.showModal)();
       document.querySelectorAll(".js__btn").forEach(function (el) {
         return el.addEventListener("click", function (e) {
           (0, _alert.hideModal)();
           if (e.target.textContent !== "Confirm") return;
-          new _manageModel.default("reviews", reviewIds).delete();
+          new _manageModel.default("reviews", event.target.parentElement.dataset.reviewId).delete();
         });
       });
     });
-  }
+  });
+  deleteSelected.addEventListener("click", function () {
+    if (document.querySelectorAll(".checkbox:checked").length === 0) return (0, _alert.showAlert)("error", "Please Select First!", 2);
+    var reviewIds = [];
+    document.querySelectorAll(".checkbox:checked").forEach(function (el) {
+      reviewIds.push(el.closest(".card").dataset.reviewId);
+    });
+    (0, _alert.showModal)();
+    document.querySelectorAll(".js__btn").forEach(function (el) {
+      return el.addEventListener("click", function (e) {
+        (0, _alert.hideModal)();
+        if (e.target.textContent !== "Confirm") return;
+        new _manageModel.default("reviews", reviewIds).delete();
+      });
+    });
+  });
 };
 
 exports.deleteReview = deleteReview;

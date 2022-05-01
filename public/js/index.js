@@ -27,10 +27,6 @@ const photoes = document.querySelectorAll(".photo");
 const bookBtn = document.getElementById("book-tour");
 const alertMessage = document.querySelector("body").dataset.alert;
 const reviewBtn = document.querySelector(".form--review");
-const deleteBtns = document.querySelectorAll(".button");
-const deleteSelected = document.getElementById("delete-selected");
-const tourId = document.querySelector(".card")?.dataset.tourId;
-const userId = document.querySelector(".card")?.dataset.userId;
 const addLocation = document.querySelector(".js__loc");
 const addDate = document.querySelector(".js__date");
 const paginate = document.querySelector(".paginate");
@@ -151,7 +147,49 @@ if (reviewBtn) {
     });
 }
 
-if (deleteBtns && tourId) {
+// Chapter: Tour
+if (tourForm) {
+    addLocation.addEventListener("click", () => {
+        document
+            .querySelector(".js__loc")
+            .insertAdjacentHTML(
+                "beforeBegin",
+                `<input class="location form__input" type="text" placeholder="Lng,Lat|address|description|day" required>`
+            );
+    });
+
+    addDate.addEventListener("click", () => {
+        document
+            .querySelector(".js__date")
+            .insertAdjacentHTML(
+                "beforeBegin",
+                `<input class="form__input startDate" type="datetime-local" placeholder="Tour Starting Date" required>`
+            );
+    });
+
+    tourForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const formData = getTourData();
+
+        if (location.pathname.startsWith("/update-tour"))
+            return new manageModel("tours").createUpdate(
+                formData,
+                location.pathname.slice(location.pathname.lastIndexOf("/") + 1)
+            );
+
+        new manageModel("tours").createUpdate(formData);
+    });
+}
+
+export const deleteTour = () => {
+    const tourId = document.querySelector(".card")?.dataset.tourId;
+
+    if (!tourId) return;
+
+    const deleteBtns = document.querySelectorAll(".button");
+    const deleteSelected = document.getElementById("delete-selected");
+
     deleteBtns.forEach((btn) => {
         btn.addEventListener("click", (event) => {
             showModal();
@@ -180,9 +218,7 @@ if (deleteBtns && tourId) {
             );
         });
     });
-}
 
-if (deleteSelected && tourId) {
     deleteSelected.addEventListener("click", () => {
         if (document.querySelectorAll(".checkbox:checked").length === 0)
             return showAlert("error", "Please Select First!", 2);
@@ -216,41 +252,20 @@ if (deleteSelected && tourId) {
             })
         );
     });
-}
+};
+deleteTour();
 
-if (addLocation && addDate) {
-    addLocation.addEventListener("click", () => {
-        document
-            .querySelector(".js__loc")
-            .insertAdjacentHTML(
-                "beforeBegin",
-                `<input class="location form__input" type="text" placeholder="Lng,Lat|address|description|day" required>`
-            );
-    });
-
-    addDate.addEventListener("click", () => {
-        document
-            .querySelector(".js__date")
-            .insertAdjacentHTML(
-                "beforeBegin",
-                `<input class="form__input startDate" type="datetime-local" placeholder="Tour Starting Date" required>`
-            );
-    });
-}
-
-if (tourForm) {
-    tourForm.addEventListener("submit", (e) => {
+// Chapter: User
+if (userForm) {
+    userForm.addEventListener("submit", (e) => {
         e.preventDefault();
 
-        const formData = getTourData();
+        const role = document.getElementById("role").value;
 
-        if (location.pathname.startsWith("/update-tour"))
-            return new manageModel("tours").createUpdate(
-                formData,
-                location.pathname.slice(location.pathname.lastIndexOf("/") + 1)
-            );
-
-        new manageModel("tours").createUpdate(formData);
+        return new manageModel("users").createUpdate(
+            JSON.stringify({ role }),
+            location.pathname.slice(location.pathname.lastIndexOf("/") + 1)
+        );
     });
 }
 
@@ -258,8 +273,15 @@ if (paginate) {
     handlePagination();
 }
 
-// Warning: This deleteBtns only selects the initial page's buttons not the other page's buttons. So to select those buttons the logics are written inside paginate.js
-if (deleteBtns && userId) {
+// Warning: This deleteBtns only selects the initial page's buttons not the other page's buttons. So to select those buttons the logics are written inside paginate.js but now refactored with a function technically the same!
+export const deleteUser = () => {
+    const userId = document.querySelector(".card")?.dataset.userId;
+
+    if (!userId) return;
+
+    const deleteBtns = document.querySelectorAll(".button");
+    const deleteSelected = document.getElementById("delete-selected");
+
     deleteBtns.forEach((btn) => {
         btn.addEventListener("click", (event) => {
             showModal();
@@ -278,9 +300,7 @@ if (deleteBtns && userId) {
             );
         });
     });
-}
 
-if (deleteSelected && userId) {
     deleteSelected.addEventListener("click", () => {
         if (document.querySelectorAll(".checkbox:checked").length === 0)
             return showAlert("error", "Please Select First!", 2);
@@ -301,21 +321,10 @@ if (deleteSelected && userId) {
             })
         );
     });
-}
+};
+deleteUser();
 
-if (userForm) {
-    userForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-
-        const role = document.getElementById("role").value;
-
-        return new manageModel("users").createUpdate(
-            JSON.stringify({ role }),
-            location.pathname.slice(location.pathname.lastIndexOf("/") + 1)
-        );
-    });
-}
-
+// Chapter: Review
 if (select) {
     select.addEventListener("change", () => {
         const selectedTour =
@@ -325,40 +334,15 @@ if (select) {
 }
 
 export const deleteReview = () => {
-    const deleteBtns = document.querySelectorAll(".button");
     const reviewId = document.querySelector(".card")?.dataset.reviewId;
 
-    if (deleteBtns && reviewId) {
-        deleteBtns.forEach((btn) => {
-            btn.addEventListener("click", (event) => {
-                showModal();
+    if (!reviewId) return;
 
-                document.querySelectorAll(".js__btn").forEach((el) =>
-                    el.addEventListener("click", (e) => {
-                        hideModal();
+    const deleteBtns = document.querySelectorAll(".button");
+    const deleteSelected = document.getElementById("delete-selected");
 
-                        if (e.target.textContent !== "Confirm") return;
-
-                        new manageModel(
-                            "reviews",
-                            event.target.parentElement.dataset.reviewId
-                        ).delete();
-                    })
-                );
-            });
-        });
-    }
-
-    if (deleteSelected && reviewId) {
-        deleteSelected.addEventListener("click", () => {
-            if (document.querySelectorAll(".checkbox:checked").length === 0)
-                return showAlert("error", "Please Select First!", 2);
-            const reviewIds = [];
-
-            document.querySelectorAll(".checkbox:checked").forEach((el) => {
-                reviewIds.push(el.closest(".card").dataset.reviewId);
-            });
-
+    deleteBtns.forEach((btn) => {
+        btn.addEventListener("click", (event) => {
             showModal();
 
             document.querySelectorAll(".js__btn").forEach((el) =>
@@ -366,10 +350,35 @@ export const deleteReview = () => {
                     hideModal();
 
                     if (e.target.textContent !== "Confirm") return;
-                    new manageModel("reviews", reviewIds).delete();
+
+                    new manageModel(
+                        "reviews",
+                        event.target.parentElement.dataset.reviewId
+                    ).delete();
                 })
             );
         });
-    }
+    });
+
+    deleteSelected.addEventListener("click", () => {
+        if (document.querySelectorAll(".checkbox:checked").length === 0)
+            return showAlert("error", "Please Select First!", 2);
+        const reviewIds = [];
+
+        document.querySelectorAll(".checkbox:checked").forEach((el) => {
+            reviewIds.push(el.closest(".card").dataset.reviewId);
+        });
+
+        showModal();
+
+        document.querySelectorAll(".js__btn").forEach((el) =>
+            el.addEventListener("click", (e) => {
+                hideModal();
+
+                if (e.target.textContent !== "Confirm") return;
+                new manageModel("reviews", reviewIds).delete();
+            })
+        );
+    });
 };
 deleteReview();

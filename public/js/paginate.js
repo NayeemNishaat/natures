@@ -1,6 +1,5 @@
 import { showAlert } from "./alert";
-import { showModal, hideModal } from "./alert";
-import manageModel from "./manageModel";
+import { deleteUser } from ".";
 
 const lastPage = +document.querySelector(".last")?.dataset.page;
 const middlePageEl = document.querySelector(".middle");
@@ -88,36 +87,7 @@ const handlePagination = () => {
 
                     container.insertAdjacentHTML("afterbegin", markup);
 
-                    const deleteBtns = document.querySelectorAll(".button");
-                    if (
-                        deleteBtns &&
-                        document.querySelector(".card")?.dataset.userId
-                    ) {
-                        deleteBtns.forEach((btn) => {
-                            btn.addEventListener("click", (event) => {
-                                showModal();
-
-                                document
-                                    .querySelectorAll(".js__btn")
-                                    .forEach((el) =>
-                                        el.addEventListener("click", (e) => {
-                                            hideModal();
-
-                                            if (
-                                                e.target.textContent !==
-                                                "Confirm"
-                                            )
-                                                return;
-
-                                            new manageModel(
-                                                "users",
-                                                event.target.parentElement.dataset.userId
-                                            ).delete();
-                                        })
-                                    );
-                            });
-                        });
-                    }
+                    deleteUser();
                 } else throw new Error(data.message);
             } catch (err) {
                 showAlert("error", err.message);
