@@ -1521,6 +1521,13 @@ body {
     cursor: auto;
 }
 
+/* Chapter: Select */
+select {
+    outline: none;
+    padding: 1.25rem 0rem !important;
+    text-align: center;
+}
+
 /* Key: Responsive */
 @media only screen and (max-width: 768px) {
     .sectionTable {

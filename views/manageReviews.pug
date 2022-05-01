@@ -4,6 +4,10 @@ block main
 	main.main
 		.btn-delete
 			button.btn-small.btn--green#delete-selected Delete Selected
+			select.btn-small.btn--green#tours(name="tours")
+				option(value="") All Reviews
+				each tour in tours
+					option(value=tour.id)= tour.name
 		.card-container
 			- reviews.length ?  reviews = reviews : reviews = null
 			if !reviews
@@ -27,7 +31,7 @@ block main
 
 						.card__footer
 							p
-								span.card__footer-text= "User"
+								span.card__footer-text= "User -"
 								| 
 								span.card__footer-value= review.user.name
 							p.card__ratings

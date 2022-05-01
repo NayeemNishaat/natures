@@ -183,9 +183,11 @@ exports.getUpdateUser = catchAsync(async (req, res) => {
 
 exports.getManageReviews = catchAsync(async (req, res) => {
     const reviews = await Review.find().populate("tour", "name imageCover");
+    const tours = await Tour.find().select("name");
 
     res.status(200).render("manageReviews", {
         title: "Manage Reviews",
-        reviews
+        reviews,
+        tours
     });
 });

@@ -7,7 +7,7 @@ import { displayMap } from "./mapbox";
 import { updateSettings } from "./updateSettings";
 import { bookTour } from "./stripe";
 import { showAlert } from "./alert";
-import { submitReview } from "./review";
+import { submitReview, showReviews } from "./review";
 import { showModal, hideModal } from "./alert";
 import { getTourData } from "./tour";
 import manageModel from "./manageModel";
@@ -35,6 +35,7 @@ const reviewId = document.querySelector(".card")?.dataset.reviewId;
 const addLocation = document.querySelector(".js__loc");
 const addDate = document.querySelector(".js__date");
 const paginate = document.querySelector(".paginate");
+const select = document.querySelector("select");
 
 // Chapter: Delegation
 if (alertMessage) showAlert("success", alertMessage, 20);
@@ -357,5 +358,13 @@ if (deleteSelected && reviewId) {
                 new manageModel("reviews", reviewIds).delete();
             })
         );
+    });
+}
+
+if (select) {
+    select.addEventListener("change", () => {
+        const selectedTour =
+            document.querySelector("select").selectedOptions[0].value;
+        showReviews(selectedTour);
     });
 }
