@@ -81,6 +81,12 @@ router.get(
     authController.restrictTo("admin"),
     viewsController.getManageReviews
 );
+router.get(
+    "/manage-bookings",
+    authController.protect,
+    authController.restrictTo("admin"),
+    viewsController.getManageBookings
+);
 
 router.post(
     "/submit-user-data",

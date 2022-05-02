@@ -191,3 +191,13 @@ exports.getManageReviews = catchAsync(async (req, res) => {
         tours
     });
 });
+
+exports.getManageBookings = catchAsync(async (req, res) => {
+    const bookings = await Booking.find();
+    console.log(bookings);
+
+    res.status(200).render("manageBookings", {
+        title: "Manage Bookings",
+        bookings
+    });
+});
