@@ -8384,7 +8384,7 @@ var deleteReview = function deleteReview() {
       });
     });
   });
-  deleteSelected.addEventListener("click", function () {
+  deleteSelected === null || deleteSelected === void 0 ? void 0 : deleteSelected.addEventListener("click", function () {
     if (document.querySelectorAll(".checkbox:checked").length === 0) return (0, _alert.showAlert)("error", "Please Select First!", 2);
     var reviewIds = [];
     document.querySelectorAll(".checkbox:checked").forEach(function (el) {

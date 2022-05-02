@@ -361,7 +361,7 @@ export const deleteReview = () => {
         });
     });
 
-    deleteSelected.addEventListener("click", () => {
+    deleteSelected?.addEventListener("click", () => {
         if (document.querySelectorAll(".checkbox:checked").length === 0)
             return showAlert("error", "Please Select First!", 2);
         const reviewIds = [];
