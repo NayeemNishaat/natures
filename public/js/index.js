@@ -444,9 +444,19 @@ if (bookingForm) {
         const price = document.getElementById("price").value;
         const paid = document.getElementById("status").value === "Paid";
 
-        return new manageModel("bookings").createUpdate(
-            JSON.stringify({ email, tourName, price, paid }),
-            location.pathname.slice(location.pathname.lastIndexOf("/") + 1)
-        );
+        const createBooking =
+            document.querySelector(".heading-secondary").textContent ===
+            "Create Booking";
+
+        if (createBooking)
+            return new manageModel("bookings").createUpdate(
+                JSON.stringify({ email, tourName, price, paid }),
+                null
+            );
+        else
+            return new manageModel("bookings").createUpdate(
+                JSON.stringify({ email, tourName, price, paid }),
+                location.pathname.slice(location.pathname.lastIndexOf("/") + 1)
+            );
     });
 }

@@ -7558,6 +7558,9 @@ var manageModel = /*#__PURE__*/function () {
                 _context2.next = 5;
                 return fetch("/api/v1/".concat(this.collection), {
                   method: "POST",
+                  headers: this.collection === "bookings" ? {
+                    "Content-Type": "application/json"
+                  } : {},
                   body: userData
                 });
 
@@ -8447,7 +8450,13 @@ if (bookingForm) {
     var tourName = document.getElementById("tourName").value;
     var price = document.getElementById("price").value;
     var paid = document.getElementById("status").value === "Paid";
-    return new _manageModel.default("bookings").createUpdate(JSON.stringify({
+    var createBooking = document.querySelector(".heading-secondary").textContent === "Create Booking";
+    if (createBooking) return new _manageModel.default("bookings").createUpdate(JSON.stringify({
+      email: email,
+      tourName: tourName,
+      price: price,
+      paid: paid
+    }), null);else return new _manageModel.default("bookings").createUpdate(JSON.stringify({
       email: email,
       tourName: tourName,
       price: price,

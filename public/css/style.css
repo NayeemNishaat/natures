@@ -182,7 +182,7 @@ body {
 .heading-primary,
 .heading-tertirary {
     color: #fff;
-    text-transform: uppercase;
+    text-transform: capitalize;
     font-weight: 300;
 }
 .heading-primary span,

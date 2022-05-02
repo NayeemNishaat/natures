@@ -61,6 +61,12 @@ class manageModel {
             if (!docId)
                 res = await fetch(`/api/v1/${this.collection}`, {
                     method: "POST",
+                    headers:
+                        this.collection === "bookings"
+                            ? {
+                                  "Content-Type": "application/json"
+                              }
+                            : {},
                     body: userData
                 });
             else
