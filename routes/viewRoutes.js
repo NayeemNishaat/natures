@@ -87,6 +87,12 @@ router.get(
     authController.restrictTo("admin"),
     viewsController.getManageBookings
 );
+router.get(
+    "/update-booking/:bookingId",
+    authController.protect,
+    authController.restrictTo("admin"),
+    viewsController.getUpdateBooking
+);
 
 router.post(
     "/submit-user-data",

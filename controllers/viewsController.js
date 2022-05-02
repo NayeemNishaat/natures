@@ -200,3 +200,13 @@ exports.getManageBookings = catchAsync(async (req, res) => {
         bookings
     });
 });
+
+exports.getUpdateBooking = catchAsync(async (req, res) => {
+    const booking = await Booking.findById(req.params.bookingId);
+    console.log(booking);
+
+    res.status(200).render("createUpdateBooking", {
+        title: "Update Booking",
+        booking
+    });
+});

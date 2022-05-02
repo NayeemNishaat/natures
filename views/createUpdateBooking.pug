@@ -1,0 +1,21 @@
+extends base
+
+block main
+	main.main
+		.user-form
+			h2.heading-secondary.ma-bt-lg Update Booking
+			form.form
+				.form__group
+					label.form__label(for='name') User Email
+					input#role.form__input(type='email', value= booking.user.email, placeholder='user@example.com', required)
+				.form__group
+					label.form__label(for='tourName') Tour Name
+					input#tourName.form__input(type='text', value= booking.tour.name, placeholder='Tour Name', required)
+				.form__group
+					label.form__label(for='price') Price
+					input#price.form__input(type='number', value= booking.price, placeholder='Tour Price', required)
+				.form__group
+					label.form__label(for='status') Status
+					input#status.form__input(type='text', value= booking.paid?"Paid":"Unpaid", placeholder='Paid|Unpaid', required)
+				.form__group
+					button.btn.btn--green= "Submit"
