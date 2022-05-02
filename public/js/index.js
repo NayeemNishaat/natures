@@ -382,3 +382,53 @@ export const deleteReview = () => {
     });
 };
 deleteReview();
+
+export const deleteBooking = () => {
+    const bookingId = document.querySelector(".card")?.dataset.bookingId;
+
+    if (!bookingId) return;
+
+    const deleteBtns = document.querySelectorAll(".button");
+    const deleteSelected = document.getElementById("delete-selected");
+
+    deleteBtns.forEach((btn) => {
+        btn.addEventListener("click", (event) => {
+            showModal();
+
+            document.querySelectorAll(".js__btn").forEach((el) =>
+                el.addEventListener("click", (e) => {
+                    hideModal();
+
+                    if (e.target.textContent !== "Confirm") return;
+
+                    new manageModel(
+                        "bookings",
+                        event.target.parentElement.dataset.bookingId
+                    ).delete();
+                })
+            );
+        });
+    });
+
+    deleteSelected.addEventListener("click", () => {
+        if (document.querySelectorAll(".checkbox:checked").length === 0)
+            return showAlert("error", "Please Select First!", 2);
+        const bookingIds = [];
+
+        document.querySelectorAll(".checkbox:checked").forEach((el) => {
+            bookingIds.push(el.closest(".card").dataset.bookingId);
+        });
+
+        showModal();
+
+        document.querySelectorAll(".js__btn").forEach((el) =>
+            el.addEventListener("click", (e) => {
+                hideModal();
+
+                if (e.target.textContent !== "Confirm") return;
+                new manageModel("bookings", bookingIds).delete();
+            })
+        );
+    });
+};
+deleteBooking();

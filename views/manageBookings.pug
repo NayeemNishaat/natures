@@ -2,29 +2,37 @@ extends base
 
 block main
 	main.main
+		.btn-delete
+			button.btn-small.btn--green#delete-selected Delete Selected
+			a(href="/create-booking").btn-small.btn--green#create Create Booking
 		.card-container
 			if bookings.length===0
 				h2(style={"text-align":"center"})
 				h2(style={"text-align":"center"}) No Booking Found
+			else
+				each booking in bookings
+					.card(data-booking-id=`${booking.id}`)
+						button.button X
+						a(href=`/update-user/${user.id}`)
+							svg.edit__icon
+								use(xlink:href='img/icons.svg#icon-edit')
+						input.checkbox(type="checkbox")
+						.card__header
+							.card__picture
+								.card__picture-overlay &nbsp;
+								img.card__picture-img(src=`/img/tours/${booking.tour.imageCover}`, alt=`${booking.tour.name}`)
+							h3.heading-tertirary
+								span= booking.tour.name
 
-			each booking in bookings
-				.card
-					.card__header
-						.card__picture
-							.card__picture-overlay &nbsp;
-							img.card__picture-img(src=`/img/tours/${booking.tour.imageCover}`, alt=`${booking.tour.name}`)
-						h3.heading-tertirary
-							span= booking.tour.name
-
-					.card__details
-						h4.card__sub-heading= `Booked By - ${booking.user.name}`
-						p.card__text= booking.user.email
-					.card__footer
-						p
-							span.card__footer-value Price
-							| 
-							span.card__footer-text= `$${booking.price}`
-						p.card__ratings
-							span.card__footer-value Status
-							| 
-							span.card__footer-text= booking.paid?"Paid":"Not Paid"
+						.card__details
+							h4.card__sub-heading= `Booked By - ${booking.user.name}`
+							p.card__text= booking.user.email
+						.card__footer
+							p
+								span.card__footer-value Price
+								| 
+								span.card__footer-text= `$${booking.price}`
+							p.card__ratings
+								span.card__footer-value Status
+								| 
+								span.card__footer-text= booking.paid?"Paid":"Not Paid"
