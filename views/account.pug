@@ -17,7 +17,7 @@ block main
 					+navItem("/reviews","My Reviews","star")
 					+navItem("/billing","Billing","credit-card")
 
-				- if(user.role==="admin")
+				if user.role==="admin"||"lead-guide"
 					.admin-nav
 						h5.admin-nav__heading Admin
 						ul.side-nav

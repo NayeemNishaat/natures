@@ -53,14 +53,6 @@ router
         tourController.createTour
     );
 
-router
-    .route("/delete")
-    .delete(
-        authController.protect,
-        authController.restrictTo("admin", "lead-guide"),
-        tourController.deleteTour
-    );
-
 // Important: Warning: This route should be the last because if we put any other route after this then that route will be treated as the Note: value of the url param "id"!
 router
     .route("/:id")
@@ -73,6 +65,15 @@ router
         tourController.preprocessFormData,
         tourController.updateTour
     );
+
+router
+    .route("/delete")
+    .delete(
+        authController.protect,
+        authController.restrictTo("admin", "lead-guide"),
+        tourController.deleteTour
+    );
+
 // .delete(
 //     authController.protect,
 //     authController.restrictTo("admin", "lead-guide"),
