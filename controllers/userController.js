@@ -1,6 +1,7 @@
 const multer = require("multer"); // Note: Multer is a middleware for transporting multi-part form data.
 const sharp = require("sharp");
 const User = require("../models/userModel");
+const Booking = require("../models/bookingModel");
 const catchAsync = require("../lib/catchAsync");
 const AppError = require("../lib/appError");
 const factory = require("./handlerFactory");
@@ -130,4 +131,4 @@ exports.createUser = (req, res) => {
 // Warning: Don't try to update password with this!
 exports.updateUser = factory.updateOne(User);
 
-exports.deleteUser = factory.delete(User);
+exports.deleteUser = factory.delete(User, Booking);

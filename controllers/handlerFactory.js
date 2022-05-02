@@ -23,7 +23,7 @@ exports.delete = (Model, ModelDependency) =>
 
         if (ModelDependency) {
             await ModelDependency.deleteMany({
-                tour: req.body.docId || req.params.id
+                [Model.modelName.toLowerCase()]: req.body.docId || req.params.id
             });
         }
 
