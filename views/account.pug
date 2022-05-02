@@ -22,8 +22,10 @@ block main
 						h5.admin-nav__heading Admin
 						ul.side-nav
 							+navItem("/manage-tours","Manage Tours","map")
-							+navItem("/manage-users","Manage Users","users")
-							+navItem("/manage-reviews","Manage Reviews","star")
+							if user.role==="admin"
+								+navItem("/manage-users","Manage Users","users")
+							if user.role==="admin"
+								+navItem("/manage-reviews","Manage Reviews","star")
 							+navItem("/manage-bookings","Manage Bookings","briefcase")
 
 			.user-view__content
