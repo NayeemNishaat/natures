@@ -1270,6 +1270,7 @@ body {
 
 .login-form,
 .user-form,
+.booking-form,
 .tour-form {
     margin: 0 auto;
     max-width: 55rem;

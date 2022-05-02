@@ -67,7 +67,7 @@ class manageModel {
                 res = await fetch(`/api/v1/${this.collection}/${docId}`, {
                     method: "PATCH",
                     headers:
-                        this.collection === "users"
+                        this.collection === "users" || "bookings"
                             ? {
                                   "Content-Type": "application/json"
                               }

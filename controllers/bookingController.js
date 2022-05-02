@@ -92,5 +92,18 @@ exports.webhookCheckout = (req, res, next) => {
 exports.createBooking = factory.createOne(Booking);
 exports.getBooking = factory.getOne(Booking);
 exports.getAllBooking = factory.getAll(Booking);
+
+exports.getUserAndTour = async (req, res, next) => {
+    if (req.body.email && req.body.tourName) {
+        const user = await User.findOne({ email: req.body.email }, "_id");
+        const tour = await Tour.findOne({ name: req.body.tourName }, "_id");
+
+        req.body.user = user._id;
+        req.body.tour = tour._id;
+    }
+
+    next();
+};
+
 exports.updateBooking = factory.updateOne(Booking);
 exports.deleteBooking = factory.delete(Booking);

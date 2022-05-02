@@ -2,12 +2,12 @@ extends base
 
 block main
 	main.main
-		.user-form
+		.booking-form
 			h2.heading-secondary.ma-bt-lg Update Booking
 			form.form
 				.form__group
 					label.form__label(for='name') User Email
-					input#role.form__input(type='email', value= booking.user.email, placeholder='user@example.com', required)
+					input#email.form__input(type='email', value= booking.user.email, placeholder='user@example.com', required)
 				.form__group
 					label.form__label(for='tourName') Tour Name
 					input#tourName.form__input(type='text', value= booking.tour.name, placeholder='Tour Name', required)

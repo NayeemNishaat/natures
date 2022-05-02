@@ -22,6 +22,7 @@ const userPhotoForm = document.querySelector(".form-user-photo");
 const userPasswordForm = document.querySelector(".form-user-password");
 const tourForm = document.querySelector(".tour-form");
 const userForm = document.querySelector(".user-form");
+const bookingForm = document.querySelector(".booking-form");
 const logoutBtn = document.querySelector(".nav__el--logout");
 const photoes = document.querySelectorAll(".photo");
 const bookBtn = document.getElementById("book-tour");
@@ -383,6 +384,7 @@ export const deleteReview = () => {
 };
 deleteReview();
 
+// Chapter: Booking
 export const deleteBooking = () => {
     const bookingId = document.querySelector(".card")?.dataset.bookingId;
 
@@ -432,3 +434,19 @@ export const deleteBooking = () => {
     });
 };
 deleteBooking();
+
+if (bookingForm) {
+    bookingForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const email = document.getElementById("email").value;
+        const tourName = document.getElementById("tourName").value;
+        const price = document.getElementById("price").value;
+        const paid = document.getElementById("status").value === "Paid";
+
+        return new manageModel("bookings").createUpdate(
+            JSON.stringify({ email, tourName, price, paid }),
+            location.pathname.slice(location.pathname.lastIndexOf("/") + 1)
+        );
+    });
+}
