@@ -84,13 +84,19 @@ router.get(
 router.get(
     "/manage-bookings",
     authController.protect,
-    authController.restrictTo("admin"),
+    authController.restrictTo("admin", "lead-guide"),
     viewsController.getManageBookings
+);
+router.get(
+    "/create-booking",
+    authController.protect,
+    authController.restrictTo("admin", "lead-guide"),
+    viewsController.getCreateBooking
 );
 router.get(
     "/update-booking/:bookingId",
     authController.protect,
-    authController.restrictTo("admin"),
+    authController.restrictTo("admin", "lead-guide"),
     viewsController.getUpdateBooking
 );
 

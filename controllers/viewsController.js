@@ -209,3 +209,9 @@ exports.getUpdateBooking = catchAsync(async (req, res) => {
         booking
     });
 });
+
+exports.getCreateBooking = catchAsync(async (req, res) => {
+    res.status(200).render("createUpdateBooking", {
+        title: "Create Booking"
+    });
+});
