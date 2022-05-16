@@ -80,6 +80,9 @@ export const forgotPassword = async (email) => {
         });
 
         const data = await res.json();
+
+        if (data.status === "error") throw new Error();
+
         if (data.status === "success") {
             showAlert("success", data.message);
             setTimeout(() => {
