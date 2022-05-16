@@ -65,3 +65,25 @@ export const signup = async (name, email, password, passwordConfirm) => {
         showAlert("error", "Error when trying to sign up. Please try again!");
     }
 };
+
+export const resetPassword = async (email) => {
+    try {
+        const res = await fetch("/api/v1/users/forgot-password", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ email })
+        });
+
+        const data = await res.json();
+        if (data.status === "success") {
+            showAlert("success", data.message);
+            setTimeout(() => {
+                location.assign("/");
+            }, 3000);
+        }
+    } catch (err) {
+        showAlert("error", "Failed to reset your password!");
+    }
+};

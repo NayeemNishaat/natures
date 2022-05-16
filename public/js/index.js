@@ -2,7 +2,7 @@
 
 const slugify = require("slugify");
 import "@babel/polyfill";
-import { login, logout, signup } from "./loginSignup";
+import { login, logout, signup, resetPassword } from "./loginSignup";
 import { displayMap } from "./mapbox";
 import { updateSettings } from "./updateSettings";
 import { bookTour } from "./stripe";
@@ -16,6 +16,7 @@ import handlePagination from "./paginate";
 // Chapter: DOM Elements
 const mapBox = document.getElementById("map");
 const loginForm = document.querySelector(".form--login");
+const resetForm = document.querySelector(".form--reset");
 const signupForm = document.querySelector(".form--signup");
 const userDateForm = document.querySelector(".form-user-data");
 const userPhotoForm = document.querySelector(".form-user-photo");
@@ -458,5 +459,13 @@ if (bookingForm) {
                 JSON.stringify({ email, tourName, price, paid }),
                 location.pathname.slice(location.pathname.lastIndexOf("/") + 1)
             );
+    });
+}
+
+if (resetForm) {
+    document.querySelector(".btn").addEventListener("click", (e) => {
+        e.preventDefault();
+
+        resetPassword(document.getElementById("email").value);
     });
 }
