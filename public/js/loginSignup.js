@@ -66,7 +66,7 @@ export const signup = async (name, email, password, passwordConfirm) => {
     }
 };
 
-export const resetPassword = async (email) => {
+export const forgotPassword = async (email) => {
     try {
         const res = await fetch("/api/v1/users/forgot-password", {
             method: "POST",
@@ -79,6 +79,28 @@ export const resetPassword = async (email) => {
         const data = await res.json();
         if (data.status === "success") {
             showAlert("success", data.message);
+            setTimeout(() => {
+                location.assign("/");
+            }, 3000);
+        }
+    } catch (err) {
+        showAlert("error", "Failed to send password reset link!");
+    }
+};
+
+export const resetPassword = async (password, passwordConfirm, token) => {
+    try {
+        const res = await fetch(`/api/v1/users/reset-password/${token}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ password, passwordConfirm })
+        });
+
+        const data = await res.json();
+        if (data.status === "success") {
+            showAlert("success", "Password changed successfully!");
             setTimeout(() => {
                 location.assign("/");
             }, 3000);

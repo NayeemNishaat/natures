@@ -2,7 +2,13 @@
 
 const slugify = require("slugify");
 import "@babel/polyfill";
-import { login, logout, signup, resetPassword } from "./loginSignup";
+import {
+    login,
+    logout,
+    signup,
+    forgotPassword,
+    resetPassword
+} from "./loginSignup";
 import { displayMap } from "./mapbox";
 import { updateSettings } from "./updateSettings";
 import { bookTour } from "./stripe";
@@ -16,6 +22,7 @@ import handlePagination from "./paginate";
 // Chapter: DOM Elements
 const mapBox = document.getElementById("map");
 const loginForm = document.querySelector(".form--login");
+const forgotForm = document.querySelector(".form--forgot");
 const resetForm = document.querySelector(".form--reset");
 const signupForm = document.querySelector(".form--signup");
 const userDateForm = document.querySelector(".form-user-data");
@@ -462,10 +469,27 @@ if (bookingForm) {
     });
 }
 
+if (forgotForm) {
+    document.querySelector(".btn").addEventListener("click", (e) => {
+        e.preventDefault();
+
+        forgotPassword(document.getElementById("email").value);
+    });
+}
+
 if (resetForm) {
     document.querySelector(".btn").addEventListener("click", (e) => {
         e.preventDefault();
 
-        resetPassword(document.getElementById("email").value);
+        const password = document.getElementById("password").value;
+        const passwordConfirm =
+            document.getElementById("passwordConfirm").value;
+
+        if (password !== passwordConfirm)
+            return showAlert("error", "Passwords didn't match!", 3);
+
+        const token = location.search.slice(1);
+
+        resetPassword(password, passwordConfirm, token);
     });
 }

@@ -36,6 +36,11 @@ router.get(
     authController.isLoggedIn,
     viewsController.getForgotPasswordForm
 );
+router.get(
+    "/reset-password",
+    authController.isLoggedIn,
+    viewsController.getResetPasswordForm
+);
 
 router.get("/me", authController.protect, viewsController.getAccount);
 router.get(
