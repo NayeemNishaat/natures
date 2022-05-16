@@ -3,6 +3,7 @@ const AppError = require("../lib/appError");
 const sendError = (req, res, err, env) => {
     // Chapter: Development Error
     if (env === "development") {
+        console.error(err);
         // Key: API
         if (req.originalUrl.startsWith("/api")) {
             return res.status(err.statusCode).json({
@@ -14,7 +15,6 @@ const sendError = (req, res, err, env) => {
         }
 
         // Key: Rendered Website
-        console.error(err);
         return res.status(err.statusCode).render("error", {
             title: "Something went wrong!",
             msg: err.message
@@ -23,6 +23,7 @@ const sendError = (req, res, err, env) => {
 
     // Chapter: Production Error
     if (err.isOperational) {
+        console.error(err);
         // Point: Operational error
         // Key: API
         if (req.originalUrl.startsWith("/api")) {
@@ -33,15 +34,14 @@ const sendError = (req, res, err, env) => {
         }
 
         // Key: Rendered Website
-        console.error(err);
         return res.status(err.statusCode).render("error", {
             title: "Something went wrong!",
             msg: err.message
         });
     }
 
-    // Point: Programming/unknown error
     console.error(err);
+    // Point: Programming/unknown error
     return res.status(err.statusCode).render("error", {
         title: "Something went wrong!",
         msg: "Please try again later!"
@@ -55,7 +55,9 @@ const handleCastErrorDB = (err) => {
 
 const handleDuplicateFieldsDB = (err) =>
     new AppError(
-        `Duplicate field value: '${err.keyValue.name}' is not allowed.`,
+        `Duplicate field value: '${Object.values(err.keyValue).join(
+            ", "
+        )}' is not allowed.`,
         400
     );
 // const value = err.errmsg.match(/(['"]).*\1/);

@@ -12,7 +12,14 @@ const signToken = (id) =>
         expiresIn: process.env.JWT_EXPIRES_IN
     });
 
-const createSendToken = (user, statusCode, req, res) => {
+const createSendToken = (user, statusCode, req, res, sendToken = true) => {
+    if (!sendToken) {
+        res.status(statusCode).json({
+            status: "success",
+            data: { user: user }
+        });
+    }
+
     const token = signToken(user._id);
 
     const cookieOptions = {
@@ -57,7 +64,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     }/${otp}`;
     await new Email(newUser, url).sendWelcome();
 
-    createSendToken(newUser, 201, req, res);
+    createSendToken(newUser, 201, req, res, false);
 });
 
 exports.activate = catchAsync(async (req, res, next) => {
@@ -227,9 +234,11 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     // Part: Get user based on posted email
     const user = await User.findOne({ email: req.body.email });
 
-    if (!user)
+    if (!user || !user.active)
         return next(
-            new AppError("There is no user with that email address."),
+            new AppError(
+                "There is no user with that email address or account is not activated."
+            ),
             404
         );
 

@@ -52,6 +52,9 @@ export const signup = async (name, email, password, passwordConfirm) => {
         });
 
         const data = await res.json();
+
+        if (data.status === "fail") throw new Error(data.message);
+
         if (data.status === "success") {
             showAlert(
                 "success",
@@ -62,7 +65,7 @@ export const signup = async (name, email, password, passwordConfirm) => {
             }, 5000);
         }
     } catch (err) {
-        showAlert("error", "Error when trying to sign up. Please try again!");
+        showAlert("error", err.message);
     }
 };
 
