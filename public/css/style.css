@@ -278,6 +278,11 @@ body {
     background-color: #55c57a;
     color: #fff;
 }
+.btn--gray {
+    margin-left: 2rem;
+    background-color: #969696;
+    color: #fff;
+}
 .btn--green::after {
     background-color: #55c57a;
 }
