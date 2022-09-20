@@ -4,13 +4,14 @@ const dotenv = require("dotenv");
 
 // Important: Must be placed before executing any other code!
 process.on("uncaughtException", (err) => {
-    // Remark: Uncaught Exceptions are synchronous errors.
-    console.error("Uncaught Exception! Shutting down!");
-    console.error(err.name, err.message);
-    process.exit(1);
+  // Remark: Uncaught Exceptions are synchronous errors.
+  console.error("Uncaught Exception! Shutting down!");
+  console.error(err.name, err.message);
+  process.exit(1);
 });
 
-dotenv.config({ path: `${__dirname}/config.env` }); // Important: Note: This two lines should be on top because we need to set the environment variable at first before starting the app!
+// dotenv.config({ path: `${__dirname}/config.env` }); // Important: Note: This two lines should be on top because we need to set the environment variable at first before starting the app!
+dotenv.config();
 
 const app = require(`./app`);
 
@@ -50,34 +51,34 @@ const app = require(`./app`);
 const DB = process.env.DB_MONGOOSE;
 
 mongoose
-    .connect(DB)
-    .then(() => {
-        // console.log("DB connection successful!");
-    })
-    .catch(() => {
-        // console.log("DB connection failed!");
-    });
+  .connect(DB)
+  .then(() => {
+    // console.log("DB connection successful!");
+  })
+  .catch(() => {
+    // console.log("DB connection failed!");
+  });
 
 const port = process.env.PORT || 8080;
 
 const server = app.listen(port, () => {
-    // console.log(`App listening on port ${port}.`);
+  // console.log(`App listening on port ${port}.`);
 });
 
 process.on("unhandledRejection", (err) => {
-    console.error("Unhandled Rejection! Shutting down!");
-    console.error(err.name, err.message);
-    server.close(() => process.exit(1)); // Note: 1 -> Uncaught exception, 0 -> Success.
+  console.error("Unhandled Rejection! Shutting down!");
+  console.error(err.name, err.message);
+  server.close(() => process.exit(1)); // Note: 1 -> Uncaught exception, 0 -> Success.
 });
 
 // Remark: Heroku sends SIGTERM signal everyday to restart the node application for better application health.
 process.on("SIGTERM", () => {
-    console.log("SIGTERM received. Shutting down gracefully!");
+  console.log("SIGTERM received. Shutting down gracefully!");
 
-    // Note: Gracefully shutting down to complete all the pending requests.
-    server.close(() => {
-        console.log("Process terminated!");
-    });
+  // Note: Gracefully shutting down to complete all the pending requests.
+  server.close(() => {
+    console.log("Process terminated!");
+  });
 });
 
 // Chapter: With Mongoose
