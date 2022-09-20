@@ -487,6 +487,7 @@ body {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  flex-direction: column;
 }
 .section-description > * {
   padding: 0 8vw;
@@ -809,6 +810,18 @@ body {
   font-size: 1.9rem;
   font-weight: 400;
   margin-bottom: 1rem;
+}
+
+@media only screen and (max-width: 50rem) {
+  .cta {
+    padding: 3rem 2rem;
+  }
+  .cta__img {
+    top: 27%;
+  }
+  .cta__wrapper {
+    margin-top: 17rem;
+  }
 }
 
 .user-view {
