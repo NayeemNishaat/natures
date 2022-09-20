@@ -43,6 +43,12 @@ body {
   flex-direction: column;
 }
 
+@media screen and (max-width: 50rem) {
+  body {
+    padding: 2rem;
+  }
+}
+
 .main {
   background-color: #f7f7f7;
   padding: 8rem 6rem;
@@ -210,6 +216,13 @@ body {
   text-align: center;
   width: 70%;
   margin: 0 auto;
+}
+
+@media screen and (max-width: 50rem) {
+  .heading-primary {
+    font-size: 2.5rem;
+    width: 100%;
+  }
 }
 
 .heading-tertirary {
@@ -406,6 +419,20 @@ body {
   );
 }
 
+@media screen and (max-width: 50rem) {
+  .section-header {
+    height: 50vw;
+  }
+  .form__group {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .btn--gray {
+    margin-left: 0rem;
+  }
+}
+
 .header__hero {
   height: 100%;
 }
@@ -479,6 +506,15 @@ body {
   fill: currentColor;
   -webkit-filter: drop-shadow(0 0.75rem 0.5rem rgba(0, 0, 0, 0.25));
   filter: drop-shadow(0 0.75rem 0.5rem rgba(0, 0, 0, 0.25));
+}
+
+@media screen and (max-width: 50rem) {
+  .heading-box__detail {
+    font-size: 1rem;
+  }
+  .heading-box__detail:not(:last-child) {
+    margin-right: 1rem;
+  }
 }
 
 .section-description {
@@ -813,6 +849,10 @@ body {
 }
 
 @media only screen and (max-width: 50rem) {
+  .section-cta {
+    padding-right: 2rem;
+    padding-left: 2rem;
+  }
   .cta {
     padding: 3rem 2rem;
   }
@@ -821,6 +861,13 @@ body {
   }
   .cta__wrapper {
     margin-top: 17rem;
+  }
+  .section-cta {
+    padding-bottom: 0rem;
+    padding-top: calc(10rem + var(--section-rotate));
+  }
+  .reviews {
+    padding: 0;
   }
 }
 
@@ -879,6 +926,8 @@ body {
     grid-template-columns: 1fr;
     grid-row-gap: 1.25rem;
     justify-items: center;
+    font-size: 1rem;
+    padding: 4rem 0;
   }
 }
 .footer__logo {
@@ -900,7 +949,7 @@ body {
   display: -ms-flexbox;
   display: flex;
 }
-.footer__nav li {
+.footer__nav li:not(:first-child) {
   margin-left: 1.5rem;
 }
 .footer__nav a {
@@ -1299,6 +1348,17 @@ body {
   box-shadow: 0 2.5rem 8rem 2rem rgba(0, 0, 0, 0.06);
   padding: 5rem 7rem;
   border-radius: 5px;
+}
+
+@media screen and (max-width: 50rem) {
+  .login-form,
+  .reset-form,
+  .forgot-form,
+  .user-form,
+  .booking-form,
+  .tour-form {
+    padding: 5rem 2rem;
+  }
 }
 
 .form__input {
