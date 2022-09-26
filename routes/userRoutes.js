@@ -16,29 +16,29 @@ router.use(authController.protect); // Important: By using this middleware all t
 router.patch("/update-password", authController.updatePassword);
 
 router.get(
-    "/me",
-    userController.getMe,
-    userController.getUser // Note: Pretty clever! Faking user id in the url by setting it with userController.getMe() middleware.
+  "/me",
+  userController.getMe,
+  userController.getUser // Note: Pretty clever! Faking user id in the url by setting it with userController.getMe() middleware.
 );
 router.patch(
-    "/update-me",
-    userController.uploadUserPhoto,
-    userController.resizeUserPhoto,
-    userController.updateMe
+  "/update-me",
+  userController.uploadUserPhoto,
+  userController.resizeUserPhoto,
+  userController.updateMe
 );
 router.delete("/delete-me", userController.deleteMe);
 
 router.use(authController.restrictTo("admin"));
 
 router
-    .route("/")
-    .get(userController.getAllUsers)
-    .post(userController.createUser);
+  .route("/")
+  .get(userController.getAllUsers)
+  .post(userController.createUser);
 
 router
-    .route("/:id")
-    .get(userController.getUser)
-    .patch(userController.updateUser);
+  .route("/:id")
+  .get(userController.getUser)
+  .patch(userController.updateUser);
 
 router.route("/delete").delete(userController.deleteUser);
 
