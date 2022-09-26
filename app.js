@@ -55,29 +55,29 @@ app.options("*", cors());
 
 // Part: Set security http headers
 app.use(
-    helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false })
+  helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false })
 ); // Note: Called a function but app.use() expects a function not a function call. But the called function will return a function so no worries. Important: csp and coep are disabled in order to add script from remote source!
 
 // Part: Development logging
 if (process.env.NODE_ENV === "development") {
-    // Note: Do development logging!
-    // Important: Must use logging in production (Morgan)
+  // Note: Do development logging!
+  // Important: Must use logging in production (Morgan)
 }
 
 // Part: Request limitting
 const limiter = rateLimit({
-    max: 100,
-    windowMs: 3600 * 1000,
-    message: "Too many requests from this IP. Please try again in an hour."
+  max: 100,
+  windowMs: 3600 * 1000,
+  message: "Too many requests from this IP. Please try again in an hour."
 });
 
 app.use("/api", limiter);
 
 // Key: Stripe Webhook
 app.post(
-    "/webhook-checkout",
-    express.raw({ type: "application/json" }),
-    bookingController.webhookCheckout
+  "/webhook-checkout",
+  express.raw({ type: "application/json" }),
+  bookingController.webhookCheckout
 ); // Important: Reason for defining "/webhook-checkout" route right in app.js is, stripe uses the raw format to read the body not the json format. That's why we put this middleware right before the json body parser.
 
 // Part: Json body parser
@@ -96,16 +96,16 @@ app.use(xss());
 // Part: Prevent parameter pollution
 // Warning: /api/v1/tours?sort=duration&sort=price -> will give an error because we dont expect any array of parameters but string. (express converts multiple params with same name seperated by "&" to an array)
 app.use(
-    hpp({
-        whitelist: [
-            "duration",
-            "ratingsQuantity",
-            "ratingsAverage",
-            "maxGroupSize",
-            "difficulty",
-            "price"
-        ]
-    })
+  hpp({
+    whitelist: [
+      "duration",
+      "ratingsQuantity",
+      "ratingsAverage",
+      "maxGroupSize",
+      "difficulty",
+      "price"
+    ]
+  })
 );
 
 // Part: Compression Middleware
@@ -125,9 +125,9 @@ app.use(express.static(path.join(__dirname, "public")));
 }); */
 
 app.use((req, _res, next) => {
-    req.requestTime = new Date().toISOString();
+  req.requestTime = new Date().toISOString();
 
-    next();
+  next();
 });
 
 // app.get("/", (req, res) => {
@@ -279,16 +279,16 @@ app.use("/api/v1/bookings", bookingRouter);
 
 // Part: Handle unwanted routes (Operational Error)
 app.all("*", authController.isLoggedIn, (req, _res, next) => {
-    // res.status(404).json({
-    //     status: "fail",
-    //     message: `Can't find ${req.originalUrl} on this server.`
-    // });
+  // res.status(404).json({
+  //     status: "fail",
+  //     message: `Can't find ${req.originalUrl} on this server.`
+  // });
 
-    // const err = new Error(`Can't find ${req.originalUrl} on this server.`);
-    // err.status = "fail";
-    // err.statusCode = 404;
+  // const err = new Error(`Can't find ${req.originalUrl} on this server.`);
+  // err.status = "fail";
+  // err.statusCode = 404;
 
-    next(new AppError(`Can't find ${req.originalUrl} on this server.`, 404)); // Important: If next() receives an argument, express will automatically know an error occured. And it will skip all the other middlewares to the error handling middleware.
+  next(new AppError(`Can't find ${req.originalUrl} on this server.`, 404)); // Important: If next() receives an argument, express will automatically know an error occured. And it will skip all the other middlewares to the error handling middleware.
 });
 
 // Chapter: Error Handling
