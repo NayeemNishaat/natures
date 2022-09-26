@@ -1,8 +1,8 @@
 # Natures
-Natures app with Express and MongoDB!
+It's a tour booking web application!
 
-# Site Link
+# Live
 http://natours-lby.herokuapp.com/
 
-# API Documentation
+# API Doc
 https://documenter.getpostman.com/view/19820088/UVyrUGZK
